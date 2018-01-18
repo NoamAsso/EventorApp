@@ -42,10 +42,8 @@ public class LoginActivity extends AppCompatActivity {
         loginactivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(LoginActivity.this, UserAreaMain.class);
-                //myIntent.putExtra("key", value); //Optional parameters
+                Intent myIntent = new Intent(LoginActivity.this, LoginMenu.class);
                 LoginActivity.this.startActivity(myIntent);
-                //finish();
             }
         });
         TextView registeractivity = (TextView) findViewById(R.id.register);
@@ -53,9 +51,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(LoginActivity.this, RegisterActivity.class);
-                //myIntent.putExtra("key", value); //Optional parameters
                 LoginActivity.this.startActivity(myIntent);
-                //finish();
             }
         });
 

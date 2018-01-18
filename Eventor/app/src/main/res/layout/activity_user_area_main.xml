@@ -7,7 +7,6 @@
     tools:context="com.example.noam.eventor.UserAreaMain"
     android:id="@+id/drawerLayout">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

@@ -25,7 +25,6 @@ public class UserAreaMain extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Toolbar toolbar;
-        ViewPager pager;
         MyAdapter adapter;
         CharSequence Titles[]={"Recent Events","My Events","Invitations"};
         int Numboftabs =3;
@@ -45,8 +44,6 @@ public class UserAreaMain extends AppCompatActivity {
         adapter =  new MyAdapter(getSupportFragmentManager(),Titles,Numboftabs);
 
         // Assigning ViewPager View and setting the adapter
-        pager = (ViewPager) findViewById(R.id.view_pager);
-        pager.setAdapter(adapter);
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
