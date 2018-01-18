@@ -27,7 +27,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     ImageButton datePick;
     TextView dateDisplay;
 int day, month, year, hour, minute;
-int fday,fmonth, fyear, fhour, fminute;
+int fday,fmownth, fyear, fhour, fminute;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
