@@ -219,7 +219,7 @@ public static final int Selected_Image = 1;
             price.setBackgroundResource(R.drawable.rounded_edittext_gray );
         else
             price.setBackgroundResource(R.drawable.rounded_edittext );
-        dateDisplay.setBackgroundResource(R.drawable.rounded_edittext;
+        dateDisplay.setBackgroundResource(R.drawable.rounded_edittext);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

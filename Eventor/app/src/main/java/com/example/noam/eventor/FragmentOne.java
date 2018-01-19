@@ -28,7 +28,7 @@ public class FragmentOne extends Fragment {
         return inflater.inflate(R.layout.fragment_one, container, false);
     }
 
-    public void fetchFromNetwork(View view) {
+   /* public void fetchFromNetwork(View view) {
         fetchButton = (Button) view.findViewById(R.id.fetchButton);
         fetchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,11 +36,11 @@ public class FragmentOne extends Fragment {
 
             }
         });
-        /*myfragment = new FragmentOne();
+        *//*myfragment = new FragmentOne();
 
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_switch, myfragment);
-        fragmentTransaction.commit();*/
-    }
+        fragmentTransaction.commit();*//*
+    }*/
 }
