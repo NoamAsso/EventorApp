@@ -24,8 +24,10 @@ public static String lastId = null;
     private String userName;
     private Date creationDate;
     private Date date;
+    private String dateTest;
     private int maxUsers;
     private int currentUsers;
+    private String title;
     private String description;
     private int price;
     //eventType missing
@@ -35,6 +37,7 @@ public static String lastId = null;
     private String friendsById[];
     private Boolean isPrivate;
     private ImageView eventImage;
+
 
 
     public GenericEvent() {
@@ -55,7 +58,29 @@ public static String lastId = null;
         this.eventImage = null;
     }
 
+    public String getDateTest() {
+        return dateTest;
+    }
 
+    public void setDateTest(String dateTest) {
+        this.dateTest = dateTest;
+    }
+
+    public static String getLastId() {
+        return lastId;
+    }
+
+    public static void setLastId(String lastId) {
+        GenericEvent.lastId = lastId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
     public String getId() {
         return id;
     }

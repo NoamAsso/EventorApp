@@ -51,6 +51,7 @@
                                 android:layout_height="match_parent">
 
                                 <ImageButton
+                                    android:id="@+id/event_image"
                                     android:layout_width="130dp"
                                     android:layout_height="120dp"
                                     android:background="#00ffffff"
@@ -72,7 +73,7 @@
                                         android:textSize="20sp" />
 
                                     <Spinner
-                                        android:id="@+id/planets_spinner"
+                                        android:id="@+id/choosen_catgory"
                                         android:layout_width="fill_parent"
                                         android:layout_height="match_parent"
                                         android:layout_weight="0.3"
@@ -107,7 +108,7 @@
                                 android:textSize="18sp" />
 
                             <EditText
-                                android:id="@+id/eventTitle"
+                                android:id="@+id/event_title"
                                 android:layout_width="fill_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="0.1"
@@ -133,7 +134,7 @@
                                 android:textColor="@android:color/white"
                                 android:textSize="18sp" />
                             <EditText
-                                android:id="@+id/descriptionText"
+                                android:id="@+id/description_text"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="0.005"
@@ -331,6 +332,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
                             <ImageButton
+                                android:id="@+id/loaction_button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src = "@drawable/ic_add_location_white_48dp"
@@ -356,6 +358,7 @@
                             android:orientation="horizontal">
 
                             <CheckBox
+                                android:id="@+id/isPrivate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Private event"
@@ -367,6 +370,11 @@
                             android:layout_height="1dp"
                             android:background="@android:color/darker_gray" />
 
+                        <ImageView
+                            android:id="@+id/kak"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src = "@drawable/add_image"/>
 
 
 
@@ -376,6 +384,7 @@
                             android:orientation="vertical">
 
                             <Button
+                                android:id="@+id/create_button"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
