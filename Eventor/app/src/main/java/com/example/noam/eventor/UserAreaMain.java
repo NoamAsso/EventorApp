@@ -31,6 +31,9 @@ public class UserAreaMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_area_main);
         Intent intent = getIntent();
+        AddItemAdapter adapter1;
+        adapter1 = AddItemAdapter.getInstance();
+        adapter1.setContext(this);
        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
       mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open, R.string.close);
        mDrawerLayout.addDrawerListener(mToggle);

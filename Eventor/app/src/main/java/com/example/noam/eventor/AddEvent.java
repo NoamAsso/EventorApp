@@ -103,7 +103,6 @@ public static final int Selected_Image = 1;
 
 
                 if(!error){
-                    /*
                     GenericEvent event = new GenericEvent();
                     event.setTitle(eventTitle.getText().toString());
                     event.setDescription(eventDescription.getText().toString());
@@ -112,7 +111,16 @@ public static final int Selected_Image = 1;
                         event.setMaxUsers(Integer.parseInt(numParticipant.getText().toString()));
                     if(!isFree.isChecked())
                         event.setPrice(Integer.parseInt(price.getText().toString()));
-                    */
+                    AddItemAdapter adapter;
+                    adapter = AddItemAdapter.getInstance();
+                    adapter.AddObj(event);
+                    adapter.notifyDataSetChanged();
+
+                    
+                    //Intent myIntent = new Intent(AddEvent.this, UserAreaMain.class);
+                    //myIntent.putExtra("key", value); //Optional parameters
+                    //AddEvent.this.startActivity(myIntent);
+                    //finish();
                 }
                 else {
 
@@ -219,7 +227,7 @@ public static final int Selected_Image = 1;
             price.setBackgroundResource(R.drawable.rounded_edittext_gray );
         else
             price.setBackgroundResource(R.drawable.rounded_edittext );
-        dateDisplay.setBackgroundResource(R.drawable.rounded_edittext;
+        dateDisplay.setBackgroundResource(R.drawable.rounded_edittext);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
