@@ -20,7 +20,6 @@ package com.example.noam.eventor;
 
 public class FragmentOne extends Fragment {
 
-    Button fetchButton;
 
     public FragmentOne() {
         // Required empty public constructor
@@ -40,40 +39,11 @@ public class FragmentOne extends Fragment {
         Context context;
         ListView list = (ListView) v.findViewById(R.id.eventlist1);
         AddItemAdapter adapter;
-        fetchButton = (Button) v.findViewById(R.id.fetchButton);
         adapter = AddItemAdapter.getInstance();
         context = getActivity();
-        if(context==null)
-            fetchButton.setText("papaappapapaxt");
-
         list.setAdapter(adapter);
         GenericEvent event;
-        if(!adapter.getModel().isEmpty()){
-            event = (GenericEvent) adapter.getItem(0);
-            fetchButton.setText(event.getTitle());
-        }
-
-
-
-
-
         //connect the adapter to the ListView
-
     }
-    public void fetchFromNetwork(View view) {
-        fetchButton = (Button) view.findViewById(R.id.fetchButton);
 
-        fetchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        /*myfragment = new FragmentOne();
-
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_switch, myfragment);
-        fragmentTransaction.commit();*/
-    }
 }

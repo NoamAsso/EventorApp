@@ -1,12 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#62ffffff">
+    android:background="#62ffffff"
+    android:orientation="vertical">
 
     <ListView
         android:id="@+id/studentList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_weight="5"/>
 
-</RelativeLayout>
+    <Button
+        android:id="@+id/fetchButton"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="Fetch from Network"
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/textFromServer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="nothing received from server yet"
+        android:layout_weight="3"
+        android:gravity="center"
+        />
+
+</LinearLayout>
