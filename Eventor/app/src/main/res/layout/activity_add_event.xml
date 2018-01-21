@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/checkifgood"
+    android:background="@drawable/football"
     tools:context="com.example.noam.eventor.AddEvent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#27d6d6d6"
+        android:background="#7e000000"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp">
 
@@ -41,57 +41,46 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
+                        <ImageButton
+                            android:id="@+id/event_image"
+                            android:layout_width="130dp"
+                            android:layout_height="120dp"
+                            android:layout_gravity="center"
+                            android:background="#00ffffff"
+                            android:src="@drawable/add_image2" />
+
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
 
-                            <LinearLayout
+                            <TextView
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="Choose event category:"
 
-                                <ImageButton
-                                    android:id="@+id/event_image"
-                                    android:layout_width="130dp"
-                                    android:layout_height="120dp"
-                                    android:background="#00ffffff"
-                                    android:src="@drawable/add_image2" />
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_weight="0.3"
-                                        android:gravity="center"
-                                        android:text="Choose event category:"
-
-                                        android:textColor="@android:color/white"
-                                        android:textSize="20sp" />
-
-                                    <Spinner
-                                        android:id="@+id/choosen_catgory"
-                                        android:layout_width="fill_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_weight="0.3"
-                                        android:background="@drawable/rounded_edittext" />
-
-                                    <TextView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_weight="0.54"
-                                        android:textSize="20sp"
-                                        android:visibility="invisible" />
-                                </LinearLayout>
+                                android:textColor="@android:color/white"
+                                android:textSize="20sp" />
 
 
-                            </LinearLayout>
+                            <Spinner
+                                android:id="@+id/spinner_catgory"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:background="@drawable/rounded_edittext" />
+
+                            <EditText
+                                android:id="@+id/costume_category"
+                                android:layout_width="fill_parent"
+                                android:layout_height="0dp"
+                                android:background="@drawable/rounded_edittext"
+                                android:gravity="center"
+                                android:hint="Costume category"
+                                android:textColorHint="#e9e9e9" />
 
                         </LinearLayout>
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
@@ -115,7 +104,7 @@
                                 android:background="@drawable/rounded_edittext"
                                 android:gravity="center"
                                 android:hint="New Title"
-                                android:textColorHint="#a7a7a7" />
+                                android:textColorHint="#e9e9e9" />
                         </LinearLayout>
 
 
@@ -139,7 +128,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="0.005"
                                 android:background="@drawable/rounded_edittext"
-
                                 android:gravity="center"
                                 android:hint="250 characters"
                                 android:inputType="textEmailAddress|textMultiLine"
@@ -147,7 +135,7 @@
                                 android:minLines="5"
                                 android:scrollHorizontally="false"
                                 android:scrollbars="vertical"
-                                android:textColorHint="#a7a7a7" />
+                                android:textColorHint="#e9e9e9" />
 
 
 

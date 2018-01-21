@@ -7,6 +7,7 @@ package com.example.noam.eventor;
 import android.media.Image;
 import android.widget.ImageView;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -122,7 +123,7 @@ public static String lastId = null;
     }
 
     public int getMaxUsers() {
-        return maxUsers;
+        return this.maxUsers;
     }
 
     public void setMaxUsers(int maxUsers) {

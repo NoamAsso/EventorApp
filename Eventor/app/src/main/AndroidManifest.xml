@@ -21,7 +21,6 @@
         <activity
             android:name=".AddEvent"
             android:label="Create new event" />
-        <activity android:name=".MainActivity" />
         <activity android:name=".Testing" />
         <activity android:name=".LoginMenu"></activity>
     </application>

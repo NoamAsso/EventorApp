@@ -17,7 +17,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -25,11 +28,13 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
@@ -69,10 +74,41 @@ public static final int Selected_Image = 1;
         isPrivate =  (CheckBox) findViewById(R.id.isPrivate);
         kaka = (ImageView) findViewById(R.id.kak);
         createButton = (Button) findViewById(R.id.create_button);
+        final EditText costumeCategory = (EditText) findViewById(R.id.costume_category);
 
 
+        //spinner
+        String[] items = new String[] {"Soccer", "Basketball", "Volleyball","Tennis", "Baseball", "Cricket","Costume"};
+        final Spinner spinner = (Spinner) findViewById(R.id.spinner_catgory);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, items);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                // TODO Auto-generated method stub
+                String chosenOption=spinner.getSelectedItem().toString();
+                if(chosenOption.matches("Costume")){
+                    ViewGroup.LayoutParams params = spinner.getLayoutParams();
+                    params.height = 0;
+                    spinner.setLayoutParams(params);
+                    params = costumeCategory.getLayoutParams();
+                    params.height = 100;
+                    costumeCategory.setLayoutParams(params);
+                }
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+        //spinner
 
 
+        //create button
         createButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -99,15 +135,13 @@ public static final int Selected_Image = 1;
                     error = true;
                     dateDisplay.setBackgroundResource(R.drawable.rounded_edittext_red );
                 }
-
-
-
                 if(!error){
                     GenericEvent event = new GenericEvent();
-                    event.setTitle(eventTitle.getText().toString());
+                    Date date = new Date();
+                    event.setTitle(spinner.getSelectedItem().toString());
                     event.setDescription(eventDescription.getText().toString());
                     event.setDateTest(dateDisplay.getText().toString());
-                    if(isLimit.isChecked())
+                    if(!isLimit.isChecked())
                         event.setMaxUsers(Integer.parseInt(numParticipant.getText().toString()));
                     if(!isFree.isChecked())
                         event.setPrice(Integer.parseInt(price.getText().toString()));
@@ -115,22 +149,22 @@ public static final int Selected_Image = 1;
                     adapter = AddItemAdapter.getInstance();
                     adapter.AddObj(event);
                     adapter.notifyDataSetChanged();
-
-                    
-                    //Intent myIntent = new Intent(AddEvent.this, UserAreaMain.class);
+                    int num = event.getMaxUsers();
+                    date.setYear(fyear);
+                    date.setMonth(fmonth);
+                    date.setDate(fday);
+                    date.setHours(fhour);
+                    date.setMinutes(fminute);
+                    event.setDate(date);
+                    Intent myIntent = new Intent(AddEvent.this, UserAreaMain.class);
                     //myIntent.putExtra("key", value); //Optional parameters
-                    //AddEvent.this.startActivity(myIntent);
+                    AddEvent.this.startActivity(myIntent);
                     //finish();
                 }
                 else {
 
                     Toast.makeText(getApplicationContext(),"Some fields are missing",Toast.LENGTH_SHORT).show();
                 }
-
-
-
-
-
             }
         });
 
@@ -138,6 +172,9 @@ public static final int Selected_Image = 1;
 
         numParticipant.setEnabled(false);
         price.setEnabled(false);
+
+
+
         eventImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

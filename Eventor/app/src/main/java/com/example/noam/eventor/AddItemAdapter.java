@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.Date;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -69,6 +71,8 @@ public void setContext (Context context){
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        int year, month, day;
+        Date datecheck = new Date();
         // inflate the layout for each list row
         if (convertView == null) {
             convertView = LayoutInflater.from(context).
@@ -83,9 +87,27 @@ public void setContext (Context context){
                 convertView.findViewById(R.id.event_title_item);
         TextView maxNumOfUsers = (TextView)
                 convertView.findViewById(R.id.max_num_users);
-
+        TextView date = (TextView)
+                convertView.findViewById(R.id.event_date_item);
         //sets the text for item name and item description from the current item object
         title.setText(currentItem.getTitle());
+        year = currentItem.getDate().getYear();
+        month = currentItem.getDate().getMonth();
+        day = currentItem.getDate().getDate();
+        if((year == (datecheck.getYear()+1900)) && (month == (datecheck.getMonth()+1))){
+            switch (day-datecheck.getDate()){
+                case 0:
+                    date.setText("Today");break;
+                case 1:
+                    date.setText("Tommorow");break;
+                default:
+                    date.setText(Integer.toString(datecheck.getDate()));
+            }
+        }
+        else
+            date.setText(Integer.toString(datecheck.getDate()));
+
+        //date.setText(currentItem.getDateTest());
         maxNumOfUsers.setText(Integer.toString(currentItem.getMaxUsers()));
 
         // returns the view for the current row
