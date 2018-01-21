@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +19,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+
 /**
  * Created by Noam on 19/01/2018.
  */
@@ -82,13 +87,14 @@ public void setContext (Context context){
         // get current item to be displayed
         GenericEvent currentItem = (GenericEvent) getItem(position);
 
+        TextView timeHrsMin = (TextView)
+                convertView.findViewById(R.id.time_item);
         // get the TextView for item name and item description
-        TextView title = (TextView)
-                convertView.findViewById(R.id.event_title_item);
-        TextView maxNumOfUsers = (TextView)
-                convertView.findViewById(R.id.max_num_users);
-        TextView date = (TextView)
-                convertView.findViewById(R.id.event_date_item);
+        TextView title = (TextView) convertView.findViewById(R.id.event_title_item);
+        TextView maxNumOfUsers = (TextView) convertView.findViewById(R.id.max_num_users);
+        TextView date = (TextView) convertView.findViewById(R.id.event_date_item);
+        TextView location = (TextView) convertView.findViewById(R.id.location_item);
+        ImageView image = (ImageView) convertView.findViewById(R.id.image_item);
         //sets the text for item name and item description from the current item object
         title.setText(currentItem.getTitle());
         year = currentItem.getDate().getYear();
@@ -101,15 +107,26 @@ public void setContext (Context context){
                 case 1:
                     date.setText("Tommorow");break;
                 default:
-                    date.setText(Integer.toString(datecheck.getDate()));
+                    date.setText(currentItem.getDateTest());
             }
         }
         else
             date.setText(Integer.toString(datecheck.getDate()));
-
+        if(currentItem.getDate().getMinutes()<10 && currentItem.getDate().getHours()>9){
+            timeHrsMin.setText("At: "+currentItem.getDate().getHours()+":0"+currentItem.getDate().getMinutes());
+        }
+        else if(currentItem.getDate().getHours()<10 && currentItem.getDate().getMinutes()>9){
+            timeHrsMin.setText("At: 0"+currentItem.getDate().getHours()+":"+currentItem.getDate().getMinutes());
+        }
+        else if((currentItem.getDate().getHours()<10 && currentItem.getDate().getMinutes()<10))
+        timeHrsMin.setText("At: "+currentItem.getDate().getHours()+":0"+currentItem.getDate().getMinutes());
+        else
+            timeHrsMin.setText("At: "+currentItem.getDate().getHours()+":"+currentItem.getDate().getMinutes());
         //date.setText(currentItem.getDateTest());
+        image.setImageBitmap(currentItem.getEventImage());;
         maxNumOfUsers.setText(Integer.toString(currentItem.getMaxUsers()));
-
+        String address = String.format("Place: %s",currentItem.getEventLocation().getAddress());
+        location.setText(address);
         // returns the view for the current row
         return convertView;
     }

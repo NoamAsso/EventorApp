@@ -33,15 +33,24 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
 
 public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
 public static final int Selected_Image = 1;
+    int PLACE_PICKER_REQUEST = 2;
     EditText eventTitle;
     EditText eventDescription;
     ImageButton datePick;
+    Bitmap bitmap;
     TextView dateDisplay;
     ImageView kaka;
     ImageButton eventImage;
@@ -49,6 +58,9 @@ public static final int Selected_Image = 1;
     EditText price;
     CheckBox isLimit;
     CheckBox isFree;
+    ImageButton locationButton;
+    EditText locationText;
+    Place place;
     CheckBox isPrivate;
     Button createButton;
     int day, month, year, hour, minute;
@@ -72,13 +84,16 @@ public static final int Selected_Image = 1;
         price = (EditText) findViewById(R.id.priceText);
         isFree =  (CheckBox) findViewById(R.id.isFree);
         isPrivate =  (CheckBox) findViewById(R.id.isPrivate);
-        kaka = (ImageView) findViewById(R.id.kak);
         createButton = (Button) findViewById(R.id.create_button);
+        locationButton = (ImageButton) findViewById(R.id.loaction_button);
+        locationText = (EditText) findViewById(R.id.location_text);
         final EditText costumeCategory = (EditText) findViewById(R.id.costume_category);
 
+        numParticipant.setEnabled(false);
+        price.setEnabled(false);
 
         //spinner
-        String[] items = new String[] {"Soccer", "Basketball", "Volleyball","Tennis", "Baseball", "Cricket","Costume"};
+        String[] items = new String[] {"Football", "Basketball", "Volleyball","Tennis", "Baseball", "Cricket","Costume"};
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_catgory);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, items);
@@ -156,6 +171,8 @@ public static final int Selected_Image = 1;
                     date.setHours(fhour);
                     date.setMinutes(fminute);
                     event.setDate(date);
+                    event.setEventImage(bitmap);
+                    event.setEventLocation(place);
                     Intent myIntent = new Intent(AddEvent.this, UserAreaMain.class);
                     //myIntent.putExtra("key", value); //Optional parameters
                     AddEvent.this.startActivity(myIntent);
@@ -166,21 +183,32 @@ public static final int Selected_Image = 1;
                     Toast.makeText(getApplicationContext(),"Some fields are missing",Toast.LENGTH_SHORT).show();
                 }
             }
+            //create button
         });
 
-
-
-        numParticipant.setEnabled(false);
-        price.setEnabled(false);
-
-
-
+        locationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                try {
+                    Intent intent = builder.build(getApplicationContext());
+                    startActivityForResult(intent,PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         eventImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                buttonClick(view);
+                ImagebuttonClick(view);
+
             }
         });
+
+        //max Paticipants limit and price handler
         isLimit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -210,6 +238,9 @@ public static final int Selected_Image = 1;
                 }
             }
         });
+        //max Paticipants limit and price handler
+
+
         datePick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -249,10 +280,37 @@ public static final int Selected_Image = 1;
         fminute = i1;
         dateDisplay.setText(fday + "/" + fmonth + "/"+ fyear + "   "+ fhour + ":"+ fminute );
     }
-    public void buttonClick(View v){
+
+    public void ImagebuttonClick(View v){
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent,Selected_Image);
+        startActivityForResult(intent,1);
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+if(resultCode == RESULT_OK && (data !=null)){
+    eventTitle.setText(Integer.toString(requestCode));
+    if(requestCode == Selected_Image){
+        Uri imageUri = data.getData();
+        try{
+            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+            eventImage.setImageBitmap(bitmap);
+        }
+        catch (IOException e) {
+            System.out.println(e);
+        }
+    }
+    if(requestCode == PLACE_PICKER_REQUEST){
+        eventTitle.setText("love");
+        Place place = PlacePicker.getPlace(data,this);
+        String address = String.format("Place: %s",place.getAddress());
+        locationText.setText(address);
+
+    }
+}
+
+    }
+
     public void EditTextNormalize(){
         eventTitle.setBackgroundResource(R.drawable.rounded_edittext);
         eventDescription.setBackgroundResource(R.drawable.rounded_edittext);
@@ -265,27 +323,5 @@ public static final int Selected_Image = 1;
         else
             price.setBackgroundResource(R.drawable.rounded_edittext );
         dateDisplay.setBackgroundResource(R.drawable.rounded_edittext);
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch(resultCode){
-            case Selected_Image:
-                if(resultCode==RESULT_OK){
-                    Uri uri = data.getData();
-                    String[] projection = {MediaStore.Images.Media.DATA};
-
-                    Cursor c = getContentResolver().query(uri,projection,null,null,null);
-                    c.moveToFirst();
-                    int columnIndex = c.getColumnIndex(projection[0]);
-                    String filePath = c.getString(columnIndex);
-                    c.close();
-
-                    Bitmap event_pic = BitmapFactory.decodeFile(filePath);
-                    Drawable d = new BitmapDrawable(event_pic);
-
-                    kaka.setBackground(d);
-                }
-        }
     }
 }
