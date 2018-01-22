@@ -36,8 +36,11 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_string_api" />
 
-        <activity android:name=".EventPage"></activity>
-
+        <activity android:name=".EventPage" />
+        <activity
+            android:name=".EventMenu"
+            android:label="@string/title_activity_event_menu"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

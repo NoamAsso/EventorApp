@@ -45,14 +45,10 @@ public class UserAreaMain extends AppCompatActivity {
        // setSupportActionBar(toolbar);
 
         adapter =  new MyAdapter(getSupportFragmentManager(),Titles,Numboftabs);
-
-        // Assigning ViewPager View and setting the adapter
-
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
 
         viewPager.setAdapter(new MyAdapter(getSupportFragmentManager(),Titles,Numboftabs));
-        // Assiging the Sliding Tab Layout View
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.post(new Runnable() {
             @Override

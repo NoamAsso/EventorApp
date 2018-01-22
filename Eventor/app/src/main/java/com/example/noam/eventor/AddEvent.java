@@ -45,7 +45,10 @@ import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.PlaceBufferResponse;
 import com.google.android.gms.location.places.PlaceDetectionApi;
+import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
@@ -67,6 +70,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
     private static final String TAG = "AddEvent";
@@ -90,11 +95,83 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     CheckBox isPrivate;
     Button createButton;
     GoogleApiClient googleApiClient;
-    GeoDataClient mGeoDataClient;
     int day, month, year, hour, minute;
     int fday,fmonth, fyear, fhour, fminute;
+    private GeoDataClient mGeoDataClient;
+    private PlaceDetectionClient mPlaceDetectionClient;
+    GenericEvent event;
     Context context;
-    Place place2;
+    Place place2 = new Place() {
+        @Override
+        public String getId() {
+            return null;
+        }
+
+        @Override
+        public List<Integer> getPlaceTypes() {
+            return null;
+        }
+
+        @Override
+        public CharSequence getAddress() {
+            return null;
+        }
+
+        @Override
+        public Locale getLocale() {
+            return null;
+        }
+
+        @Override
+        public CharSequence getName() {
+            return null;
+        }
+
+        @Override
+        public LatLng getLatLng() {
+            return null;
+        }
+
+        @Override
+        public LatLngBounds getViewport() {
+            return null;
+        }
+
+        @Override
+        public Uri getWebsiteUri() {
+            return null;
+        }
+
+        @Override
+        public CharSequence getPhoneNumber() {
+            return null;
+        }
+
+        @Override
+        public float getRating() {
+            return 0;
+        }
+
+        @Override
+        public int getPriceLevel() {
+            return 0;
+        }
+
+        @Override
+        public CharSequence getAttributions() {
+            return null;
+        }
+
+        @Override
+        public Place freeze() {
+            return null;
+        }
+
+        @Override
+        public boolean isDataValid() {
+            return false;
+        }
+    };
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
@@ -102,7 +179,8 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        mGeoDataClient =Places.getGeoDataClient(AddEvent.this, null);
+        mPlaceDetectionClient = Places.getPlaceDetectionClient(this, null);
         eventTitle = (EditText) findViewById(R.id.event_title);
         eventDescription = (EditText) findViewById(R.id.description_text);
         eventImage = (ImageButton) findViewById(R.id.event_image);
@@ -183,7 +261,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     dateDisplay.setBackgroundResource(R.drawable.rounded_edittext_red );
                 }
                 if(!error){
-                    GenericEvent event = new GenericEvent();
+                    event = new GenericEvent();
                     Date date = new Date();
                     event.setTitle(spinner.getSelectedItem().toString());
                     event.setDescription(eventDescription.getText().toString());
@@ -193,9 +271,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     if(!isFree.isChecked())
                         event.setPrice(Integer.parseInt(price.getText().toString()));
                     AddItemAdapter adapter;
-                    adapter = AddItemAdapter.getInstance();
-                    adapter.AddObj(event);
-                    adapter.notifyDataSetChanged();
+
                     int num = event.getMaxUsers();
                     date.setYear(fyear);
                     date.setMonth(fmonth);
@@ -204,15 +280,13 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     date.setMinutes(fminute);
                     event.setDate(date);
                     event.setEventImage(bitmap);
-                    event.setEventLocation(place);
                     Gson gson = new Gson();
                     Double latitude = place.getLatLng().latitude;
                     Double longitude = place.getLatLng().longitude;
                     String placeId = place.getId();
+                    event.setDateTest(place.getId());
                     String placeAdress = String.format("%s",place.getAddress());
                     String placeName;
-
-                    mGeoDataClient =Places.getGeoDataClient(AddEvent.this, null);
 
                     mGeoDataClient.getPlaceById(placeId).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
                         @Override
@@ -220,16 +294,64 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                             if (task.isSuccessful()) {
                                 PlaceBufferResponse places = task.getResult();
                                 place2 = places.get(0);
-                                Log.i(TAG, "Place found: " + place2.getName());
+                                Log.i(TAG, "Place foundddddddddddddddd: " + place2.getName() + place2.getAddress());
                                 places.release();
                             } else {
                                 Log.e(TAG, "Place not found.");
                             }
                         }
                     });
-                    Place place3 =place2;
+                    event.setEventLocation(place);
                     String temp = String.format("%s",place.getLocale(),place.getName(),place.getAddress());
                     String json = gson.toJson(event);
+
+                    int i = 0;
+                    adapter = AddItemAdapter.getInstance();
+                    adapter.AddObj(event);
+                    adapter.notifyDataSetChanged();
+
+                    //Building test Json for testing
+                    String test1 = "first try";
+                    int test2 = 17;
+
+                    JSONObject json2 = new JSONObject();
+                    try {
+                        json2.putOpt("test1", test1);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        json2.put("test2",test2);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    String toSend = json2.toString();
+
+                    NetworkManager instance = NetworkManager.getInstance();
+                    //John purcell's way
+                    //instance.sendDataToServer(toSend);
+                    // The old way
+                    instance.addRequest(new PostEventRequest(toSend, new ServerCallback() {
+
+                        @Override
+                        public void onSuccess(Object res, int statusCode) {
+                            final String result = (String) res;
+                            Log.e("AddEvent", result);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onFailure(Object err, int statusCode) {
+                            Log.e("AddEvent", "Connection to Server failed");
+                        }
+                    }));
+
 
                     Intent myIntent = new Intent(AddEvent.this, UserAreaMain.class);
                     //myIntent.putExtra("key", value); //Optional parameters
