@@ -3,7 +3,11 @@ package com.example.noam.eventor;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.hardware.SensorManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -23,17 +27,20 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.junit.runner.Describable;
+
 import java.util.ArrayList;
 
-import static android.icu.text.Normalizer.YES;
 
 /**
  * Created by Itay on 18/1/2018
  */
 
     public class MapEventMenu extends Fragment implements OnMapReadyCallback {
+    private static final String DESCRIBABLE_KEY = "describable_key";
 
     private static final String TAG = "MapEventMenu" ;
+    private static final int REQUEST_CODE = 1;
     MapView mapView;
         GoogleMap map;
 
@@ -45,7 +52,8 @@ import static android.icu.text.Normalizer.YES;
             mapView = (MapView) v.findViewById(R.id.mapView);
             mapView.onCreate(savedInstanceState);
             //mapView.loca = YES;
-
+            AddItemAdapter adapter = AddItemAdapter.getInstance();
+            GenericEvent currentevent = (GenericEvent) adapter.getModel().get(adapter.getCurrentIndex());
             mapView.getMapAsync(this);
 
 
@@ -56,12 +64,15 @@ import static android.icu.text.Normalizer.YES;
         public void onMapReady(GoogleMap googleMap) {
             map = googleMap;
             map.getUiSettings().setMyLocationButtonEnabled(false);
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_CODE);
             if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 map.setMyLocationEnabled(true);
-                Log.e(TAG, "fuckkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-                Log.e(TAG, "fuckkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
             }
+            else
+                map.setMyLocationEnabled(true);
        /*
        //in old Api Needs to call MapsInitializer before doing any CameraUpdateFactory call
         try {
@@ -69,10 +80,15 @@ import static android.icu.text.Normalizer.YES;
         } catch (GooglePlayServicesNotAvailableException e) {
             e.printStackTrace();
         }
+
        */
+       LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            double longitude = location.getLongitude();
+            double latitude = location.getLatitude();
 
             // Updates the location and zoom of the MapView
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(43.1, -87.9), 10);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 10);
         map.animateCamera(cameraUpdate);
 
         }
