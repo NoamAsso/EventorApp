@@ -1,6 +1,7 @@
 package com.example.noam.eventor;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -19,6 +22,8 @@ import android.widget.Toast;
 public class FragmentTwo extends Fragment {
 
     Button fetchButton;
+    TextView testText;
+
     public static final String TAG = "Fragment2";
 
     public FragmentTwo() {
@@ -30,16 +35,39 @@ public class FragmentTwo extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_two, container, false);
         fetchFromNetwork(view);
+
+        NetworkManager instance = NetworkManager.getInstance();
+        instance.addRequest(new GetEventsRequest(new ServerCallback() {
+
+            @Override
+            public void onSuccess(Object res, int statusCode) {
+                final String result = (String) res;
+                Log.e("Fragment2", result);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Object err, int statusCode) {
+                Log.e("Fragment2", "Connection to Server failed");
+            }
+        }));
+
         return view;
     }
 
     public void fetchFromNetwork(View view) {
         fetchButton = view.findViewById(R.id.fetchButton); //Removed the casting to button (redundant?)
+        testText = view.findViewById(R.id.textFromServer);
         fetchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                NetworkManager instance = NetworkManager.getInstance();
-               instance.addRequest(new GetNotificationByIdRequest("1", new ServerCallback() {
+               instance.addRequest(new GetEventsRequest(new ServerCallback() {
 
                    @Override
                    public void onSuccess(Object res, int statusCode) {
@@ -49,6 +77,7 @@ public class FragmentTwo extends Fragment {
                            @Override
                            public void run() {
                                Toast.makeText(getActivity().getApplicationContext(), "yay got the message!", Toast.LENGTH_SHORT).show();
+                               testText.setText(result);
                            }
                        });
                    }
@@ -60,11 +89,5 @@ public class FragmentTwo extends Fragment {
                }));
             }//OnClick
         });//setOnClickListener
-        /*myfragment = new FragmentTwo();
-
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_switch, myfragment);
-        fragmentTransaction.commit();*/
-    }
+    }//fetchFromNetwork
 }

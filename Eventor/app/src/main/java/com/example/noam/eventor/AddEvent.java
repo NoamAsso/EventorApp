@@ -60,6 +60,9 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
@@ -227,7 +230,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     Place place3 =place2;
                     String temp = String.format("%s",place.getLocale(),place.getName(),place.getAddress());
                     String json = gson.toJson(event);
-                    int i = 0;
+
                     Intent myIntent = new Intent(AddEvent.this, UserAreaMain.class);
                     //myIntent.putExtra("key", value); //Optional parameters
                     AddEvent.this.startActivity(myIntent);
@@ -395,7 +398,6 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     @Override
     public void onConnectionSuspended(int i) {
 
-
-    }
+   }
 }
 
