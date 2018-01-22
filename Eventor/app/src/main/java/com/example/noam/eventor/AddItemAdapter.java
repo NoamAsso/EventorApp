@@ -2,6 +2,7 @@ package com.example.noam.eventor;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +23,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 
+import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBufferResponse;
+import com.google.android.gms.location.places.PlaceDetectionClient;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 /**
  * Created by Noam on 19/01/2018.
@@ -35,6 +42,7 @@ public class AddItemAdapter extends BaseAdapter {
         private ArrayList<GenericEvent> model;
         private static AddItemAdapter sInstance;
         private LayoutInflater layoutInflater;
+        TextView location;
     private AddItemAdapter() {
         model = new ArrayList<>();
         this.context = null;
@@ -88,13 +96,14 @@ public void setContext (Context context){
 
         GenericEvent currentItem = (GenericEvent) getItem(position);
 
-
+        GeoDataClient mGeoDataClient = Places.getGeoDataClient(context, null);
+        PlaceDetectionClient mPlaceDetectionClient = Places.getPlaceDetectionClient(context, null);
         Button detailButton = (Button) convertView.findViewById(R.id.details_button);
         TextView timeHrsMin = (TextView) convertView.findViewById(R.id.time_item);
         TextView title = (TextView) convertView.findViewById(R.id.event_title_item);
         TextView maxNumOfUsers = (TextView) convertView.findViewById(R.id.max_num_users);
         TextView date = (TextView) convertView.findViewById(R.id.event_date_item);
-        TextView location = (TextView) convertView.findViewById(R.id.location_item);
+        location = (TextView) convertView.findViewById(R.id.location_item);
         ImageView image = (ImageView) convertView.findViewById(R.id.image_item);
         //sets the text for item name and item description from the current item object
         title.setText(currentItem.getTitle());
@@ -126,8 +135,25 @@ public void setContext (Context context){
         //date.setText(currentItem.getDateTest());
         image.setImageBitmap(currentItem.getEventImage());;
         maxNumOfUsers.setText(Integer.toString(currentItem.getMaxUsers()));
-        String address = String.format("%s, %s",currentItem.getEventLocation().getLocale(),currentItem.getEventLocation().getAddress());
-        location.setText(address);
+        String placeId = currentItem.getDateTest();
+        mGeoDataClient.getPlaceById(placeId).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
+            public static final String TAG = "AddItemAdapter";
+
+            @Override
+            public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
+                if (task.isSuccessful()) {
+                    PlaceBufferResponse places = task.getResult();
+                    Place place2 = places.get(0);
+                    location.setText(place2.getName()+", "+place2.getAddress());
+                    Log.i(TAG, "Place foundddddddddddddddd: " + place2.getName() + place2.getAddress());
+                    places.release();
+                } else {
+                    Log.e(TAG, "Place not found.");
+                }
+            }
+        });
+        //String address = String.format("%s, %s",currentItem.getEventLocation().getLocale(),currentItem.getEventLocation().getAddress());
+        //location.setText(address);
 
 
 
