@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.noam.eventor">
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -21,9 +22,9 @@
         <activity
             android:name=".AddEvent"
             android:label="Create new event" />
-        <activity android:name=".MainActivity" />
         <activity android:name=".Testing" />
         <activity android:name=".LoginMenu"></activity>
+
     </application>
 
 </manifest>
