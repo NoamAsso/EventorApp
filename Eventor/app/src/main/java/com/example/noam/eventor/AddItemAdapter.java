@@ -39,10 +39,11 @@ import com.google.android.gms.tasks.Task;
 
 public class AddItemAdapter extends BaseAdapter {
         private Context context; //context
+        private static int currentIndex;
         private ArrayList<GenericEvent> model;
         private static AddItemAdapter sInstance;
         private LayoutInflater layoutInflater;
-        TextView location;
+
     private AddItemAdapter() {
         model = new ArrayList<>();
         this.context = null;
@@ -55,7 +56,12 @@ public class AddItemAdapter extends BaseAdapter {
         }
         return sInstance;
     }
-public void AddObj(GenericEvent obj){
+
+    public static int getCurrentIndex() {
+        return currentIndex;
+    }
+
+    public void AddObj(GenericEvent obj){
     model.add(obj);
 }
 public void setContext (Context context){
@@ -85,7 +91,7 @@ public void setContext (Context context){
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         int year, month, day;
         Date datecheck = new Date();
         // inflate the layout for each list row
@@ -94,7 +100,7 @@ public void setContext (Context context){
                     inflate(R.layout.event_list_item, parent, false);
         }
 
-        GenericEvent currentItem = (GenericEvent) getItem(position);
+        final GenericEvent currentItem = (GenericEvent) getItem(position);
 
         GeoDataClient mGeoDataClient = Places.getGeoDataClient(context, null);
         PlaceDetectionClient mPlaceDetectionClient = Places.getPlaceDetectionClient(context, null);
@@ -103,7 +109,7 @@ public void setContext (Context context){
         TextView title = (TextView) convertView.findViewById(R.id.event_title_item);
         TextView maxNumOfUsers = (TextView) convertView.findViewById(R.id.max_num_users);
         TextView date = (TextView) convertView.findViewById(R.id.event_date_item);
-        location = (TextView) convertView.findViewById(R.id.location_item);
+        final TextView location = (TextView) convertView.findViewById(R.id.location_item);
         ImageView image = (ImageView) convertView.findViewById(R.id.image_item);
         //sets the text for item name and item description from the current item object
         title.setText(currentItem.getTitle());
@@ -160,6 +166,7 @@ public void setContext (Context context){
         detailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                currentIndex = position;
                 Intent myIntent = new Intent(context, EventPage.class);
                 //myIntent.putExtra("key", value); //Optional parameters
                 context.startActivity(myIntent);
