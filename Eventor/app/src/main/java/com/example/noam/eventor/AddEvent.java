@@ -3,6 +3,7 @@ package com.example.noam.eventor;
 import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -12,12 +13,17 @@ import android.graphics.drawable.Drawable;
 import android.icu.text.DateFormat;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -25,18 +31,49 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import android.location.Location;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.location.places.GeoDataApi;
+import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.PlaceBufferResponse;
+import com.google.android.gms.location.places.PlaceDetectionApi;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import android.graphics.Bitmap;
+import android.media.Image;
+import android.net.Uri;
+import android.widget.ImageView;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
+import java.util.Date;
 
-public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+    private static final String TAG = "AddEvent";
 
-public static final int Selected_Image = 1;
+    public static final int Selected_Image = 1;
+    int PLACE_PICKER_REQUEST = 2;
     EditText eventTitle;
     EditText eventDescription;
     ImageButton datePick;
+    Bitmap bitmap;
     TextView dateDisplay;
     ImageView kaka;
     ImageButton eventImage;
@@ -44,11 +81,17 @@ public static final int Selected_Image = 1;
     EditText price;
     CheckBox isLimit;
     CheckBox isFree;
+    ImageButton locationButton;
+    EditText locationText;
+    Place place;
     CheckBox isPrivate;
     Button createButton;
+    GoogleApiClient googleApiClient;
+    GeoDataClient mGeoDataClient;
     int day, month, year, hour, minute;
     int fday,fmonth, fyear, fhour, fminute;
-
+    Context context;
+    Place place2;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
@@ -67,12 +110,49 @@ public static final int Selected_Image = 1;
         price = (EditText) findViewById(R.id.priceText);
         isFree =  (CheckBox) findViewById(R.id.isFree);
         isPrivate =  (CheckBox) findViewById(R.id.isPrivate);
-        kaka = (ImageView) findViewById(R.id.kak);
         createButton = (Button) findViewById(R.id.create_button);
+        locationButton = (ImageButton) findViewById(R.id.loaction_button);
+        locationText = (EditText) findViewById(R.id.location_text);
+        final EditText costumeCategory = (EditText) findViewById(R.id.costume_category);
+
+        numParticipant.setEnabled(false);
+        price.setEnabled(false);
+        locationText.setEnabled(false);
 
 
+        context = getApplicationContext();
+        //spinner
+        String[] items = new String[] {"Football", "Basketball", "Volleyball","Tennis", "Baseball", "Cricket","Costume"};
+        final Spinner spinner = (Spinner) findViewById(R.id.spinner_catgory);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, items);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                // TODO Auto-generated method stub
+                String chosenOption=spinner.getSelectedItem().toString();
+                if(chosenOption.matches("Costume")){
+                    ViewGroup.LayoutParams params = spinner.getLayoutParams();
+                    params.height = 0;
+                    spinner.setLayoutParams(params);
+                    params = costumeCategory.getLayoutParams();
+                    params.height = 100;
+                    costumeCategory.setLayoutParams(params);
+                }
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+        //spinner
 
 
+        //create button
         createButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -99,43 +179,91 @@ public static final int Selected_Image = 1;
                     error = true;
                     dateDisplay.setBackgroundResource(R.drawable.rounded_edittext_red );
                 }
-
-
-
                 if(!error){
-                    /*
                     GenericEvent event = new GenericEvent();
-                    event.setTitle(eventTitle.getText().toString());
+                    Date date = new Date();
+                    event.setTitle(spinner.getSelectedItem().toString());
                     event.setDescription(eventDescription.getText().toString());
                     event.setDateTest(dateDisplay.getText().toString());
-                    if(isLimit.isChecked())
+                    if(!isLimit.isChecked())
                         event.setMaxUsers(Integer.parseInt(numParticipant.getText().toString()));
                     if(!isFree.isChecked())
                         event.setPrice(Integer.parseInt(price.getText().toString()));
-                    */
+                    AddItemAdapter adapter;
+                    adapter = AddItemAdapter.getInstance();
+                    adapter.AddObj(event);
+                    adapter.notifyDataSetChanged();
+                    int num = event.getMaxUsers();
+                    date.setYear(fyear);
+                    date.setMonth(fmonth);
+                    date.setDate(fday);
+                    date.setHours(fhour);
+                    date.setMinutes(fminute);
+                    event.setDate(date);
+                    event.setEventImage(bitmap);
+                    event.setEventLocation(place);
+                    Gson gson = new Gson();
+                    Double latitude = place.getLatLng().latitude;
+                    Double longitude = place.getLatLng().longitude;
+                    String placeId = place.getId();
+                    String placeAdress = String.format("%s",place.getAddress());
+                    String placeName;
+
+                    mGeoDataClient =Places.getGeoDataClient(AddEvent.this, null);
+
+                    mGeoDataClient.getPlaceById(placeId).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
+                        @Override
+                        public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
+                            if (task.isSuccessful()) {
+                                PlaceBufferResponse places = task.getResult();
+                                place2 = places.get(0);
+                                Log.i(TAG, "Place found: " + place2.getName());
+                                places.release();
+                            } else {
+                                Log.e(TAG, "Place not found.");
+                            }
+                        }
+                    });
+                    Place place3 =place2;
+                    String temp = String.format("%s",place.getLocale(),place.getName(),place.getAddress());
+                    String json = gson.toJson(event);
+                    int i = 0;
+                    Intent myIntent = new Intent(AddEvent.this, UserAreaMain.class);
+                    //myIntent.putExtra("key", value); //Optional parameters
+                    AddEvent.this.startActivity(myIntent);
+                    //finish();
                 }
                 else {
 
                     Toast.makeText(getApplicationContext(),"Some fields are missing",Toast.LENGTH_SHORT).show();
                 }
-
-
-
-
-
             }
+            //create button
         });
 
-
-
-        numParticipant.setEnabled(false);
-        price.setEnabled(false);
+        locationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                try {
+                    Intent intent = builder.build(AddEvent.this);
+                    startActivityForResult(intent,PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         eventImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                buttonClick(view);
+                ImagebuttonClick(view);
+
             }
         });
+
+        //max Paticipants limit and price handler
         isLimit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,7 +285,7 @@ public static final int Selected_Image = 1;
                 //is chkIos checked?
                 if (((CheckBox) v).isChecked()){
                     findViewById(R.id.priceText).setEnabled(false);
-                findViewById(R.id.priceText).setBackgroundResource(R.drawable.rounded_edittext_gray );
+                    findViewById(R.id.priceText).setBackgroundResource(R.drawable.rounded_edittext_gray );
                 }
                 else{
                     findViewById(R.id.priceText).setEnabled(true);
@@ -165,6 +293,9 @@ public static final int Selected_Image = 1;
                 }
             }
         });
+        //max Paticipants limit and price handler
+
+
         datePick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -178,7 +309,7 @@ public static final int Selected_Image = 1;
             }
         });
 
-        }
+    }
     public boolean onOptionsItemSelected(MenuItem item){
         Intent myIntent = new Intent(getApplicationContext(), UserAreaMain.class);
         startActivityForResult(myIntent, 0);
@@ -204,10 +335,37 @@ public static final int Selected_Image = 1;
         fminute = i1;
         dateDisplay.setText(fday + "/" + fmonth + "/"+ fyear + "   "+ fhour + ":"+ fminute );
     }
-    public void buttonClick(View v){
+
+    public void ImagebuttonClick(View v){
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent,Selected_Image);
+        startActivityForResult(intent,1);
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK && (data !=null)){
+            eventTitle.setText(Integer.toString(requestCode));
+            if(requestCode == Selected_Image){
+                Uri imageUri = data.getData();
+                try{
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                    eventImage.setImageBitmap(bitmap);
+                }
+                catch (IOException e) {
+                    System.out.println(e);
+                }
+            }
+            if(requestCode == PLACE_PICKER_REQUEST){
+                eventTitle.setText("love");
+                place = PlacePicker.getPlace(data,this);
+                String address = String.format("%s, %s, %s",place.getLocale(),place.getName(),place.getAddress());
+                locationText.setText(address);
+
+            }
+        }
+
+    }
+
     public void EditTextNormalize(){
         eventTitle.setBackgroundResource(R.drawable.rounded_edittext);
         eventDescription.setBackgroundResource(R.drawable.rounded_edittext);
@@ -221,26 +379,23 @@ public static final int Selected_Image = 1;
             price.setBackgroundResource(R.drawable.rounded_edittext );
         dateDisplay.setBackgroundResource(R.drawable.rounded_edittext);
     }
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch(resultCode){
-            case Selected_Image:
-                if(resultCode==RESULT_OK){
-                    Uri uri = data.getData();
-                    String[] projection = {MediaStore.Images.Media.DATA};
+    public void onConnectionFailed(ConnectionResult connectionResult) {
 
-                    Cursor c = getContentResolver().query(uri,projection,null,null,null);
-                    c.moveToFirst();
-                    int columnIndex = c.getColumnIndex(projection[0]);
-                    String filePath = c.getString(columnIndex);
-                    c.close();
 
-                    Bitmap event_pic = BitmapFactory.decodeFile(filePath);
-                    Drawable d = new BitmapDrawable(event_pic);
+    }
 
-                    kaka.setBackground(d);
-                }
-        }
+    @Override
+    public void onConnected(Bundle bundle) {
+
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+
     }
 }
+

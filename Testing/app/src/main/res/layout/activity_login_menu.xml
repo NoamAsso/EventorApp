@@ -4,13 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/football_login2"
+    android:background="@drawable/checkifgood"
     tools:context="com.example.noam.eventor.LoginMenu">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#58000000"
         android:orientation="horizontal">
 
         <RelativeLayout

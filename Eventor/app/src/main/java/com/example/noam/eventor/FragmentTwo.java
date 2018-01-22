@@ -48,14 +48,14 @@ public class FragmentTwo extends Fragment {
                        getActivity().runOnUiThread(new Runnable() {
                            @Override
                            public void run() {
-                               Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                               Toast.makeText(getActivity().getApplicationContext(), "yay got the message!", Toast.LENGTH_SHORT).show();
                            }
                        });
                    }
 
                    @Override
                    public void onFailure(Object err, int statusCode) {
-                       Log.e("Fragment2", (String) err);
+                       Log.e("Fragment2", "Connection to Server failed");
                    }
                }));
             }//OnClick

@@ -30,11 +30,13 @@ public class LoginActivity extends AppCompatActivity {
         Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.kaki);
 
         mVideoView.setVideoURI(uri);
+
         mVideoView.start();
 
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.setVolume(0f, 0f);
                 mediaPlayer.setLooping(true);
             }
         });
