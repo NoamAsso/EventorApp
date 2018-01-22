@@ -73,7 +73,7 @@ android:id="@+id/image_item"
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="15dp"
+                android:layout_height="30dp"
 
 
                 android:orientation="horizontal">
@@ -82,8 +82,8 @@ android:id="@+id/image_item"
                 <TextView
                     android:id="@+id/location_item"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.75"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.73"
                     android:paddingStart="5dp"
                     android:text="Location"
                     android:textSize="8sp" />
@@ -106,10 +106,7 @@ android:id="@+id/image_item"
                 </LinearLayout>
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="12dp"
-                android:visibility="invisible" />
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -170,6 +167,7 @@ android:id="@+id/image_item"
                 android:layout_height="10dp"
                 android:visibility="invisible" />
             <Button
+                android:id="@+id/details_button"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_weight="1"

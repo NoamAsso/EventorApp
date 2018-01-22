@@ -4,10 +4,10 @@ package com.example.noam.eventor;
  * Created by Noam on 13/01/2018.
  */
 
+
+
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.net.Uri;
-import android.widget.ImageView;
 
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
@@ -21,15 +21,12 @@ import java.util.Locale;
 /**
  * Created by Noam on 12/01/2018.
  */
-enum Status {
-    PAST,PRESENT,FUTURE
-}
+
 
 public class GenericEvent {
 
 public static String lastId = null;
     private String id;
-    private Status status;
     private String userName;
     private Date creationDate;
     private Date date;
@@ -52,7 +49,6 @@ public static String lastId = null;
 
     public GenericEvent() {
         this.id = null;
-        this.status = Status.FUTURE;
         this.userName = null;
         this.date = null;
         this.creationDate = new Date();
@@ -114,11 +110,6 @@ public static String lastId = null;
             }
 
             @Override
-            public boolean zzsT() {
-                return false;
-            }
-
-            @Override
             public float getRating() {
                 return 0;
             }
@@ -126,6 +117,11 @@ public static String lastId = null;
             @Override
             public int getPriceLevel() {
                 return 0;
+            }
+
+            @Override
+            public CharSequence getAttributions() {
+                return null;
             }
 
             @Override
@@ -195,13 +191,8 @@ public static String lastId = null;
         this.date = date;
     }
 
-    public Status getStatus() {
-        return status;
-    }
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
+
 
     public Date getCreationDate() {
         return creationDate;

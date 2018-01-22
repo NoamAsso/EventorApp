@@ -30,5 +30,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     androidTestImplementation 'com.android.volley:volley:1.0.0'
     compile 'cz.msebera.android:httpclient:4.4.1.2'
-    compile 'com.google.android.gms:play-services:7.3.0'
+    compile 'com.google.android.gms:play-services-maps:+'
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.google.android.gms:play-services-places:11.8.0'
 }

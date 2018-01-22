@@ -1,11 +1,13 @@
 package com.example.noam.eventor;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
@@ -84,12 +86,11 @@ public void setContext (Context context){
                     inflate(R.layout.event_list_item, parent, false);
         }
 
-        // get current item to be displayed
         GenericEvent currentItem = (GenericEvent) getItem(position);
 
-        TextView timeHrsMin = (TextView)
-                convertView.findViewById(R.id.time_item);
-        // get the TextView for item name and item description
+
+        Button detailButton = (Button) convertView.findViewById(R.id.details_button);
+        TextView timeHrsMin = (TextView) convertView.findViewById(R.id.time_item);
         TextView title = (TextView) convertView.findViewById(R.id.event_title_item);
         TextView maxNumOfUsers = (TextView) convertView.findViewById(R.id.max_num_users);
         TextView date = (TextView) convertView.findViewById(R.id.event_date_item);
@@ -125,8 +126,25 @@ public void setContext (Context context){
         //date.setText(currentItem.getDateTest());
         image.setImageBitmap(currentItem.getEventImage());;
         maxNumOfUsers.setText(Integer.toString(currentItem.getMaxUsers()));
-        String address = String.format("Place: %s",currentItem.getEventLocation().getAddress());
+        String address = String.format("%s, %s",currentItem.getEventLocation().getLocale(),currentItem.getEventLocation().getAddress());
         location.setText(address);
+
+
+
+        detailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(context, EventPage.class);
+                //myIntent.putExtra("key", value); //Optional parameters
+                context.startActivity(myIntent);
+                //finish();
+            }
+        });
+
+
+
+
+
         // returns the view for the current row
         return convertView;
     }
