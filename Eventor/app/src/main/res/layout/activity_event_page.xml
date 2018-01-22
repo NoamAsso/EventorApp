@@ -15,12 +15,15 @@
         android:text="Event Details"
         android:gravity="center"
         android:textSize="20sp"/>
-
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/mapView"
+    <fragment
+        android:name="com.example.noam.eventor.MapEventMenu"
+        android:id="@+id/fooFragment"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        />
+        android:layout_height="200dp">
+
+
+    </fragment>
+
     <TextView
 
         android:layout_width="match_parent"
