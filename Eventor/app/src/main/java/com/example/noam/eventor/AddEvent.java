@@ -298,10 +298,14 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     else
                         event.setEventImage("No image");
                     event.setplaceID(placeId);
-
+                    event.addToFriendsById(1);
+                    event.addToFriendsById(1);
+                    event.addToFriendsById(new Integer(1));
+                    event.addToFriendsById(new Integer(1));
+                    event.addToFriendsById(new Integer(1));
                     String temp = String.format("%s",place.getLocale(),place.getName(),place.getAddress());
                     String json = gson.toJson(event);
-
+                    GenericEvent eventTest = gson.fromJson(json,GenericEvent.class);
                     int i = 0;
                     adapter = AddItemAdapter.getInstance();
                     adapter.AddObj(event);
@@ -310,7 +314,6 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     //Building test Json for testing
                     String test1 = "first try";
                     int test2 = 17;
-
                     JSONObject json2 = new JSONObject();
                     try {
                         json2.putOpt("test1", test1);
@@ -322,7 +325,6 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                     String toSend = json2.toString();
 
                     NetworkManager instance = NetworkManager.getInstance();

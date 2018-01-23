@@ -179,14 +179,9 @@ public void setContext (Context context){
                 //finish();
             }
         });
-
-
-
-
-
-        // returns the view for the current row
         return convertView;
     }
+
     public Bitmap StringToBitMap(String encodedString){
         try {
             byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);

@@ -165,6 +165,7 @@ public class GenericEvent {
     }
 
     public void addToFriendsById(Integer friend){
+
         this.friendsById.add(friend);
     }
 

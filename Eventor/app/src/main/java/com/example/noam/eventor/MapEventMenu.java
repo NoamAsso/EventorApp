@@ -51,14 +51,15 @@ public class MapEventMenu extends Fragment implements OnMapReadyCallback {
     private static final int REQUEST_CODE = 1;
     MapView mapView;
     GoogleMap map;
-
+    Button myLocation;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_map_event_menu, container, false);
-
+        Button myLocation = (Button) v.findViewById(R.id.my_location_button);
         // Gets the MapView from the XML layout and creates it
         mapView = (MapView) v.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
+        myLocation = (Button) v.findViewById(R.id.my_location_button);
         //mapView.loca = YES;
 
         mapView.getMapAsync(this);
@@ -70,6 +71,7 @@ public class MapEventMenu extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
+
         map.getUiSettings().setMyLocationButtonEnabled(false);
         ActivityCompat.requestPermissions(getActivity(),
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -118,8 +120,8 @@ public class MapEventMenu extends Fragment implements OnMapReadyCallback {
                     Log.e(TAG, "Place not found.");
                 }
             }
-        });
 
+        });
 
     }
 
