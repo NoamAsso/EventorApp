@@ -44,7 +44,7 @@ public class NetworkManager {
     }
 
     public static String getServerUrl() {
-        return "http://172.20.10.6:5000/";    //Development
+        return "http://192.168.43.143:5000/";    //Development
     }
 
     public static NetworkManager getInstance() {
@@ -137,7 +137,7 @@ public class NetworkManager {
             HttpPost httpPost = new HttpPost(uri);
             StringEntity entity = new StringEntity(request.getJsonEntity());
             httpPost.setEntity(entity);
-            httpPost.setHeader(HTTP.CONTENT_ENCODING, "application/json");
+            httpPost.setHeader(HTTP.CONTENT_TYPE, "application/json");
 
             HttpClient httpclient = HttpClientBuilder.create().build();
 

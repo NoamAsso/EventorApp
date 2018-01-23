@@ -34,8 +34,8 @@ public class FragmentTwo extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_two, container, false);
+        testText = view.findViewById(R.id.textFromServer);
         fetchFromNetwork(view);
-
         NetworkManager instance = NetworkManager.getInstance();
         instance.addRequest(new GetEventsRequest(new ServerCallback() {
 
@@ -46,7 +46,7 @@ public class FragmentTwo extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                    testText.setText(result);
                     }
                 });
             }
@@ -62,7 +62,7 @@ public class FragmentTwo extends Fragment {
 
     public void fetchFromNetwork(View view) {
         fetchButton = view.findViewById(R.id.fetchButton); //Removed the casting to button (redundant?)
-        testText = view.findViewById(R.id.textFromServer);
+
         fetchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,7 +77,7 @@ public class FragmentTwo extends Fragment {
                            @Override
                            public void run() {
                                Toast.makeText(getActivity().getApplicationContext(), "yay got the message!", Toast.LENGTH_SHORT).show();
-                               testText.setText(result);
+                               testText.setText(result + "fetch from network");
                            }
                        });
                    }

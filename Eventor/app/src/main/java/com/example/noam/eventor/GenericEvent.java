@@ -27,25 +27,28 @@ public class GenericEvent {
 
 public static String lastId = null;
     private String id;
-    private String userName;
+    private String userName;//Changes to user id
     private Date creationDate;
     private Date date;
     private String dateTest;
+
     private int maxUsers;
     private int currentUsers;
-    private String title;
+    private String title;          //NO
     private String description;
     private int price;
     //eventType missing
     //subeventType missing
-    private String phoneNum;
-    private String email;
+    private String phoneNum;       //NO
+    private String email;          //NO
     private String friendsById[];
     private Boolean isPrivate;
     private Bitmap eventImage;
-    private Place eventLocation;
+    private Place eventLocation;   //NO
 
-
+    //int latitude
+    //int longitude
+    //String placeId
 
     public GenericEvent() {
         this.id = null;

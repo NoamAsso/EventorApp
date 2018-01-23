@@ -12,10 +12,10 @@ public class PostEventRequest extends BaseRequest {
 
     String json;
 
-    public PostEventRequest(String obj, ServerCallback mCallback)
+    public PostEventRequest(String newjson, ServerCallback mCallback)
     {
         super(mCallback);
-        this.json = json;
+        this.json = newjson;
     }
 
     @Override
