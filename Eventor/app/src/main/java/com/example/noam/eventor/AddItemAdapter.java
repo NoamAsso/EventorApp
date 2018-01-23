@@ -142,9 +142,13 @@ public void setContext (Context context){
         else
             timeHrsMin.setText("At: "+currentItem.getDate().getHours()+":"+currentItem.getDate().getMinutes());
         //date.setText(currentItem.getstringDate());
-        image.setImageBitmap(StringToBitMap(currentItem.getEventImage()));
+
+        if(currentItem.getEventImage() != "No image")
+            image.setImageBitmap(StringToBitMap(currentItem.getEventImage()));
+        else
+            image.setBackground(context.getResources().getDrawable(R.drawable.add_image));
         maxNumOfUsers.setText(Integer.toString(currentItem.getMaxUsers()));
-        String placeId = currentItem.getstringDate();
+        String placeId = currentItem.getPlaceID();
         mGeoDataClient.getPlaceById(placeId).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
             public static final String TAG = "AddItemAdapter";
             @Override
