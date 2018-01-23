@@ -14,9 +14,7 @@ import java.util.Date;
 public class GenericEvent {
 
     private int id;
-
     private int adminUserId;
-
     private String category;
     private Date creationDate;
     private Date date;
@@ -29,15 +27,17 @@ public class GenericEvent {
     //eventType missing
     //subeventType missing
     private ArrayList<Integer> friendsById;
+    private String friendsIdString;
     private Boolean isPrivate;
     private String eventImage;
     private String placeID;
     private Double longitude;
     private Double latitude;
+
     public GenericEvent() {
         this.id = 0;
         this.date = null;
-        this.adminUserId = adminUserId;
+        this.adminUserId = 0;
         this.creationDate = new Date();
         this.intCreationDate = (int)(this.creationDate.getTime()/1000);
         this.date = new Date();
@@ -45,7 +45,7 @@ public class GenericEvent {
         this.currentUsers = 0;
         this.description = null;
         this.price = 0;
-        this.friendsById = null;
+        this.friendsById = new ArrayList<>();
         this.isPrivate = false;
         this.eventImage = null;
         this.placeID = null;
@@ -164,8 +164,8 @@ public class GenericEvent {
         this.friendsById = friendsById;
     }
 
-    public void addToFriendsById(Integer friend){
-        this.friendsById.add(friend);
+    public void addToFriendsById(Integer userId){
+        this.friendsById.add(userId);
     }
 
     public Integer removeFromFriendsById(int i){

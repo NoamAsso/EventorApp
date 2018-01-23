@@ -298,8 +298,16 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     else
                         event.setEventImage("No image");
                     event.setplaceID(placeId);
+                    //Update event.adminUserId (in future)
+                    event.addToFriendsById(-1);//In the future here you enter the current user id as he is the admin
 
-                    String temp = String.format("%s",place.getLocale(),place.getName(),place.getAddress());
+                    StringBuilder strFriends = new StringBuilder();
+                    for (Integer i : event.getFriendsById())
+                    {
+                        strFriends.append(i.toString());
+                    }
+                    String result = strFriends.toString();
+
                     String json = gson.toJson(event);
 
                     int i = 0;
