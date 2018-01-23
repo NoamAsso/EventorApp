@@ -13,6 +13,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +26,6 @@ import java.util.Locale;
 
 public class GenericEvent {
 
-public static String lastId = null;
     private int id;
     private String category;
     private String userName;
@@ -38,7 +38,7 @@ public static String lastId = null;
     private int price;
     //eventType missing
     //subeventType missing
-    private String friendsById[];
+    private ArrayList<Integer> friendsById;
     private Boolean isPrivate;
     private String eventImage;
     private String placeID;
@@ -74,14 +74,6 @@ public static String lastId = null;
 
     public void setstringDate(String stringDate) {
         this.stringDate = stringDate;
-    }
-
-    public static String getLastId() {
-        return lastId;
-    }
-
-    public static void setLastId(String lastId) {
-        GenericEvent.lastId = lastId;
     }
 
     public int getId() {
@@ -193,12 +185,22 @@ public static String lastId = null;
     }
 
 
-    public String[] getFriendsById() {
+    public ArrayList getFriendsById() {
         return friendsById;
     }
 
-    public void setFriendsById(String[] friendsById) {
+    public void setFriendsById(ArrayList friendsById) {
         this.friendsById = friendsById;
+    }
+    public void addToFriendsById(Integer friend){
+        this.friendsById.add(friend);
+    }
+    public Object getItem(int i) {
+        if(!friendsById.isEmpty())
+            return friendsById.get(i);
+
+        else
+            return null;
     }
 
     public Boolean getPrivate() {
