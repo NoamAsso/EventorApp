@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.AttributeSet;
@@ -23,108 +24,36 @@ public class EventPage extends AppCompatActivity {
         Intent intent = getIntent();
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floating_button);
 
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_event_page);
 // The View with the BottomSheetBehavior
         View bottomSheet = coordinatorLayout.findViewById(R.id.bottom_sheet);
         final BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
-
         behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                // React to state change
-                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                        ((LockableBottomSheetBehavior) behavior).setLocked(true);
-                } else {
-                    bottomSheet.setVisibility(View.VISIBLE);
+                if (newState == BottomSheetBehavior.STATE_DRAGGING) {
+                    behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 }
-
             }
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                // React to dragging events
             }
         });
-
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+                    behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                } else {
+                    behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+            }
+        });
     behavior.setHideable(false);
         behavior.setPeekHeight(300);
     }
 
-
-
-
-    public class LockableBottomSheetBehavior<V extends View> extends BottomSheetBehavior<V> {
-
-        private boolean mLocked = false;
-
-        public LockableBottomSheetBehavior() {}
-
-        public LockableBottomSheetBehavior(Context context, AttributeSet attrs) {
-            super(context, attrs);
-        }
-
-        public void setLocked(boolean locked) {
-            mLocked = locked;
-        }
-
-        @Override
-        public boolean onInterceptTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
-            boolean handled = false;
-
-            if (!mLocked) {
-                handled = super.onInterceptTouchEvent(parent, child, event);
-            }
-
-            return handled;
-        }
-
-        @Override
-        public boolean onTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
-            boolean handled = false;
-
-            if (!mLocked) {
-                handled = super.onTouchEvent(parent, child, event);
-            }
-
-            return handled;
-        }
-
-        @Override
-        public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, V child, View directTargetChild, View target, int nestedScrollAxes) {
-            boolean handled = false;
-
-            if (!mLocked) {
-                handled = super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target, nestedScrollAxes);
-            }
-
-            return handled;
-        }
-
-        @Override
-        public void onNestedPreScroll(CoordinatorLayout coordinatorLayout, V child, View target, int dx, int dy, int[] consumed) {
-            if (!mLocked) {
-                super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed);
-            }
-        }
-
-        @Override
-        public void onStopNestedScroll(CoordinatorLayout coordinatorLayout, V child, View target) {
-            if (!mLocked) {
-                super.onStopNestedScroll(coordinatorLayout, child, target);
-            }
-        }
-
-        @Override
-        public boolean onNestedPreFling(CoordinatorLayout coordinatorLayout, V child, View target, float velocityX, float velocityY) {
-            boolean handled = false;
-
-            if (!mLocked) {
-                handled = super.onNestedPreFling(coordinatorLayout, child, target, velocityX, velocityY);
-            }
-
-            return handled;
-
-        }
-    }
 }

@@ -126,7 +126,7 @@ public void setContext (Context context){
                 case 1:
                     date.setText("Tommorow");break;
                 default:
-                    date.setText(currentItem.getstringDate());
+                    date.setText(Integer.toString(day)+"/"+Integer.toString(month)+"/"+Integer.toString(year));
             }
         }
         else
