@@ -26,30 +26,30 @@ import java.util.Locale;
 public class GenericEvent {
 
 public static String lastId = null;
-    private String id;
+    private int id;
+    private String category;
     private String userName;
     private Date creationDate;
     private Date date;
-    private String dateTest;
+    private String stringDate;
     private int maxUsers;
     private int currentUsers;
-    private String title;
     private String description;
     private int price;
     //eventType missing
     //subeventType missing
-    private String phoneNum;
-    private String email;
     private String friendsById[];
     private Boolean isPrivate;
-    private Bitmap eventImage;
-    private Place eventLocation;
+    private String eventImage;
+    private String placeID;
+    private Double longitude;
+    private Double latitude;
 
 
 
     public GenericEvent() {
-        this.id = null;
-        this.userName = null;
+        this.id = 0;
+        this.userName = "empty";
         this.date = null;
         this.creationDate = new Date();
         this.date = new Date();
@@ -57,99 +57,23 @@ public static String lastId = null;
         this.currentUsers = 0;
         this.description = null;
         this.price = 0;
-        this.phoneNum = null;
-        this.email = null;
         this.friendsById = null;
         this.isPrivate = false;
         this.eventImage = null;
-        this.eventLocation = null;
-        this.eventLocation = new Place() {
-            @Override
-            public String getId() {
-                return null;
-            }
+        this.placeID = null;
+        this.longitude=0.0;
+        this.latitude=0.0;
 
-            @Override
-            public List<Integer> getPlaceTypes() {
-                return null;
-            }
-
-            @Override
-            public CharSequence getAddress() {
-                return null;
-            }
-
-            @Override
-            public Locale getLocale() {
-                return null;
-            }
-
-            @Override
-            public CharSequence getName() {
-                return null;
-            }
-
-            @Override
-            public LatLng getLatLng() {
-                return null;
-            }
-
-            @Override
-            public LatLngBounds getViewport() {
-                return null;
-            }
-
-            @Override
-            public Uri getWebsiteUri() {
-                return null;
-            }
-
-            @Override
-            public CharSequence getPhoneNumber() {
-                return null;
-            }
-
-            @Override
-            public float getRating() {
-                return 0;
-            }
-
-            @Override
-            public int getPriceLevel() {
-                return 0;
-            }
-
-            @Override
-            public CharSequence getAttributions() {
-                return null;
-            }
-
-            @Override
-            public Place freeze() {
-                return null;
-            }
-
-            @Override
-            public boolean isDataValid() {
-                return false;
-            }
-        };
     }
 
-    public Place getEventLocation() {
-        return eventLocation;
+
+
+    public String getstringDate() {
+        return stringDate;
     }
 
-    public void setEventLocation(Place eventLocation) {
-        this.eventLocation = eventLocation;
-    }
-
-    public String getDateTest() {
-        return dateTest;
-    }
-
-    public void setDateTest(String dateTest) {
-        this.dateTest = dateTest;
+    public void setstringDate(String stringDate) {
+        this.stringDate = stringDate;
     }
 
     public static String getLastId() {
@@ -160,18 +84,11 @@ public static String lastId = null;
         GenericEvent.lastId = lastId;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -191,8 +108,49 @@ public static String lastId = null;
         this.date = date;
     }
 
+    public void setStringDate(String stringDate) {
+        this.stringDate = stringDate;
+    }
 
+    public void setplaceID(String placeID) {
+        this.placeID = placeID;
+    }
 
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getStringDate() {
+        return stringDate;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getPlaceID() {
+        return placeID;
+    }
+
+    public void setPlaceID(String placeID) {
+        this.placeID = placeID;
+    }
 
     public Date getCreationDate() {
         return creationDate;
@@ -234,21 +192,6 @@ public static String lastId = null;
         this.price = price;
     }
 
-    public String getPhoneNum() {
-        return phoneNum;
-    }
-
-    public void setPhoneNum(String phoneNum) {
-        this.phoneNum = phoneNum;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String[] getFriendsById() {
         return friendsById;
@@ -266,11 +209,11 @@ public static String lastId = null;
         isPrivate = aPrivate;
     }
 
-    public Bitmap getEventImage() {
+    public String getEventImage() {
         return eventImage;
     }
 
-    public void setEventImage(Bitmap eventImage) {
+    public void setEventImage(String eventImage) {
         this.eventImage = eventImage;
     }
 

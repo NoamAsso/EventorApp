@@ -99,7 +99,7 @@ public class MapEventMenu extends Fragment implements OnMapReadyCallback {
 
         AddItemAdapter adapter = AddItemAdapter.getInstance();
         GenericEvent currentevent = (GenericEvent) adapter.getModel().get(adapter.getCurrentIndex());
-        String placeId = currentevent.getDateTest();
+        String placeId = currentevent.getstringDate();
         GeoDataClient mGeoDataClient = Places.getGeoDataClient(getActivity(), null);
         mGeoDataClient.getPlaceById(placeId).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
             public static final String TAG = "AddItemAdapter";

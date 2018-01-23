@@ -17,6 +17,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,6 +67,7 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
@@ -203,7 +205,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
         context = getApplicationContext();
         //spinner
-        String[] items = new String[] {"Football", "Basketball", "Volleyball","Tennis", "Baseball", "Cricket","Costume"};
+        String[] items = new String[] {"Football", "Basketball", "Volleyball","Tennis", "Baseball", "Cricket","custom"};
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_catgory);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, items);
@@ -260,18 +262,25 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     error = true;
                     dateDisplay.setBackgroundResource(R.drawable.rounded_edittext_red );
                 }
+                if(locationText.getText().toString().matches("")){
+                    error = true;
+                    locationText.setBackgroundResource(R.drawable.rounded_edittext_red );
+                }
                 if(!error){
                     event = new GenericEvent();
+                    Gson gson = new Gson();
                     Date date = new Date();
-                    event.setTitle(spinner.getSelectedItem().toString());
+                    if(spinner.getSelectedItem().toString()=="custom")
+                        event.setCategory(costumeCategory.getText().toString());
+                    else
+                        event.setCategory(spinner.getSelectedItem().toString());
                     event.setDescription(eventDescription.getText().toString());
-                    event.setDateTest(dateDisplay.getText().toString());
+                    event.setstringDate(dateDisplay.getText().toString());
                     if(!isLimit.isChecked())
                         event.setMaxUsers(Integer.parseInt(numParticipant.getText().toString()));
                     if(!isFree.isChecked())
                         event.setPrice(Integer.parseInt(price.getText().toString()));
                     AddItemAdapter adapter;
-
                     int num = event.getMaxUsers();
                     date.setYear(fyear);
                     date.setMonth(fmonth);
@@ -279,29 +288,15 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     date.setHours(fhour);
                     date.setMinutes(fminute);
                     event.setDate(date);
-                    event.setEventImage(bitmap);
-                    Gson gson = new Gson();
-                    Double latitude = place.getLatLng().latitude;
-                    Double longitude = place.getLatLng().longitude;
+                    event.setLatitude(place.getLatLng().latitude);
+                    event.setLongitude(place.getLatLng().longitude);
                     String placeId = place.getId();
-                    event.setDateTest(place.getId());
                     String placeAdress = String.format("%s",place.getAddress());
                     String placeName;
+                    event.setPrivate(isPrivate.isChecked());
+                    //event.setEventImage(BitMapToString(bitmap));
+                    event.setplaceID(placeId);
 
-                    mGeoDataClient.getPlaceById(placeId).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
-                        @Override
-                        public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
-                            if (task.isSuccessful()) {
-                                PlaceBufferResponse places = task.getResult();
-                                place2 = places.get(0);
-                                Log.i(TAG, "Place foundddddddddddddddd: " + place2.getName() + place2.getAddress());
-                                places.release();
-                            } else {
-                                Log.e(TAG, "Place not found.");
-                            }
-                        }
-                    });
-                    event.setEventLocation(place);
                     String temp = String.format("%s",place.getLocale(),place.getName(),place.getAddress());
                     String json = gson.toJson(event);
 
@@ -521,5 +516,12 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     public void onConnectionSuspended(int i) {
 
    }
+    public String BitMapToString(Bitmap bitmap){
+        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        byte [] b=baos.toByteArray();
+        String temp= Base64.encodeToString(b, Base64.DEFAULT);
+        return temp;
+    }
 }
 
