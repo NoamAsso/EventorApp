@@ -293,7 +293,10 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     String placeAdress = String.format("%s",place.getAddress());
                     String placeName;
                     event.setPrivate(isPrivate.isChecked());
-                    //event.setEventImage(BitMapToString(bitmap));
+                    if(bitmap != null)
+                        event.setEventImage(getStringFromBitmap(bitmap));
+                    else
+                        event.setEventImage("No image");
                     event.setplaceID(placeId);
 
                     String temp = String.format("%s",place.getLocale(),place.getName(),place.getAddress());
@@ -475,9 +478,8 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                 }
             }
             if(requestCode == PLACE_PICKER_REQUEST){
-                eventTitle.setText("love");
                 place = PlacePicker.getPlace(data,this);
-                String address = String.format("%s, %s, %s",place.getLocale(),place.getName(),place.getAddress());
+                String address = String.format("%s, %s",place.getName(),place.getAddress());
                 locationText.setText(address);
 
             }
@@ -515,12 +517,16 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     public void onConnectionSuspended(int i) {
 
    }
-    public String BitMapToString(Bitmap bitmap){
-        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
-        byte [] b=baos.toByteArray();
-        String temp= Base64.encodeToString(b, Base64.DEFAULT);
-        return temp;
+    private String getStringFromBitmap(Bitmap bitmapPicture) {
+
+        final int COMPRESSION_QUALITY = 100;
+        String encodedImage;
+        ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
+        bitmapPicture.compress(Bitmap.CompressFormat.PNG, COMPRESSION_QUALITY,
+                byteArrayBitmapStream);
+        byte[] b = byteArrayBitmapStream.toByteArray();
+        encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+        return encodedImage;
     }
 }
 

@@ -4,17 +4,8 @@ package com.example.noam.eventor;
  * Created by Noam on 13/01/2018.
  */
 
-import android.graphics.Bitmap;
-import android.net.Uri;
-
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by Noam on 12/01/2018.
@@ -23,8 +14,17 @@ import java.util.Locale;
 public class GenericEvent {
 
     private int id;
+
+    public int getAdminUserId() {
+        return adminUserId;
+    }
+
+    public void setAdminUserId(int adminUserId) {
+        this.adminUserId = adminUserId;
+    }
+
+    private int adminUserId;
     private String category;
-    private String userName;
     private Date creationDate;
     private Date date;
     private int intDate;
@@ -34,7 +34,8 @@ public class GenericEvent {
     private String description;
     private int price;
     //eventType missing
-    private String friendsById[];
+    //subeventType missing
+    private ArrayList<Integer> friendsById;
     private Boolean isPrivate;
     private String eventImage;
     private String placeID;
@@ -43,8 +44,8 @@ public class GenericEvent {
 
     public GenericEvent() {
         this.id = 0;
-        this.userName = "empty";
         this.date = null;
+        this.adminUserId = adminUserId;
         this.creationDate = new Date();
         this.intCreationDate = (int)(this.creationDate.getTime()/1000);
         this.date = new Date();
@@ -67,14 +68,6 @@ public class GenericEvent {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public Date getDate() {
@@ -163,13 +156,30 @@ public class GenericEvent {
         this.price = price;
     }
 
-    public String[] getFriendsById() {
+    public ArrayList<Integer> getFriendsById() {
         return friendsById;
     }
 
-
-    public void setFriendsById(String[] friendsById) {
+    public void setFriendsById(ArrayList friendsById) {
         this.friendsById = friendsById;
+    }
+
+    public void addToFriendsById(Integer friend){
+        this.friendsById.add(friend);
+    }
+
+    public Integer removeFromFriendsById(int i){
+        if(!friendsById.isEmpty())
+            return friendsById.get(i);
+        else
+            return null;
+    }
+
+    public Integer getFromFriendsById(int i) {
+        if(!friendsById.isEmpty())
+            return friendsById.get(i);
+        else
+            return null;
     }
 
     public Boolean getPrivate() {
