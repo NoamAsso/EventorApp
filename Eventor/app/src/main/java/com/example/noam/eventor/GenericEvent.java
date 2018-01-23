@@ -15,15 +15,8 @@ public class GenericEvent {
 
     private int id;
 
-    public int getAdminUserId() {
-        return adminUserId;
-    }
-
-    public void setAdminUserId(int adminUserId) {
-        this.adminUserId = adminUserId;
-    }
-
     private int adminUserId;
+
     private String category;
     private Date creationDate;
     private Date date;
@@ -41,7 +34,6 @@ public class GenericEvent {
     private String placeID;
     private Double longitude;
     private Double latitude;
-
     public GenericEvent() {
         this.id = 0;
         this.date = null;
@@ -72,6 +64,14 @@ public class GenericEvent {
 
     public Date getDate() {
         return date;
+    }
+
+    public int getAdminUserId() {
+        return adminUserId;
+    }
+
+    public void setAdminUserId(int adminUserId) {
+        this.adminUserId = adminUserId;
     }
 
     public void setDate(Date date) {
