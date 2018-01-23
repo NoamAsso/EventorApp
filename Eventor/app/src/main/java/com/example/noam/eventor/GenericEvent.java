@@ -4,8 +4,6 @@ package com.example.noam.eventor;
  * Created by Noam on 13/01/2018.
  */
 
-
-
 import android.graphics.Bitmap;
 import android.net.Uri;
 
@@ -22,16 +20,15 @@ import java.util.Locale;
  * Created by Noam on 12/01/2018.
  */
 
-
 public class GenericEvent {
 
-    public static String lastId = null;
     private int id;
     private String category;
     private String userName;
     private Date creationDate;
     private Date date;
-    private String stringDate;
+    private int intDate;
+    private int intCreationDate;
     private int maxUsers;
     private int currentUsers;
     private String description;
@@ -49,6 +46,7 @@ public class GenericEvent {
         this.userName = "empty";
         this.date = null;
         this.creationDate = new Date();
+        this.intCreationDate = (int)(this.creationDate.getTime()/1000);
         this.date = new Date();
         this.maxUsers = 0;
         this.currentUsers = 0;
@@ -61,24 +59,6 @@ public class GenericEvent {
         this.longitude=0.0;
         this.latitude=0.0;
 
-    }
-
-
-
-    public String getstringDate() {
-        return stringDate;
-    }
-
-    public void setstringDate(String stringDate) {
-        this.stringDate = stringDate;
-    }
-
-    public static String getLastId() {
-        return lastId;
-    }
-
-    public static void setLastId(String lastId) {
-        GenericEvent.lastId = lastId;
     }
 
     public int getId() {
@@ -103,10 +83,7 @@ public class GenericEvent {
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public void setStringDate(String stringDate) {
-        this.stringDate = stringDate;
+        this.intDate = (int)(date.getTime()/1000);
     }
 
     public void setplaceID(String placeID) {
@@ -119,10 +96,6 @@ public class GenericEvent {
 
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
-    }
-
-    public String getStringDate() {
-        return stringDate;
     }
 
     public Double getLongitude() {
@@ -155,6 +128,7 @@ public class GenericEvent {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+        this.intCreationDate = (int)(creationDate.getTime()/1000);
     }
 
     public int getMaxUsers() {
@@ -189,10 +163,10 @@ public class GenericEvent {
         this.price = price;
     }
 
-
     public String[] getFriendsById() {
         return friendsById;
     }
+
 
     public void setFriendsById(String[] friendsById) {
         this.friendsById = friendsById;
@@ -210,13 +184,25 @@ public class GenericEvent {
         return eventImage;
     }
 
+    public int getIntDate() {
+        return intDate;
+    }
+
+    public void setIntDate(int intDate) {
+        this.intDate = intDate;
+    }
+
+    public int getIntCreationDate() {
+        return intCreationDate;
+    }
+
+    public void setIntCreationDate(int intCreationDate) {
+        this.intCreationDate = intCreationDate;
+    }
+
     public void setEventImage(String eventImage) {
         this.eventImage = eventImage;
     }
-
-
-
-
 
 
 }

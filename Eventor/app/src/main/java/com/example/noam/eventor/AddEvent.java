@@ -275,7 +275,6 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     else
                         event.setCategory(spinner.getSelectedItem().toString());
                     event.setDescription(eventDescription.getText().toString());
-                    event.setstringDate(dateDisplay.getText().toString());
                     if(!isLimit.isChecked())
                         event.setMaxUsers(Integer.parseInt(numParticipant.getText().toString()));
                     if(!isFree.isChecked())
