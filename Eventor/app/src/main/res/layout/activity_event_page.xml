@@ -1,35 +1,294 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_event_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/football_event_background2"
     tools:context="com.example.noam.eventor.EventPage">
+
+
+
+
+    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:layout_above="@+id/bottom_navigation"
+            android:layout_alignParentTop="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp">
+
+            <RelativeLayout
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.03"></RelativeLayout>
+            <RelativeLayout
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.94">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@drawable/event_page_background"
+                    >
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Created by:"
+                            android:textColor="@android:color/white"
+                            android:layout_gravity="center"
+                            android:textSize="12sp"/>
+                        <TextView
+                            android:id="@+id/event_creator_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="username"
+                            android:paddingLeft="10dp"
+                            android:textColor="@android:color/white"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src = "@drawable/add_image"
+                        android:paddingBottom="20dp"
+                        android:paddingTop="10dp"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"
+                        android:paddingTop="2dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+                        <TextView
+                            android:id="@+id/event_category"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Football"
+                            android:textColor="@android:color/white"
+                            android:textSize="30sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="game"
+                            android:paddingLeft="10dp"
+                            android:textColor="@android:color/white"
+                            android:textSize="30sp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+                        <TextView
+                            android:id="@+id/event_category"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Today"
+                            android:textColor="@android:color/white"
+                            android:paddingBottom="3dp"
+                            android:textSize="20sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="At: 20:00"
+                            android:paddingLeft="10dp"
+                            android:textColor="@android:color/white"
+                            android:paddingBottom="3dp"
+                            android:paddingRight="20dp"
+                            android:textSize="20sp"/>
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:text="Set reminder"
+                            android:textAllCaps="false"/>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@android:color/darker_gray"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Description:"
+                                android:textColor="@android:color/white"
+                                android:textSize="20sp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="90dp"
+                                android:background="@drawable/rounded_edittext_gray"
+                                android:gravity="center">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingLeft="10dp"
+                                    android:text="blalalalalalalalalalallalalalalalalalal"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="18sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="7dp"
+                        android:paddingBottom="7dp"
+                        >
+                        <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Joined:"
+                        android:textColor="@android:color/white"
+                        android:layout_gravity="center"
+                        android:paddingLeft="10dp"
+                        android:textSize="20sp"/>
+                        <TextView
+                        android:id="@+id/current_joined_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@android:color/white"
+                        android:layout_gravity="center"
+                        android:textSize="20sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="/"
+                            android:textColor="@android:color/white"
+                            android:layout_gravity="center"
+                            android:textSize="20sp"/>
+                        <TextView
+                            android:id="@+id/max_joined_number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="max"
+                            android:textColor="@android:color/white"
+                            android:layout_gravity="center"
+                            android:textSize="20sp"/>
+                        <View
+                            android:layout_width="130dp"
+                            android:layout_height="match_parent"/>
+
+                        <Button
+                            android:id="@+id/join_event_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:text="see location"
+                            android:textColor="@android:color/white"
+                            android:background="@drawable/curve_edges_button_login"
+                            android:textAllCaps="false"/>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"/>
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:text="Join game"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:background="@drawable/join_game_button"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Event ID: 53"
+                        android:textSize="12dp"
+                        android:textColor="@android:color/white"
+                        android:layout_gravity="center"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"/>
+                </LinearLayout>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.03"></RelativeLayout>
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+        <!-- Here you put the rest of your current view-->
+    </android.support.v4.widget.NestedScrollView>
+
+
+    <FrameLayout
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="270dp"
+
+        app:behavior_hideable="true"
+        app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+            android:paddingBottom="30dp"
+            android:paddingRight="40dp"/>
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Event Details"
-        android:gravity="center"
-        android:textSize="20sp"/>
+    android:layout_height="250dp"
+    android:layout_gravity="bottom">
     <fragment
         android:name="com.example.noam.eventor.MapEventMenu"
         android:id="@+id/fooFragment"
         android:layout_width="match_parent"
-        android:layout_height="200dp">
-
-
+        android:layout_height="match_parent">
     </fragment>
-
-    <TextView
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Location details"
-        android:gravity="center"
-        android:textSize="20sp"/>
 </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+
+</FrameLayout>
+
+
+
+</android.support.design.widget.CoordinatorLayout>

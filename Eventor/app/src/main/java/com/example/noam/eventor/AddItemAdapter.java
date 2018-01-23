@@ -2,7 +2,10 @@ package com.example.noam.eventor;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -112,7 +115,7 @@ public void setContext (Context context){
         final TextView location = (TextView) convertView.findViewById(R.id.location_item);
         ImageView image = (ImageView) convertView.findViewById(R.id.image_item);
         //sets the text for item name and item description from the current item object
-        title.setText(currentItem.getTitle());
+        title.setText(currentItem.getCategory());
         year = currentItem.getDate().getYear();
         month = currentItem.getDate().getMonth();
         day = currentItem.getDate().getDate();
@@ -123,7 +126,7 @@ public void setContext (Context context){
                 case 1:
                     date.setText("Tommorow");break;
                 default:
-                    date.setText(currentItem.getDateTest());
+                    date.setText(currentItem.getstringDate());
             }
         }
         else
@@ -138,27 +141,26 @@ public void setContext (Context context){
         timeHrsMin.setText("At: "+currentItem.getDate().getHours()+":0"+currentItem.getDate().getMinutes());
         else
             timeHrsMin.setText("At: "+currentItem.getDate().getHours()+":"+currentItem.getDate().getMinutes());
-        //date.setText(currentItem.getDateTest());
-        image.setImageBitmap(currentItem.getEventImage());;
+        //date.setText(currentItem.getstringDate());
+        image.setImageBitmap(StringToBitMap(currentItem.getEventImage()));
         maxNumOfUsers.setText(Integer.toString(currentItem.getMaxUsers()));
-        String placeId = currentItem.getDateTest();
+        String placeId = currentItem.getstringDate();
         mGeoDataClient.getPlaceById(placeId).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
             public static final String TAG = "AddItemAdapter";
-
             @Override
             public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
                 if (task.isSuccessful()) {
                     PlaceBufferResponse places = task.getResult();
                     Place place2 = places.get(0);
                     location.setText(place2.getName()+", "+place2.getAddress());
-                    Log.i(TAG, "Place foundddddddddddddddd: " + place2.getName() + place2.getAddress());
+                    Log.i(TAG, "Place found: " + place2.getName() + place2.getAddress());
                     places.release();
                 } else {
                     Log.e(TAG, "Place not found.");
                 }
             }
         });
-        //String address = String.format("%s, %s",currentItem.getEventLocation().getLocale(),currentItem.getEventLocation().getAddress());
+        //String address = String.format("%s, %s",currentItem.getplaceID().getLocale(),currentItem.getplaceID().getAddress());
         //location.setText(address);
 
 
@@ -180,5 +182,15 @@ public void setContext (Context context){
 
         // returns the view for the current row
         return convertView;
+    }
+    public Bitmap StringToBitMap(String encodedString){
+        try {
+            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch(Exception e) {
+            e.getMessage();
+            return null;
+        }
     }
 }
