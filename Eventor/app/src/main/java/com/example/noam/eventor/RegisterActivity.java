@@ -96,7 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
                     User userTest = gson.fromJson(json,User.class);
 
                     NetworkManager instance = NetworkManager.getInstance();
-                    instance.addRequest(new PostEventRequest(json, new ServerCallback() {
+                    instance.addRequest(new PostUserRequest(json, new ServerCallback() {
                         @Override
                         public void onSuccess(Object res, int statusCode) {
                             final String result = (String) res;
