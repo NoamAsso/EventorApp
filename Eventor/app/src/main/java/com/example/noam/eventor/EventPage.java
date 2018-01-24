@@ -24,7 +24,7 @@ public class EventPage extends AppCompatActivity {
         Intent intent = getIntent();
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floating_button);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floating_button);
 
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_event_page);
 // The View with the BottomSheetBehavior
@@ -35,6 +35,11 @@ public class EventPage extends AppCompatActivity {
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_DRAGGING) {
                     behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    fab.setVisibility(View.VISIBLE);
+
+                }
+                if(behavior.getState() == BottomSheetBehavior.STATE_COLLAPSED){
+
                 }
             }
 
@@ -49,6 +54,7 @@ public class EventPage extends AppCompatActivity {
                     behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 } else {
                     behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    fab.setVisibility(View.GONE);
                 }
             }
         });

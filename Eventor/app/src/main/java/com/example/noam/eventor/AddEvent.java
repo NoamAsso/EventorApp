@@ -70,6 +70,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -299,12 +300,19 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                         event.setEventImage("No image");
                     event.setplaceID(placeId);
                     event.addToFriendsById(1);
-                    event.addToFriendsById(1);
-                    event.addToFriendsById(new Integer(1));
-                    event.addToFriendsById(new Integer(1));
-                    event.addToFriendsById(new Integer(1));
-                    String temp = String.format("%s",place.getLocale(),place.getName(),place.getAddress());
-                    String json = gson.toJson(event);
+                    event.addToFriendsById(2);
+                    event.addToFriendsById(3);
+                    event.addToFriendsById(4);
+                    event.addToFriendsById(5);
+
+
+                    ArrayList<GenericEvent> eventlist = new ArrayList<>();
+                    eventlist.add(event);
+                    GenericEvent event3 = new GenericEvent();
+                    event3 = event;
+                    eventlist.add(event3);
+
+                    String json = gson.toJson(eventlist);
                     GenericEvent eventTest = gson.fromJson(json,GenericEvent.class);
                     int i = 0;
                     adapter = AddItemAdapter.getInstance();
@@ -325,8 +333,8 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    String toSend = json2.toString();
-
+                    //String toSend = json2.toString();
+                    String toSend = json.toString();
                     NetworkManager instance = NetworkManager.getInstance();
                     //John purcell's way
                     //instance.sendDataToServer(toSend);

@@ -44,7 +44,7 @@ public class NetworkManager {
     }
 
     public static String getServerUrl() {
-        return "http://192.168.43.143:5000/";    //Development
+        return "http://172.20.10.6:5000/";    //Development
     }
 
     public static NetworkManager getInstance() {

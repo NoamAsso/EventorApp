@@ -88,6 +88,16 @@ public void setContext (Context context){
     return  model;
     }
 
+    public boolean setModel(ArrayList<GenericEvent> list){
+        if(list != null){
+            this.model = list;
+            return true;
+        }
+        else
+            return false;
+
+    }
+
     @Override
     public long getItemId(int i) {
         return i;
