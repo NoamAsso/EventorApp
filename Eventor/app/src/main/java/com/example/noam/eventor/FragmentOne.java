@@ -47,13 +47,13 @@ String result;
     public void perform(View v) {
 
         list = (ListView) v.findViewById(R.id.eventlist1);
-        RefreshList();
+        GetListFromServer();
         final SwipeRefreshLayout mSwipeRefreshView;
         mSwipeRefreshView = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
         mSwipeRefreshView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-            RefreshList();
+                GetListFromServer();
                 mSwipeRefreshView.setRefreshing(false);
             }
         });
@@ -66,15 +66,6 @@ String result;
 
 
 
-    public void RefreshList() {
-
-        GetListFromServer();
-
-
-        String kaki = result;
-        //Toast.makeText(getActivity().getApplicationContext(), "lllllllllllaaaaaaa"+kaki, Toast.LENGTH_SHORT).show();
-
-    }
 
     public void GetListFromServer() {
 
@@ -96,6 +87,7 @@ String result;
                                         currentList = gson.fromJson(result, new TypeToken<List<GenericEvent>>(){}.getType());
                                         AddItemAdapter adapter;
                                         adapter = AddItemAdapter.getInstance();
+                                        adapter.setContext(getActivity());
                                         //adapter.AddObj(eventTest);
                                         if(adapter.setModel(currentList)) {
                                             list.setAdapter(adapter);

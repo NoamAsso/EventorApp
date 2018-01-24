@@ -3,24 +3,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#30ffffff"
-    android:orientation="vertical">
+    android:orientation="horizontal"
+    android:gravity="bottom">
+    <RelativeLayout
+        android:layout_width="13dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.03"></RelativeLayout>
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
-        android:paddingTop="48dp"
-        android:layout_height="match_parent">
+        android:gravity="bottom"
+        android:layout_height="510dp">
 
-        <ListView
-            android:id="@+id/eventlist1"
 
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="7"
-            />
+        <RelativeLayout
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.94">
+            <ListView
+                android:id="@+id/eventlist1"
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="7"
+                />
+        </RelativeLayout>
+
+
 
     </android.support.v4.widget.SwipeRefreshLayout>
-
+    <RelativeLayout
+        android:layout_width="13dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.03"></RelativeLayout>
 
 <!--    <Button
         android:id="@+id/fetchButton"
