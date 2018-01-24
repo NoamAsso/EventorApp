@@ -66,25 +66,14 @@ String result;
 
 
 
-    public void RefreshList(){
+    public void RefreshList() {
 
         GetListFromServer();
-        ArrayList<GenericEvent> currentList;
-        Gson gson = new Gson();
+
+
         String kaki = result;
-        Toast.makeText(getActivity().getApplicationContext(), "lllllllllllaaaaaaa"+kaki, Toast.LENGTH_SHORT).show();
-        //GenericEvent eventTest = gson.fromJson(result,GenericEvent.class);
-        currentList = gson.fromJson(result, new TypeToken<List<GenericEvent>>(){}.getType());
-        //Context context;
-        AddItemAdapter adapter;
-        adapter = AddItemAdapter.getInstance();
-        //adapter.AddObj(eventTest);
-        if(adapter.setModel(currentList)){
-            list.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
-        }
-        else
-            Toast.makeText(getActivity(),"cant initial model",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity().getApplicationContext(), "lllllllllllaaaaaaa"+kaki, Toast.LENGTH_SHORT).show();
+
     }
 
     public void GetListFromServer() {
@@ -100,7 +89,22 @@ String result;
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(getActivity().getApplicationContext(), "yay got the message!"+result, Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(getActivity().getApplicationContext(), "yay got the message!"+result, Toast.LENGTH_SHORT).show();
+                                    ArrayList<GenericEvent> currentList;
+                                    if(result != "[]"){
+                                        Gson gson = new Gson();
+                                        currentList = gson.fromJson(result, new TypeToken<List<GenericEvent>>(){}.getType());
+                                        AddItemAdapter adapter;
+                                        adapter = AddItemAdapter.getInstance();
+                                        //adapter.AddObj(eventTest);
+                                        if(adapter.setModel(currentList)) {
+                                            list.setAdapter(adapter);
+                                            adapter.notifyDataSetChanged();
+                                        }
+                                    }
+
+                                    else
+                                        Toast.makeText(getActivity(),"cant initial model",Toast.LENGTH_SHORT).show();
 
                                 }
                             });

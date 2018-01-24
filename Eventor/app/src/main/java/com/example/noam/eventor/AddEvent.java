@@ -305,34 +305,8 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     event.addToFriendsById(4);
                     event.addToFriendsById(5);
 
-                    ArrayList<GenericEvent> eventlist = new ArrayList<>();
-                    eventlist.add(event);
-                    GenericEvent event3 = new GenericEvent();
-                    event3 = event;
-                    eventlist.add(event3);
 
-                    String json = gson.toJson(eventlist);
-                    GenericEvent eventTest = gson.fromJson(json,GenericEvent.class);
-                    int i = 0;
-                    adapter = AddItemAdapter.getInstance();
-                    adapter.AddObj(event);
-                    adapter.notifyDataSetChanged();
-
-                    //Building test Json for testing
-                    String test1 = "first try";
-                    int test2 = 17;
-                    JSONObject json2 = new JSONObject();
-                    try {
-                        json2.putOpt("test1", test1);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        json2.put("test2",test2);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
+                    String json = gson.toJson(event);
                     //String toSend = json2.toString();
                     String toSend = json.toString();
 

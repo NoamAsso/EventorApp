@@ -141,6 +141,7 @@ public void setContext (Context context){
         }
         else
             date.setText(Integer.toString(datecheck.getDate()));
+
         if(currentItem.getDate().getMinutes()<10 && currentItem.getDate().getHours()>9){
             timeHrsMin.setText("At: "+currentItem.getDate().getHours()+":0"+currentItem.getDate().getMinutes());
         }
@@ -152,11 +153,34 @@ public void setContext (Context context){
         else
             timeHrsMin.setText("At: "+currentItem.getDate().getHours()+":"+currentItem.getDate().getMinutes());
         //date.setText(currentItem.getstringDate());
+        String test = currentItem.getCategory();
+        switch (test) {
+            case "Football":
+                image.setBackground(context.getResources().getDrawable(R.drawable.football_icon));
+                break;
+            case "Baketball":
+                image.setBackground(context.getResources().getDrawable(R.drawable.basketball_icon));
+                break;
+            case "Volleyball":
+                image.setBackground(context.getResources().getDrawable(R.drawable.volleyball_icon));
+                break;
+            case "Tennis":
+                image.setBackground(context.getResources().getDrawable(R.drawable.tennis_icon));
+                break;
+            case "Baseball":
+                image.setBackground(context.getResources().getDrawable(R.drawable.baseball_icon));
+                break;
+            case "Cricket":
+                image.setBackground(context.getResources().getDrawable(R.drawable.cricket_icon));
+                break;
+            case "No image":
+                image.setBackground(context.getResources().getDrawable(R.drawable.add_image));
+                break;
+            default:
+                image.setImageBitmap(StringToBitMap(currentItem.getEventImage()));
+                break;
+        }
 
-        if(currentItem.getEventImage() != "No image")
-            image.setImageBitmap(StringToBitMap(currentItem.getEventImage()));
-        else
-            image.setBackground(context.getResources().getDrawable(R.drawable.add_image));
         maxNumOfUsers.setText(Integer.toString(currentItem.getMaxUsers()));
         String placeId = currentItem.getPlaceID();
         mGeoDataClient.getPlaceById(placeId).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
