@@ -2,28 +2,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#62ffffff"
-    android:orientation="vertical">
+    android:background="#30ffffff"
+    android:orientation="vertical"
+    android:gravity="bottom">
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh2"
+        android:layout_width="match_parent"
+        android:gravity="bottom"
+        android:layout_height="510dp">
 
-    <ListView
-        android:id="@+id/studentList"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="5"/>
+        <ListView
+            android:id="@+id/eventlist2"
 
-    <Button
-        android:id="@+id/fetchButton"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:text="Fetch from Network"
-        android:layout_weight="1"/>
-    <TextView
-        android:id="@+id/textFromServer"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:text="nothing received from server yet"
-        android:layout_weight="3"
-        android:gravity="center"
-        />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+    <!--    <Button
+            android:id="@+id/fetchButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fetch from Network"
+            android:layout_weight="1"
+            />-->
 
 </LinearLayout>

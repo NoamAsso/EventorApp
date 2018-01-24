@@ -50,11 +50,11 @@ public class EventPage extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+                if (behavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
                     behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 } else {
                     behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    fab.setVisibility(View.GONE);
+
                 }
             }
         });
