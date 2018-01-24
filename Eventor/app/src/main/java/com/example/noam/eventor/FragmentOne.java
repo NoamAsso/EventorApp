@@ -109,6 +109,7 @@ String result;
 
                         @Override
                         public void onFailure(Object err, int statusCode) {
+                            Toast.makeText(getActivity().getApplicationContext(), "failure to receive message", Toast.LENGTH_SHORT).show();
                             Log.e("Fragment2", "Connection to Server failed");
                         }
                     }));

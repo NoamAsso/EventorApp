@@ -35,27 +35,6 @@ public class FragmentTwo extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_two, container, false);
         testText = view.findViewById(R.id.textFromServer);
-        fetchFromNetwork(view);
-        NetworkManager instance = NetworkManager.getInstance();
-        instance.addRequest(new GetEventsRequest(new ServerCallback() {
-
-            @Override
-            public void onSuccess(Object res, int statusCode) {
-                final String result = (String) res;
-                Log.e("Fragment2", result);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                    testText.setText(result);
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(Object err, int statusCode) {
-                Log.e("Fragment2", "Connection to Server failed");
-            }
-        }));
 
         return view;
     }
