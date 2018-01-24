@@ -64,7 +64,20 @@ public class MapEventMenu extends Fragment implements OnMapReadyCallback {
         //mapView.loca = YES;
 
         mapView.getMapAsync(this);
-
+        myLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LocationManager lm2 = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+                    return;
+                }
+                Location location2 = lm2.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                double longitude = location2.getLongitude();
+                double latitude = location2.getLatitude();
+                final CameraUpdate cameraUpdate2 = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 10);
+                map.animateCamera(cameraUpdate2);
+            }
+        });
 
         return v;
     }
@@ -97,19 +110,7 @@ public class MapEventMenu extends Fragment implements OnMapReadyCallback {
         double longitude = location.getLongitude();
         double latitude = location.getLatitude();
         final CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 10);
-        myLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LocationManager lm2 = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
-                Location location2 = lm2.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                double longitude = location2.getLongitude();
-                double latitude = location2.getLatitude();
-                final CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 10);
-            }
-        });
+
 
         AddItemAdapter adapter = AddItemAdapter.getInstance();
         GenericEvent currentevent = (GenericEvent) adapter.getModel().get(adapter.getCurrentIndex());

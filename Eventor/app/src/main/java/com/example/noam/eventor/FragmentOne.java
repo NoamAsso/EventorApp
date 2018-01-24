@@ -28,7 +28,7 @@ package com.example.noam.eventor;
  */
 
 public class FragmentOne extends Fragment {
-
+    ListView list;
 String result;
     public FragmentOne() {
         // Required empty public constructor
@@ -46,41 +46,45 @@ String result;
     }
     public void perform(View v) {
 
-        final ListView list = (ListView) v.findViewById(R.id.eventlist1);
+        list = (ListView) v.findViewById(R.id.eventlist1);
+        RefreshList();
         final SwipeRefreshLayout mSwipeRefreshView;
         mSwipeRefreshView = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
-
         mSwipeRefreshView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
-
+            RefreshList();
                 mSwipeRefreshView.setRefreshing(false);
-                GetListFromServer();
-                ArrayList<GenericEvent> currentList;
-                Gson gson = new Gson();
-                String kaki = result;
-                //GenericEvent eventTest = gson.fromJson(result,GenericEvent.class);
-                currentList = gson.fromJson(result, new TypeToken<List<GenericEvent>>(){}.getType());
-                //Context context;
-                AddItemAdapter adapter;
-                adapter = AddItemAdapter.getInstance();
-                //adapter.AddObj(eventTest);
-                if(adapter.setModel(currentList)){
-                    list.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
-                }
-                else
-                    Toast.makeText(getActivity(),"cant initial model",Toast.LENGTH_SHORT).show();
-                //context = getActivity();
-
-                // make your api request here
             }
         });
 
 
 
         //connect the adapter to the ListView
+    }
+
+
+
+
+    public void RefreshList(){
+
+        GetListFromServer();
+        ArrayList<GenericEvent> currentList;
+        Gson gson = new Gson();
+        String kaki = result;
+        Toast.makeText(getActivity().getApplicationContext(), "lllllllllllaaaaaaa"+kaki, Toast.LENGTH_SHORT).show();
+        //GenericEvent eventTest = gson.fromJson(result,GenericEvent.class);
+        currentList = gson.fromJson(result, new TypeToken<List<GenericEvent>>(){}.getType());
+        //Context context;
+        AddItemAdapter adapter;
+        adapter = AddItemAdapter.getInstance();
+        //adapter.AddObj(eventTest);
+        if(adapter.setModel(currentList)){
+            list.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        }
+        else
+            Toast.makeText(getActivity(),"cant initial model",Toast.LENGTH_SHORT).show();
     }
 
     public void GetListFromServer() {

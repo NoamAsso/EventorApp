@@ -25,7 +25,7 @@ public class EventPage extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floating_button);
-
+        fab.setVisibility(View.GONE);
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_event_page);
 // The View with the BottomSheetBehavior
         View bottomSheet = coordinatorLayout.findViewById(R.id.bottom_sheet);
