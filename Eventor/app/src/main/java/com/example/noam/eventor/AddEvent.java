@@ -305,7 +305,6 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     event.addToFriendsById(4);
                     event.addToFriendsById(5);
 
-
                     ArrayList<GenericEvent> eventlist = new ArrayList<>();
                     eventlist.add(event);
                     GenericEvent event3 = new GenericEvent();
@@ -333,8 +332,10 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
                     //String toSend = json2.toString();
                     String toSend = json.toString();
+
                     NetworkManager instance = NetworkManager.getInstance();
                     //John purcell's way
                     //instance.sendDataToServer(toSend);

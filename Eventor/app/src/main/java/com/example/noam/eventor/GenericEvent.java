@@ -24,10 +24,7 @@ public class GenericEvent {
     private int currentUsers;
     private String description;
     private int price;
-    //eventType missing
-    //subeventType missing
     private ArrayList<Integer> friendsById;
-    private String friendsIdString;
     private Boolean isPrivate;
     private String eventImage;
     private String placeID;
