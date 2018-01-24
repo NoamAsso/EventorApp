@@ -8,19 +8,20 @@ import java.util.ArrayList;
 
 public class User {
 
-    int userId;
+    private int userId;
 
-    String userName;
-    String password;
-    int age;
+    private String userName;
+    private String password;
+    private int age;
     // TOKEN ##########################################################33
-    String mail;
-    String phoneNum;
-    String sex;
-    ArrayList<Integer> attendingEventsIds;
+    private String mail;
+    private String phoneNum;
+    private String sex;
 
-    ArrayList<Integer> createdEventsIds;
-    ArrayList<Integer> friendsIds;
+    private ArrayList<Integer> attendingEventsIds;
+    private ArrayList<Integer> createdEventsIds;
+    private ArrayList<Integer> friendsIds;
+
     public User(int userId, String userName, String password, int age, String mail, String phoneNum, String sex) {
         this.userId = userId;
         this.userName = userName;
@@ -38,7 +39,6 @@ public class User {
     public String getUserName() {
         return userName;
     }
-
 
     public void setUserName(String userName) {
         this.userName = userName;
@@ -87,4 +87,97 @@ public class User {
     public void setSex(String sex) {
         this.sex = sex;
     }
+
+    public ArrayList<Integer> getAttendingEventsIds() {
+        return attendingEventsIds;
+    }
+
+    public void setAttendingEventsIds(ArrayList<Integer> attendingEventsIds) {
+        this.attendingEventsIds = attendingEventsIds;
+    }
+
+    public ArrayList<Integer> getCreatedEventsIds() {
+        return createdEventsIds;
+    }
+
+    public void setCreatedEventsIds(ArrayList<Integer> createdEventsIds) {
+        this.createdEventsIds = createdEventsIds;
+    }
+
+    public ArrayList<Integer> getFriendsIds() {
+        return friendsIds;
+    }
+
+    public void setFriendsIds(ArrayList<Integer> friendsIds) {
+        this.friendsIds = friendsIds;
+    }
+    //#################################################
+
+    public void addToAttendingEventsIds(Integer eventID){
+        this.attendingEventsIds.add(eventID);
+    }
+
+    public Integer removeFromAttendingEventsIds(int i){
+        if(!attendingEventsIds.isEmpty())
+            return attendingEventsIds.get(i);
+        else
+            return null;
+    }
+
+    public Integer getFromAttendingEventsIds(int i) {
+        if(!attendingEventsIds.isEmpty())
+            return attendingEventsIds.get(i);
+        else
+            return null;
+    }
+
+    public void clearAttendingEventsIds(){
+        this.attendingEventsIds.clear();
+    }
+    //#################################################
+    public void addToCreatedEventsIds(Integer eventID){
+        this.createdEventsIds.add(eventID);
+    }
+
+    public Integer removeFromCreatedEventsIds(int i){
+        if(!createdEventsIds.isEmpty())
+            return createdEventsIds.get(i);
+        else
+            return null;
+    }
+
+    public Integer getFromCreatedEventsIds(int i) {
+        if(!createdEventsIds.isEmpty())
+            return createdEventsIds.get(i);
+        else
+            return null;
+    }
+
+    public void clearCreatedEventsIds(){
+        this.attendingEventsIds.clear();
+    }
+    //################################################# friendsIds
+    public void addToFriendsIds(Integer userID){
+        this.friendsIds.add(userID);
+    }
+
+    public Integer removeFromFriendsIds(int i){
+        if(!friendsIds.isEmpty())
+            return friendsIds.get(i);
+        else
+            return null;
+    }
+
+    public Integer getFromFriendsIds(int i) {
+        if(!friendsIds.isEmpty())
+            return friendsIds.get(i);
+        else
+            return null;
+    }
+
+    public void clearFriendsIds(){
+        this.friendsIds.clear();
+    }
+    //#################################################
+
 }
