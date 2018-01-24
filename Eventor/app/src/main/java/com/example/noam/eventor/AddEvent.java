@@ -70,6 +70,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -298,11 +299,20 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     else
                         event.setEventImage("No image");
                     event.setplaceID(placeId);
-                    //Update event.adminUserId (in future)
-                    event.addToFriendsById(-1);//In the future here you enter the current user id as he is the admin
+                    event.addToFriendsById(1);
+                    event.addToFriendsById(2);
+                    event.addToFriendsById(3);
+                    event.addToFriendsById(4);
+                    event.addToFriendsById(5);
 
-                    String json = gson.toJson(event);
+                    ArrayList<GenericEvent> eventlist = new ArrayList<>();
+                    eventlist.add(event);
+                    GenericEvent event3 = new GenericEvent();
+                    event3 = event;
+                    eventlist.add(event3);
 
+                    String json = gson.toJson(eventlist);
+                    GenericEvent eventTest = gson.fromJson(json,GenericEvent.class);
                     int i = 0;
                     adapter = AddItemAdapter.getInstance();
                     adapter.AddObj(event);
@@ -311,7 +321,6 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     //Building test Json for testing
                     String test1 = "first try";
                     int test2 = 17;
-
                     JSONObject json2 = new JSONObject();
                     try {
                         json2.putOpt("test1", test1);
@@ -324,6 +333,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                         e.printStackTrace();
                     }
 
+                    //String toSend = json2.toString();
                     String toSend = json.toString();
 
                     NetworkManager instance = NetworkManager.getInstance();

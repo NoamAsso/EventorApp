@@ -163,6 +163,7 @@ public class GenericEvent {
 
     public void addToFriendsById(Integer userId){
         this.friendsById.add(userId);
+
     }
 
     public Integer removeFromFriendsById(int i){

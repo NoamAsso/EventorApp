@@ -47,22 +47,37 @@ import java.util.ArrayList;
 public class MapEventMenu extends Fragment implements OnMapReadyCallback {
     private static final String DESCRIBABLE_KEY = "describable_key";
 
-    private static final String TAG = "MapEventMenu" ;
+    private static final String TAG = "MapEventMenu";
     private static final int REQUEST_CODE = 1;
     MapView mapView;
     GoogleMap map;
+    Button myLocation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_map_event_menu, container, false);
-
+        Button myLocation = (Button) v.findViewById(R.id.my_location_button);
         // Gets the MapView from the XML layout and creates it
         mapView = (MapView) v.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
+        myLocation = (Button) v.findViewById(R.id.my_location_button);
         //mapView.loca = YES;
 
         mapView.getMapAsync(this);
-
+        myLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LocationManager lm2 = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+                    return;
+                }
+                Location location2 = lm2.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                double longitude = location2.getLongitude();
+                double latitude = location2.getLatitude();
+                final CameraUpdate cameraUpdate2 = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 10);
+                map.animateCamera(cameraUpdate2);
+            }
+        });
 
         return v;
     }
@@ -70,6 +85,7 @@ public class MapEventMenu extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
+
         map.getUiSettings().setMyLocationButtonEnabled(false);
         ActivityCompat.requestPermissions(getActivity(),
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -77,8 +93,7 @@ public class MapEventMenu extends Fragment implements OnMapReadyCallback {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             map.setMyLocationEnabled(true);
-        }
-        else
+        } else
             map.setMyLocationEnabled(true);
        /*
        //in old Api Needs to call MapsInitializer before doing any CameraUpdateFactory call
@@ -118,8 +133,8 @@ public class MapEventMenu extends Fragment implements OnMapReadyCallback {
                     Log.e(TAG, "Place not found.");
                 }
             }
-        });
 
+        });
 
     }
 
