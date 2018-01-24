@@ -301,13 +301,6 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     //Update event.adminUserId (in future)
                     event.addToFriendsById(-1);//In the future here you enter the current user id as he is the admin
 
-                    StringBuilder strFriends = new StringBuilder();
-                    for (Integer i : event.getFriendsById())
-                    {
-                        strFriends.append(i.toString());
-                    }
-                    String result = strFriends.toString();
-
                     String json = gson.toJson(event);
 
                     int i = 0;
@@ -331,7 +324,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                         e.printStackTrace();
                     }
 
-                    String toSend = json2.toString();
+                    String toSend = json.toString();
 
                     NetworkManager instance = NetworkManager.getInstance();
                     //John purcell's way
