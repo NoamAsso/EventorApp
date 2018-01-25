@@ -17,6 +17,7 @@ import cz.msebera.android.httpclient.StatusLine;
 import cz.msebera.android.httpclient.client.HttpClient;
 import cz.msebera.android.httpclient.client.methods.HttpGet;
 import cz.msebera.android.httpclient.client.methods.HttpPost;
+import cz.msebera.android.httpclient.client.methods.HttpPut;
 import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.impl.client.BasicResponseHandler;
 import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
@@ -58,6 +59,57 @@ public class NetworkManager {
         Message message = new Message();
         message.obj = request;
         mNetThread.addMessage(message);
+    }
+
+    private void putData(BaseRequest request) {
+        ServerCallback callback = request.getCallback();
+
+        try {
+            String uri = getServerUrl() + request.getServiceUrl();
+
+            Log.e(TAG, "Put Send: " + uri);
+
+            HttpClient httpclient = HttpClientBuilder.create().build();
+            HttpPut httpPut = new HttpPut(uri);
+
+            httpPut.setHeader(HTTP.CONTENT_ENCODING, HTTP.UTF_8);
+
+            HttpResponse response = httpclient.execute(httpPut);
+            Log.e(TAG, "Put Received: " + response.toString());
+
+            StatusLine statusLine = response.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
+
+            if (statusCode == HttpStatus.SC_OK) {
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                response.getEntity().writeTo(out);
+                String responseString = out.toString();
+                Log.e(TAG, "Put Received: " + responseString);
+
+
+                out.close();
+                if (callback != null) {
+                    callback.onSuccess(responseString, statusCode);
+                }
+            } else {
+                //Closes the connection.
+                HttpEntity entity = response.getEntity();
+                if (entity != null) {
+                    entity.getContent().close();
+                }
+                Log.e(TAG, "Put Received: " + "Http Response: " + response.toString());
+                Log.e(TAG, "Put Received: " + "Http Response: " + statusCode);
+
+                if (callback != null) {
+                    callback.onFailure("Http Response: " + statusCode, statusCode);
+                }
+            }
+        } catch (Throwable e) {
+            Log.e(TAG, "Put Received Error: " + e.getMessage());
+            if (callback != null) {
+                callback.onFailure(null, -1);
+            }
+        }
     }
 
     private void getData(BaseRequest request) {
@@ -132,7 +184,7 @@ public class NetworkManager {
         try {
             String uri = getServerUrl() + request.getServiceUrl();
 
-            Log.e(TAG, "Get Send: " + uri);
+            Log.e(TAG, "Post Send: " + uri);
 
             HttpPost httpPost = new HttpPost(uri);
             StringEntity entity = new StringEntity(request.getJsonEntity());
@@ -145,7 +197,7 @@ public class NetworkManager {
 //            String response = httpclient.execute(httpPost,handler);
 
             HttpResponse response = httpclient.execute(httpPost);
-            Log.e(TAG, "Get Received: " + response.toString());
+            Log.e(TAG, "Post Received: " + response.toString());
 
             StatusLine statusLine = response.getStatusLine();
             int statusCode = statusLine.getStatusCode();
@@ -154,7 +206,7 @@ public class NetworkManager {
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 response.getEntity().writeTo(out);
                 String responseString = out.toString();
-                Log.e(TAG, "Get Received: " + responseString);
+                Log.e(TAG, "Post Received: " + responseString);
 
 
                 out.close();
@@ -167,8 +219,8 @@ public class NetworkManager {
                 if (httpentity != null) {
                     httpentity.getContent().close();
                 }
-                Log.e(TAG, "Get Received: " + "Http Response: " + response.toString());
-                Log.e(TAG, "Get Received: " + "Http Response: " + statusCode);
+                Log.e(TAG, "Post Received: " + "Http Response: " + response.toString());
+                Log.e(TAG, "Post Received: " + "Http Response: " + statusCode);
 
                 if (callback != null) {
                     callback.onFailure("Http Response: " + statusCode, statusCode);
@@ -179,7 +231,7 @@ public class NetworkManager {
             Log.e(TAG, e.toString());
         }
         catch (Throwable e) {
-            Log.e(TAG, "Get Received Error: " + e.getMessage());
+            Log.e(TAG, "Post Received Error: " + e.getMessage());
             if (callback != null) {
                 callback.onFailure(null, -1);
             }
@@ -227,6 +279,10 @@ public class NetworkManager {
                 }
                 case POST: {
                     postData(req);
+                    break;
+                }
+                case PUT: {
+                    putData(req);
                     break;
                 }
             }
