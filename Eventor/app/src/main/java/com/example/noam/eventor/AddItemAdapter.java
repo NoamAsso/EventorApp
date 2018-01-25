@@ -1,6 +1,8 @@
 package com.example.noam.eventor;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -25,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Toast;
 
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
@@ -34,6 +38,8 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * Created by Noam on 19/01/2018.
@@ -46,7 +52,7 @@ public class AddItemAdapter extends BaseAdapter {
         private ArrayList<GenericEvent> model;
         private static AddItemAdapter sInstance;
         private LayoutInflater layoutInflater;
-
+        private User currentUser;
     private AddItemAdapter() {
         model = new ArrayList<>();
         this.context = null;
@@ -124,6 +130,16 @@ public void setContext (Context context){
         TextView date = (TextView) convertView.findViewById(R.id.event_date_item);
         final TextView location = (TextView) convertView.findViewById(R.id.location_item);
         ImageView image = (ImageView) convertView.findViewById(R.id.image_item);
+        Button join = (Button) convertView.findViewById(R.id.event_join);
+        CurrentUser instance = CurrentUser.getInstance();
+
+        currentUser = instance.getUser();
+        if(currentUser.getFromAttendingEventsIds().contains(currentItem.getId())){
+            join.setText("Joined");
+            join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
+        }
+
+
         //sets the text for item name and item description from the current item object
         title.setText(currentItem.getCategory());
         year = currentItem.getDate().getYear();
@@ -139,8 +155,6 @@ public void setContext (Context context){
                     date.setText(Integer.toString(day)+"/"+Integer.toString(month)+"/"+Integer.toString(year));
             }
         }
-        else
-            date.setText(Integer.toString(datecheck.getDate()));
 
         if(currentItem.getDate().getMinutes()<10 && currentItem.getDate().getHours()>9){
             timeHrsMin.setText("At: "+currentItem.getDate().getHours()+":0"+currentItem.getDate().getMinutes());
@@ -149,7 +163,7 @@ public void setContext (Context context){
             timeHrsMin.setText("At: 0"+currentItem.getDate().getHours()+":"+currentItem.getDate().getMinutes());
         }
         else if((currentItem.getDate().getHours()<10 && currentItem.getDate().getMinutes()<10))
-        timeHrsMin.setText("At: "+currentItem.getDate().getHours()+":0"+currentItem.getDate().getMinutes());
+            timeHrsMin.setText("At: "+currentItem.getDate().getHours()+":0"+currentItem.getDate().getMinutes());
         else
             timeHrsMin.setText("At: "+currentItem.getDate().getHours()+":"+currentItem.getDate().getMinutes());
         //date.setText(currentItem.getstringDate());
@@ -213,9 +227,65 @@ public void setContext (Context context){
                 //finish();
             }
         });
+        join.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(currentUser.getFromAttendingEventsIds().contains(currentItem.getId())){
+                    Toast.makeText(context,"cant initial model",Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    JoinEvent();
+                                    break;
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    break;
+                            }
+                        }
+                    };
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
+                }
+
+                //finish();
+            }
+        });
         return convertView;
     }
+    public void JoinEvent() {
 
+        NetworkManager instance = NetworkManager.getInstance();
+        instance.addRequest(new GetEventsRequest(new ServerCallback() {
+
+            @Override
+            public void onSuccess(Object res, int statusCode) {
+                final String tempresult = (String) res;
+                Log.e("AddItemAdapter", tempresult);
+                //Toast.makeText(getActivity().getApplicationContext(), "yay got the message!"+result, Toast.LENGTH_SHORT).show();
+                Gson gson = new Gson();
+                GenericEvent event = gson.fromJson(tempresult, GenericEvent.class);
+                CurrentEvent eventInstance = CurrentEvent.getInstance();
+                eventInstance.setCurrentEvent(event);
+                Toast.makeText(context,"received updated event",Toast.LENGTH_SHORT).show();
+                Intent myIntent = new Intent(context, EventPage.class);
+                myIntent.putExtra("GenericEvent", event.getId()); //Optional parameters
+                context.startActivity(myIntent);
+
+            }
+
+            @Override
+            public void onFailure(Object err, int statusCode) {
+                Toast.makeText(context.getApplicationContext(), "failure to receive message", Toast.LENGTH_SHORT).show();
+                Log.e("Join request", "Connection to Server failed");
+            }
+        }));
+    }//fetchFromNetwork
     public Bitmap StringToBitMap(String encodedString){
         try {
             byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);

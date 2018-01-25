@@ -13,7 +13,7 @@
 
     <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="450dp"
+            android:layout_height="470dp"
             android:layout_above="@+id/bottom_navigation"
             android:layout_alignParentTop="true">
     <LinearLayout
@@ -105,7 +105,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center">
                         <TextView
-                            android:id="@+id/event_category"
+                            android:id="@+id/event_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Today"
@@ -113,6 +113,7 @@
                             android:paddingBottom="3dp"
                             android:textSize="20sp"/>
                         <TextView
+                            android:id="@+id/event_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="At: 20:00"
@@ -133,6 +134,15 @@
                         android:layout_height="2dp"
                         android:background="@android:color/darker_gray"
                         />
+                    <TextView
+                        android:id="@+id/place_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Location"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"
+                        android:paddingBottom="10dp"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -149,15 +159,17 @@
                                 android:layout_gravity="center"
                                 android:text="Description:"
                                 android:textColor="@android:color/white"
-                                android:textSize="20sp" />
+                                android:textSize="16sp" />
 
                             <LinearLayout
+
                                 android:layout_width="match_parent"
                                 android:layout_height="90dp"
                                 android:background="@drawable/rounded_edittext_gray"
                                 android:gravity="center">
 
                                 <TextView
+                                    android:id="@+id/event_description"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:paddingLeft="10dp"
@@ -220,7 +232,13 @@
                             android:textAllCaps="false"/>
 
                     </LinearLayout>
+                    <ListView
+                        android:id="@+id/user_list"
 
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="7"
+                        />
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="20dp"/>
@@ -236,6 +254,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="10dp"/>
                     <TextView
+                        android:id="@+id/event_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Event ID: 53"
@@ -245,6 +264,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="5dp"/>
+
                 </LinearLayout>
             </RelativeLayout>
             <RelativeLayout
@@ -264,7 +284,7 @@
     <FrameLayout
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="250dp"
 
         app:behavior_hideable="true"
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior">

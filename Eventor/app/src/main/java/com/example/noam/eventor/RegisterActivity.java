@@ -66,6 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+                EditTextNormalize();
                 boolean error = false;
                 if(userName.getText().toString().matches("")){
                     error = true;
@@ -130,5 +131,13 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 
+    }
+
+    public void EditTextNormalize(){
+        userName.setBackgroundResource(R.drawable.rounded_edittext);
+        userPassword.setBackgroundResource(R.drawable.rounded_edittext);
+        userEmail.setBackgroundResource(R.drawable.rounded_edittext );
+        userPhone.setBackgroundResource(R.drawable.rounded_edittext );
+        userAge.setBackgroundResource(R.drawable.rounded_edittext );
     }
 }

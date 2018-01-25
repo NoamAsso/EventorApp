@@ -18,4 +18,8 @@ public class CurrentUser {
     public void setUser(User user){
             this.user = user;
     }
+
+    public User getUser() {
+        return user;
+    }
 }
