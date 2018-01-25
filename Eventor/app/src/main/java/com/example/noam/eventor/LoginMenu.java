@@ -49,40 +49,53 @@ public class LoginMenu extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 String send = json2.toString();
+                Log.e("What i send:::", send);
                 int i = 0;
-                instance.addRequest(new PostUserRequest(send, new ServerCallback() {
+                instance.addRequest(new GetUserLoginRequest(send, new ServerCallback() {
                     @Override
                     public void onSuccess(Object res, int statusCode) {
                         final String result = (String) res;
-                        Log.e("AddEvent", result);
+                        Log.e("Login Menu", result);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
                                 switch(result){
                                     case "1":
-                                        Toast.makeText(getApplicationContext(), "This username doesn't exits", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "This username doesn't exists", Toast.LENGTH_SHORT).show();
                                         break;
                                     case "2":
                                         Toast.makeText(getApplicationContext(), "Wrong password", Toast.LENGTH_SHORT).show();
                                         break;
                                     default:
                                         Gson gson = new Gson();
+                                        User usertest = new User(2,"noam","12345",27,"noam@gmail.com","0524217111","Male");
+                                        String temp = gson.toJson(usertest,User.class);
+                                        usertest = gson.fromJson(temp, User.class);
                                         User user = gson.fromJson(result, User.class);
                                         CurrentUser userInstance = CurrentUser.getInstance();
                                         userInstance.setUser(user);
+                                        Intent myIntent = new Intent(LoginMenu.this, UserAreaMain.class);
+                                        LoginMenu.this.startActivity(myIntent);
+                                        break;
                                 }
+
                             }
                         });
                     }
                     @Override
                     public void onFailure(Object err, int statusCode) {
-                        Log.e("AddEvent", "Connection to Server failed");
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.e("Login Menu", "Connection to Server failed");
+                                Toast.makeText(getApplicationContext(), "Connection to Server failed", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
                     }
                 }));
-                Intent myIntent = new Intent(LoginMenu.this, UserAreaMain.class);
-                //myIntent.putExtra("key", value); //Optional parameters
-                LoginMenu.this.startActivity(myIntent);
+
                 //finish();
             }
         });

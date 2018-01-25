@@ -13,7 +13,6 @@ public class User {
     private String userName;
     private String password;
     private int age;
-    // TOKEN ##########################################################33
     private String mail;
     private String phoneNum;
     private String sex;
@@ -124,9 +123,9 @@ public class User {
             return null;
     }
 
-    public Integer getFromAttendingEventsIds(int i) {
+    public ArrayList getFromAttendingEventsIds() {
         if(!attendingEventsIds.isEmpty())
-            return attendingEventsIds.get(i);
+            return attendingEventsIds;
         else
             return null;
     }
@@ -146,9 +145,9 @@ public class User {
             return null;
     }
 
-    public Integer getFromCreatedEventsIds(int i) {
+    public ArrayList getFromCreatedEventsIds() {
         if(!createdEventsIds.isEmpty())
-            return createdEventsIds.get(i);
+            return createdEventsIds;
         else
             return null;
     }

@@ -132,7 +132,7 @@ public class NetworkManager {
         try {
             String uri = getServerUrl() + request.getServiceUrl();
 
-            Log.e(TAG, "Get Send: " + uri);
+            Log.e(TAG, "Post Send: " + uri);
 
             HttpPost httpPost = new HttpPost(uri);
             StringEntity entity = new StringEntity(request.getJsonEntity());
@@ -145,7 +145,7 @@ public class NetworkManager {
 //            String response = httpclient.execute(httpPost,handler);
 
             HttpResponse response = httpclient.execute(httpPost);
-            Log.e(TAG, "Get Received: " + response.toString());
+            Log.e(TAG, "Post Received: " + response.toString());
 
             StatusLine statusLine = response.getStatusLine();
             int statusCode = statusLine.getStatusCode();
