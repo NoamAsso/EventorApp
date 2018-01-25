@@ -77,7 +77,7 @@ public class MapEventMenu extends Fragment implements OnMapReadyCallback {
                 Location location2 = getLastKnownLocation();
                 double longitude = location2.getLongitude();
                 double latitude = location2.getLatitude();
-                final CameraUpdate cameraUpdate2 = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 30);
+                final CameraUpdate cameraUpdate2 = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15);
                 map.animateCamera(cameraUpdate2);
             }
         });

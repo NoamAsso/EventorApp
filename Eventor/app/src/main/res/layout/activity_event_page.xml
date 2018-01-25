@@ -5,7 +5,7 @@
     android:id="@+id/main_event_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/football_event_background2"
+    android:background="@drawable/tennis_net"
     tools:context="com.example.noam.eventor.EventPage">
 
 

@@ -128,19 +128,22 @@ public void setContext (Context context){
         TextView timeHrsMin = (TextView) convertView.findViewById(R.id.time_item);
         TextView title = (TextView) convertView.findViewById(R.id.event_title_item);
         TextView maxNumOfUsers = (TextView) convertView.findViewById(R.id.max_num_users);
+        TextView currentUsers = (TextView) convertView.findViewById(R.id.current_num_users);
         TextView date = (TextView) convertView.findViewById(R.id.event_date_item);
         final TextView location = (TextView) convertView.findViewById(R.id.location_item);
         ImageView image = (ImageView) convertView.findViewById(R.id.image_item);
         Button join = (Button) convertView.findViewById(R.id.event_join);
-        CurrentUser instance = CurrentUser.getInstance();
-
-        currentUser = instance.getUser();
+        CurrentEvent Einstance = CurrentEvent.getInstance();
+        CurrentUser Uinstance = CurrentUser.getInstance();
+        currentUser = Uinstance.getUser();
+        currentUsers.setText(Integer.toString(currentItem.getCurrentUsers()));
+        /*
         if(currentUser.getFromAttendingEventsIds() != null){
-            if(CurrentUser.getInstance().getUser().getFromAttendingEventsIds().contains(currentItem.getId())){
+            if(currentUser.getFromAttendingEventsIds().contains(currentItem.getId())){
                 join.setText("Joined");
                 join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
             }
-        }
+        }*/
 
 
 
