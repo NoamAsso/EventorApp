@@ -6,12 +6,14 @@ package com.example.noam.eventor;
 
 public class CurrentEvent {
 
+    static
     GenericEvent event;
     private static CurrentEvent sInstance;
 
     public static CurrentEvent getInstance() {
         if (sInstance == null) {
             sInstance = new CurrentEvent();
+            event = new GenericEvent();
         }
         return sInstance;
     }

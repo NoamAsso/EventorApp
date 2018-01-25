@@ -120,7 +120,8 @@ public void setContext (Context context){
         }
 
         final GenericEvent currentItem = (GenericEvent) getItem(position);
-
+        CurrentEvent eventInstance = CurrentEvent.getInstance();
+        eventInstance.setCurrentEvent(currentItem);
         GeoDataClient mGeoDataClient = Places.getGeoDataClient(context, null);
         PlaceDetectionClient mPlaceDetectionClient = Places.getPlaceDetectionClient(context, null);
         Button detailButton = (Button) convertView.findViewById(R.id.details_button);
@@ -134,10 +135,14 @@ public void setContext (Context context){
         CurrentUser instance = CurrentUser.getInstance();
 
         currentUser = instance.getUser();
-        if(currentUser.getFromAttendingEventsIds().contains(currentItem.getId())){
-            join.setText("Joined");
-            join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
+        if(currentUser.getFromAttendingEventsIds() != null){
+            if(CurrentUser.getInstance().getUser().getFromAttendingEventsIds().contains(currentItem.getId())){
+                join.setText("Joined");
+                join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
+            }
         }
+
+
 
 
         //sets the text for item name and item description from the current item object
@@ -230,17 +235,13 @@ public void setContext (Context context){
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(currentUser.getFromAttendingEventsIds().contains(currentItem.getId())){
-                    Toast.makeText(context,"cant initial model",Toast.LENGTH_SHORT).show();
-                }
-                else{
+                if(currentUser.getFromAttendingEventsIds()==null){
                     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which){
                                 case DialogInterface.BUTTON_POSITIVE:
-                                    JoinEvent();
+                                    JoinEvent((GenericEvent) getItem(position));
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
                                     break;
@@ -251,6 +252,13 @@ public void setContext (Context context){
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
                             .setNegativeButton("No", dialogClickListener).show();
+
+                }
+                else{
+                    if(currentUser.getFromAttendingEventsIds().contains(currentItem.getId())){
+                        Toast.makeText(context,"already joined.",Toast.LENGTH_SHORT).show();
+                    }
+
                 }
 
                 //finish();
@@ -258,24 +266,32 @@ public void setContext (Context context){
         });
         return convertView;
     }
-    public void JoinEvent() {
+    public void JoinEvent(GenericEvent event) {
 
         NetworkManager instance = NetworkManager.getInstance();
-        instance.addRequest(new GetEventsRequest(new ServerCallback() {
+        CurrentUser uInstance= CurrentUser.getInstance();
+        User user = uInstance.getUser();
+        instance.addRequest(new UpdateJoinRequest(user.getUserId(),event.getId(), new ServerCallback() {
 
             @Override
             public void onSuccess(Object res, int statusCode) {
                 final String tempresult = (String) res;
                 Log.e("AddItemAdapter", tempresult);
+
+                ((Activity)context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Gson gson = new Gson();
+                        GenericEvent event = gson.fromJson(tempresult, GenericEvent.class);
+                        CurrentEvent eventInstance = CurrentEvent.getInstance();
+                        eventInstance.setCurrentEvent(event);
+                        ArrayList<Integer> arr = new ArrayList<>();
+                        eventInstance.event.setFriendsById(arr);
+                        eventInstance.getCurrentEvent().AddFriendsById(CurrentUser.getInstance().getUser().getUserId());
+                        Toast.makeText(context,"Joined to event!",Toast.LENGTH_SHORT).show();
+                    }
+                });
                 //Toast.makeText(getActivity().getApplicationContext(), "yay got the message!"+result, Toast.LENGTH_SHORT).show();
-                Gson gson = new Gson();
-                GenericEvent event = gson.fromJson(tempresult, GenericEvent.class);
-                CurrentEvent eventInstance = CurrentEvent.getInstance();
-                eventInstance.setCurrentEvent(event);
-                Toast.makeText(context,"received updated event",Toast.LENGTH_SHORT).show();
-                Intent myIntent = new Intent(context, EventPage.class);
-                myIntent.putExtra("GenericEvent", event.getId()); //Optional parameters
-                context.startActivity(myIntent);
 
             }
 
@@ -286,6 +302,8 @@ public void setContext (Context context){
             }
         }));
     }//fetchFromNetwork
+
+
     public Bitmap StringToBitMap(String encodedString){
         try {
             byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);

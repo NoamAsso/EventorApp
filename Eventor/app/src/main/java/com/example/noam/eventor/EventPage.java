@@ -27,7 +27,7 @@ import com.google.android.gms.tasks.Task;
 import java.util.Date;
 
 public class EventPage extends AppCompatActivity {
-    TextView categoty;
+    TextView category;
     TextView date;
     TextView time;
     TextView address;
@@ -35,6 +35,7 @@ public class EventPage extends AppCompatActivity {
     TextView maxUsers;
     TextView eventId;
     TextView eventCreator;
+    TextView description;
     Button joinEvent;
     ListView participants;
 
@@ -46,13 +47,13 @@ public class EventPage extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floating_button);
-        fab.setVisibility(View.GONE);
+
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_event_page);
 // The View with the BottomSheetBehavior
         CurrentEvent eventInstance = CurrentEvent.getInstance();
         GenericEvent event = eventInstance.getCurrentEvent();
 
-        categoty = (TextView) findViewById(R.id.event_category);
+        category = (TextView) findViewById(R.id.event_category);
         date = (TextView) findViewById(R.id.event_date);
         time = (TextView) findViewById(R.id.event_time);
         address = (TextView) findViewById(R.id.place_address);
@@ -60,8 +61,10 @@ public class EventPage extends AppCompatActivity {
         maxUsers = (TextView) findViewById(R.id.max_joined_number);
         eventId = (TextView) findViewById(R.id.event_id);
         eventCreator = (TextView) findViewById(R.id.event_creator_name);
+        description = (TextView) findViewById(R.id.event_description);
         Date datecheck = new Date();
-        categoty.setText(event.getCategory().toString());
+        category.setText(event.getCategory().toString());
+        description.setText(event.getDescription().toString());
         int year = event.getDate().getYear();
         int month = event.getDate().getMonth();
         int day = event.getDate().getDate();
@@ -106,7 +109,7 @@ public class EventPage extends AppCompatActivity {
         currentUsers.setText(Integer.toString(event.getCurrentUsers()));
         maxUsers.setText(Integer.toString(event.getMaxUsers()));
         eventId.setText(Integer.toString(event.getId()));
-        eventCreator.setText(event.getAdminUserId());
+        //eventCreator.setText(event.getAdminUserId());
         View bottomSheet = coordinatorLayout.findViewById(R.id.bottom_sheet);
         final BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
         behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -114,7 +117,7 @@ public class EventPage extends AppCompatActivity {
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_DRAGGING) {
                     behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    fab.setVisibility(View.VISIBLE);
+                    fab.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.ic_arrow_downward_white_24dp ));
 
                 }
                 if(behavior.getState() == BottomSheetBehavior.STATE_COLLAPSED){
@@ -131,9 +134,10 @@ public class EventPage extends AppCompatActivity {
             public void onClick(View view) {
                 if (behavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
                     behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    fab.setImageResource(R.drawable.ic_arrow_downward_white_24dp );
                 } else {
                     behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
+                    fab.setImageResource(R.drawable.ic_arrow_upward_white_24dp );
                 }
             }
         });

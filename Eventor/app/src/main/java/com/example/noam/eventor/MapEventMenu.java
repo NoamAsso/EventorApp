@@ -38,6 +38,9 @@ import com.google.android.gms.tasks.Task;
 import org.junit.runner.Describable;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static android.content.Context.LOCATION_SERVICE;
 
 
 /**
@@ -52,7 +55,7 @@ public class MapEventMenu extends Fragment implements OnMapReadyCallback {
     MapView mapView;
     GoogleMap map;
     Button myLocation;
-
+    LocationManager mLocationManager;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_map_event_menu, container, false);
@@ -67,14 +70,14 @@ public class MapEventMenu extends Fragment implements OnMapReadyCallback {
         myLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LocationManager lm2 = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                LocationManager lm2 = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
                 if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
                     return;
                 }
-                Location location2 = lm2.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                Location location2 = getLastKnownLocation();
                 double longitude = location2.getLongitude();
                 double latitude = location2.getLatitude();
-                final CameraUpdate cameraUpdate2 = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 10);
+                final CameraUpdate cameraUpdate2 = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 30);
                 map.animateCamera(cameraUpdate2);
             }
         });
@@ -95,21 +98,20 @@ public class MapEventMenu extends Fragment implements OnMapReadyCallback {
             map.setMyLocationEnabled(true);
         } else
             map.setMyLocationEnabled(true);
-       /*
-       //in old Api Needs to call MapsInitializer before doing any CameraUpdateFactory call
-        try {
-            MapsInitializer.initialize(this.getActivity());
-        } catch (GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace();
-        }
 
-       */
 
-        LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        double longitude = location.getLongitude();
-        double latitude = location.getLatitude();
-        final CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 10);
+
+
+
+        Location myLocation = getLastKnownLocation();
+
+
+
+        //LocationManager lm = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+        //ocation location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        double longitude = myLocation.getLongitude();
+        double latitude = myLocation.getLatitude();
+        final CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15);
 
 
         AddItemAdapter adapter = AddItemAdapter.getInstance();
@@ -162,5 +164,20 @@ public class MapEventMenu extends Fragment implements OnMapReadyCallback {
         super.onLowMemory();
         mapView.onLowMemory();
     }
-
+    private Location getLastKnownLocation() {
+        mLocationManager = (LocationManager)getActivity().getSystemService(LOCATION_SERVICE);
+        List<String> providers = mLocationManager.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+            Location l = mLocationManager.getLastKnownLocation(provider);
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
+                bestLocation = l;
+            }
+        }
+        return bestLocation;
+    }
 }

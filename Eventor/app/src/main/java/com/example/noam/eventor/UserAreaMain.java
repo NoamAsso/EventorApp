@@ -31,6 +31,7 @@ public class UserAreaMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_area_main);
         Intent intent = getIntent();
+
         AddItemAdapter adapter1;
         adapter1 = AddItemAdapter.getInstance();
         adapter1.setContext(this);

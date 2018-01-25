@@ -157,6 +157,10 @@ public class GenericEvent {
         return friendsById;
     }
 
+    public void AddFriendsById(int i) {
+        this.friendsById.add(i);
+    }
+
     public void setFriendsById(ArrayList friendsById) {
         this.friendsById = friendsById;
     }

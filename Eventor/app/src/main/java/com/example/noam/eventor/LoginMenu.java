@@ -76,7 +76,9 @@ public class LoginMenu extends AppCompatActivity {
                                         CurrentUser userInstance = CurrentUser.getInstance();
                                         userInstance.setUser(user);
                                         Intent myIntent = new Intent(LoginMenu.this, UserAreaMain.class);
+                                        myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         LoginMenu.this.startActivity(myIntent);
+                                        finish();
                                         break;
                                 }
 

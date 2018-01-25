@@ -24,6 +24,8 @@
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="0.15">
+
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -31,16 +33,30 @@
             android:layout_height="fill_parent"
             android:layout_weight="0.7">
 
-            <ImageView
-                android:layout_width="300dp"
-                android:layout_height="300dp"
-                android:layout_above="@+id/linearLayout"
 
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center"
-                android:layout_marginBottom="53dp"
-                android:src="@drawable/white_logo" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity = "center"
+                android:text="Evnter"
+                android:paddingTop="100dp"
+
+                android:textColor="@android:color/white"
+                android:textSize="80sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="32dp"
+                android:layout_marginStart="32dp"
+                android:gravity="center"
+                android:paddingTop="190dp"
+                android:text="social sports"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
             <!-- This is the part that's 70% of the total width. I'm inserting a LinearLayout and buttons.-->
             <LinearLayout
                 android:id="@+id/linearLayout"
