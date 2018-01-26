@@ -296,6 +296,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     String placeId = place.getId();
 
                     event = new GenericEvent(
+                            category,
                             date,
                             maxUsers,
                             eventDescription.getText().toString(),

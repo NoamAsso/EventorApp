@@ -30,9 +30,10 @@ public class GenericEvent {
     private double longitude;
     private double latitude;
 
-    public GenericEvent(Date date, int maxUsers, String description, int price,
+    public GenericEvent(String category, Date date, int maxUsers, String description, int price,
                         boolean isPrivate, String eventImage, String placeID, double longitude,
                         double latitude) {
+        this.category = category;
         this.id = 0;            //received by the server
         this.date = date;
         this.adminUserId = 0;   //received by the server

@@ -54,15 +54,8 @@ public class FragmentTwo extends Fragment {
                 mSwipeRefreshView.setRefreshing(false);
             }
         });
-
-
-
         //connect the adapter to the ListView
     }
-
-
-
-
 
     public void GetListFromServer() {
 

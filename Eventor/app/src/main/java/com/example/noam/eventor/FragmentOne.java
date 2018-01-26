@@ -30,7 +30,7 @@ import java.util.List;
 public class FragmentOne extends Fragment {
     ListView list;
     AddItemAdapter adapter;
-    String result;
+   // String result;
 
     public FragmentOne() {
         // Required empty public constructor
@@ -67,8 +67,7 @@ public class FragmentOne extends Fragment {
 
             @Override
             public void onSuccess(Object res, int statusCode) {
-                final String tempresult = (String) res;
-                result = tempresult;
+                final String result = (String) res;
                 Log.e("Fragment2", result);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
