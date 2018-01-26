@@ -1,4 +1,4 @@
 [submodule "ionic-tutorial"]
-	ignore = untracked
+	ignore = dirty
 	path = ionic-tutorial
 	url = git://github.com/NoamAsso/EventorApp.git
