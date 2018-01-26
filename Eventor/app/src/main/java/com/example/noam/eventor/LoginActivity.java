@@ -20,9 +20,13 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -37,6 +41,12 @@ public class LoginActivity extends AppCompatActivity {
         myActionBar.hide();
         //ActionBar actionBar = getActionBar();
         //actionBar.hide();
+        Gson gson = new Gson();
+        GenericEvent event = new GenericEvent();
+        ArrayList<GenericEvent> temparr = new ArrayList<>();
+        temparr.add(event);
+        String temp = gson.toJson(temparr, new TypeToken<List<GenericEvent>>() {}.getType());;
+        temparr = gson.fromJson(temp, new TypeToken<List<GenericEvent>>() {}.getType());
         SharedPreferences sharedPref = getSharedPreferences("preferences",
                 Context.MODE_PRIVATE);
 
