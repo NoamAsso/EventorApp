@@ -16,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,12 +48,13 @@ import com.google.gson.reflect.TypeToken;
 
 
 public class AddItemAdapter extends BaseAdapter {
-        private Context context; //context
-        private static int currentIndex;
-        private ArrayList<GenericEvent> model;
-        private static AddItemAdapter sInstance;
-        private LayoutInflater layoutInflater;
-        private User currentUser;
+    private Context context; //context
+    private static int currentIndex;
+    private ArrayList<GenericEvent> model;
+    private static AddItemAdapter sInstance;
+    private LayoutInflater layoutInflater;
+    private User currentUser;
+
     private AddItemAdapter() {
         model = new ArrayList<>();
         this.context = null;
@@ -70,13 +72,15 @@ public class AddItemAdapter extends BaseAdapter {
         return currentIndex;
     }
 
-    public void AddObj(GenericEvent obj){
-    model.add(obj);
-}
-public void setContext (Context context){
-    this.context = context;
-    layoutInflater = LayoutInflater.from(context);
-}
+    public void AddObj(GenericEvent obj) {
+        model.add(obj);
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+        layoutInflater = LayoutInflater.from(context);
+    }
+
     @Override
     public int getCount() {
         return model.size();
@@ -84,22 +88,22 @@ public void setContext (Context context){
 
     @Override
     public Object getItem(int i) {
-    if(!model.isEmpty())
-        return model.get(i);
+        if (!model.isEmpty())
+            return model.get(i);
 
-    else
-        return null;
-    }
-    public ArrayList getModel(){
-    return  model;
+        else
+            return null;
     }
 
-    public boolean setModel(ArrayList<GenericEvent> list){
-        if(list != null){
+    public ArrayList getModel() {
+        return model;
+    }
+
+    public boolean setModel(ArrayList<GenericEvent> list) {
+        if (list != null) {
             this.model = list;
             return true;
-        }
-        else
+        } else
             return false;
 
     }
@@ -146,34 +150,32 @@ public void setContext (Context context){
         }*/
 
 
-
-
         //sets the text for item name and item description from the current item object
         title.setText(currentItem.getCategory());
         year = currentItem.getDate().getYear();
         month = currentItem.getDate().getMonth();
         day = currentItem.getDate().getDate();
-        if((year == (datecheck.getYear()+1900)) && (month == (datecheck.getMonth()+1))){
-            switch (day-datecheck.getDate()){
+        if ((year == (datecheck.getYear() + 1900)) && (month == (datecheck.getMonth() + 1))) {
+            switch (day - datecheck.getDate()) {
                 case 0:
-                    date.setText("Today");break;
+                    date.setText("Today");
+                    break;
                 case 1:
-                    date.setText("Tommorow");break;
+                    date.setText("Tommorow");
+                    break;
                 default:
-                    date.setText(Integer.toString(day)+"/"+Integer.toString(month)+"/"+Integer.toString(year));
+                    date.setText(Integer.toString(day) + "/" + Integer.toString(month) + "/" + Integer.toString(year));
             }
         }
 
-        if(currentItem.getDate().getMinutes()<10 && currentItem.getDate().getHours()>9){
-            timeHrsMin.setText("At: "+currentItem.getDate().getHours()+":0"+currentItem.getDate().getMinutes());
-        }
-        else if(currentItem.getDate().getHours()<10 && currentItem.getDate().getMinutes()>9){
-            timeHrsMin.setText("At: 0"+currentItem.getDate().getHours()+":"+currentItem.getDate().getMinutes());
-        }
-        else if((currentItem.getDate().getHours()<10 && currentItem.getDate().getMinutes()<10))
-            timeHrsMin.setText("At: "+currentItem.getDate().getHours()+":0"+currentItem.getDate().getMinutes());
+        if (currentItem.getDate().getMinutes() < 10 && currentItem.getDate().getHours() > 9) {
+            timeHrsMin.setText("At: " + currentItem.getDate().getHours() + ":0" + currentItem.getDate().getMinutes());
+        } else if (currentItem.getDate().getHours() < 10 && currentItem.getDate().getMinutes() > 9) {
+            timeHrsMin.setText("At: 0" + currentItem.getDate().getHours() + ":" + currentItem.getDate().getMinutes());
+        } else if ((currentItem.getDate().getHours() < 10 && currentItem.getDate().getMinutes() < 10))
+            timeHrsMin.setText("At: " + currentItem.getDate().getHours() + ":0" + currentItem.getDate().getMinutes());
         else
-            timeHrsMin.setText("At: "+currentItem.getDate().getHours()+":"+currentItem.getDate().getMinutes());
+            timeHrsMin.setText("At: " + currentItem.getDate().getHours() + ":" + currentItem.getDate().getMinutes());
         //date.setText(currentItem.getstringDate());
         String test = currentItem.getCategory();
         switch (test) {
@@ -207,12 +209,13 @@ public void setContext (Context context){
         String placeId = currentItem.getPlaceID();
         mGeoDataClient.getPlaceById(placeId).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
             public static final String TAG = "AddItemAdapter";
+
             @Override
             public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
                 if (task.isSuccessful()) {
                     PlaceBufferResponse places = task.getResult();
                     Place place2 = places.get(0);
-                    location.setText(place2.getName()+", "+place2.getAddress());
+                    location.setText(place2.getName() + ", " + place2.getAddress());
                     Log.i(TAG, "Place found: " + place2.getName() + place2.getAddress());
                     places.release();
                 } else {
@@ -222,7 +225,6 @@ public void setContext (Context context){
         });
         //String address = String.format("%s, %s",currentItem.getplaceID().getLocale(),currentItem.getplaceID().getAddress());
         //location.setText(address);
-
 
 
         detailButton.setOnClickListener(new View.OnClickListener() {
@@ -238,11 +240,11 @@ public void setContext (Context context){
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(currentUser.getFromAttendingEventsIds()==null){
+                if (currentUser.getFromAttendingEventsIds() == null) {
                     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            switch (which){
+                            switch (which) {
                                 case DialogInterface.BUTTON_POSITIVE:
                                     JoinEvent((GenericEvent) getItem(position));
                                     break;
@@ -256,10 +258,9 @@ public void setContext (Context context){
                     builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
                             .setNegativeButton("No", dialogClickListener).show();
 
-                }
-                else{
-                    if(currentUser.getFromAttendingEventsIds().contains(currentItem.getId())){
-                        Toast.makeText(context,"already joined.",Toast.LENGTH_SHORT).show();
+                } else {
+                    if (currentUser.getFromAttendingEventsIds().contains(currentItem.getId())) {
+                        Toast.makeText(context, "already joined.", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -269,19 +270,20 @@ public void setContext (Context context){
         });
         return convertView;
     }
+
     public void JoinEvent(GenericEvent event) {
 
         NetworkManager instance = NetworkManager.getInstance();
-        CurrentUser uInstance= CurrentUser.getInstance();
+        CurrentUser uInstance = CurrentUser.getInstance();
         User user = uInstance.getUser();
-        instance.addRequest(new UpdateJoinRequest(user.getUserId(),event.getId(), new ServerCallback() {
+        instance.addRequest(new UpdateJoinRequest(user.getUserId(), event.getId(), new ServerCallback() {
 
             @Override
             public void onSuccess(Object res, int statusCode) {
                 final String tempresult = (String) res;
                 Log.e("AddItemAdapter", tempresult);
 
-                ((Activity)context).runOnUiThread(new Runnable() {
+                ((Activity) context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Gson gson = new Gson();
@@ -291,7 +293,7 @@ public void setContext (Context context){
                         ArrayList<Integer> arr = new ArrayList<>();
                         eventInstance.event.setFriendsById(arr);
                         eventInstance.getCurrentEvent().AddFriendsById(CurrentUser.getInstance().getUser().getUserId());
-                        Toast.makeText(context,"Joined to event!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Joined to event!", Toast.LENGTH_SHORT).show();
                     }
                 });
                 //Toast.makeText(getActivity().getApplicationContext(), "yay got the message!"+result, Toast.LENGTH_SHORT).show();
@@ -307,12 +309,12 @@ public void setContext (Context context){
     }//fetchFromNetwork
 
 
-    public Bitmap StringToBitMap(String encodedString){
+    public Bitmap StringToBitMap(String encodedString) {
         try {
-            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
             return bitmap;
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.getMessage();
             return null;
         }
