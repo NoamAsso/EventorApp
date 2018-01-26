@@ -90,7 +90,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     ImageButton eventImage;
     EditText numParticipant;
     EditText price;
-    CheckBox isLimit;
+    CheckBox noLimit;
     CheckBox isFree;
     ImageButton locationButton;
     EditText locationText;
@@ -190,7 +190,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         datePick = (ImageButton) findViewById(R.id.date_choose);
         dateDisplay = (TextView) findViewById(R.id.date_text);
         numParticipant = (EditText) findViewById(R.id.numOfParticipants);
-        isLimit =  (CheckBox) findViewById(R.id.isLimit);
+        noLimit =  (CheckBox) findViewById(R.id.noLimit);
         price = (EditText) findViewById(R.id.priceText);
         isFree =  (CheckBox) findViewById(R.id.isFree);
         isPrivate =  (CheckBox) findViewById(R.id.isPrivate);
@@ -206,7 +206,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
         context = getApplicationContext();
         //spinner
-        String[] items = new String[] {"Football", "Basketball", "Volleyball","Tennis", "Baseball", "Cricket","custom"};
+        String[] items = new String[] {"Football", "Basketball", "Volleyball","Tennis", "Baseball", "Cricket","Custom"};
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_catgory);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, items);
@@ -251,7 +251,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     error = true;
                     eventDescription.setBackgroundResource(R.drawable.rounded_edittext_red );
                 }
-                if(numParticipant.getText().toString().matches("")&&!isLimit.isChecked()){
+                if(numParticipant.getText().toString().matches("")&&!noLimit.isChecked()){
                     error = true;
                     numParticipant.setBackgroundResource(R.drawable.rounded_edittext_red );
                 }
@@ -268,52 +268,49 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     locationText.setBackgroundResource(R.drawable.rounded_edittext_red );
                 }
                 if(!error){
-                    event = new GenericEvent();
                     Gson gson = new Gson();
                     Date date = new Date();
-                    if(spinner.getSelectedItem().toString()=="custom")
-                        event.setCategory(costumeCategory.getText().toString());
+                    String category;
+                    String bitmapString = "No Image";
+                    int maxUsers = Integer.MAX_VALUE; //if unlimited # of players
+                    int priceOfEvent = 0;
+                    if(spinner.getSelectedItem().toString().equals("Custom"))
+                        category = costumeCategory.getText().toString();
                     else
-                        event.setCategory(spinner.getSelectedItem().toString());
-                    event.setDescription(eventDescription.getText().toString());
-                    if(!isLimit.isChecked())
-                        event.setMaxUsers(Integer.parseInt(numParticipant.getText().toString()));
-                    if(!isFree.isChecked())
-                        event.setPrice(Integer.parseInt(price.getText().toString()));
-                    AddItemAdapter adapter;
-                    int num = event.getMaxUsers();
+                        category = spinner.getSelectedItem().toString();
+                    if(!noLimit.isChecked()) {
+                        maxUsers = Integer.parseInt(numParticipant.getText().toString());
+                    }
+                    if(!isFree.isChecked()) {
+                        priceOfEvent = Integer.parseInt(price.getText().toString());
+                    }
+                    if(bitmap != null)
+                        bitmapString = getStringFromBitmap(bitmap);
+
                     date.setYear(fyear);
                     date.setMonth(fmonth);
                     date.setDate(fday);
                     date.setHours(fhour);
                     date.setMinutes(fminute);
-                    event.setDate(date);
-                    event.setLatitude(place.getLatLng().latitude);
-                    event.setLongitude(place.getLatLng().longitude);
-                    String placeId = place.getId();
-                    String placeAdress = String.format("%s",place.getAddress());
-                    String placeName;
-                    event.setPrivate(isPrivate.isChecked());
-                    if(bitmap != null)
-                        event.setEventImage(getStringFromBitmap(bitmap));
-                    else
-                        event.setEventImage("No image");
-                    event.setplaceID(placeId);
-                    event.addToFriendsById(1);
-                    event.addToFriendsById(2);
-                    event.addToFriendsById(3);
-                    event.addToFriendsById(4);
-                    event.addToFriendsById(5);
 
+                    String placeId = place.getId();
+
+                    event = new GenericEvent(
+                            date,
+                            maxUsers,
+                            eventDescription.getText().toString(),
+                            priceOfEvent,
+                            isPrivate.isChecked(),
+                            bitmapString,
+                            placeId,
+                            place.getLatLng().longitude,
+                            place.getLatLng().latitude
+                    );
 
                     String json = gson.toJson(event);
-                    //String toSend = json2.toString();
                     String toSend = json.toString();
 
                     NetworkManager instance = NetworkManager.getInstance();
-                    //John purcell's way
-                    //instance.sendDataToServer(toSend);
-                    // The old way
                     instance.addRequest(new PostEventRequest(toSend, new ServerCallback() {
 
                         @Override
@@ -371,7 +368,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         });
 
         //max Paticipants limit and price handler
-        isLimit.setOnClickListener(new View.OnClickListener() {
+        noLimit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //is chkIos checked?
@@ -475,7 +472,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     public void EditTextNormalize(){
         eventTitle.setBackgroundResource(R.drawable.rounded_edittext);
         eventDescription.setBackgroundResource(R.drawable.rounded_edittext);
-        if(isLimit.isChecked())
+        if(noLimit.isChecked())
             numParticipant.setBackgroundResource(R.drawable.rounded_edittext_gray );
         else
             numParticipant.setBackgroundResource(R.drawable.rounded_edittext );

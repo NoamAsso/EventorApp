@@ -22,7 +22,6 @@ exports.insertRow = function (req, res, next) {
         placeId = req.body.placeID,
         lat = req.body.latitude,
         longitude = req.body.longitude,
-        eventUsersIds = req.body.friendsById,
         isPrivate;
     // Converting boolean to int
     if (req.body.isPrivate)
@@ -34,25 +33,33 @@ exports.insertRow = function (req, res, next) {
     eventImage = new Buffer(eventImage).toString('base64');
     console.log(typeof(eventImage));
 */
-    // Converting int array into string
-    console.log(eventUsersIds);
-    eventUsersIds = JSON.stringify(eventUsersIds);
-    console.log(eventUsersIds);
-    let placeholders = Array(17).join("?");
+    let placeholders = Array(16).join("?");
     placeholders = placeholders.split("").join(',');
 
-    let sql = 'INSERT INTO events(adminUserId, intCreationDate, intDate, creationDate,' +
-              'date, maxUsers, currentUsers, category, description, price,' +
-              'friendsById, isPrivate, eventImage, placeID, latitude, longitude) VALUES (' + placeholders + ')';
+    db.serialize(() => {
+        let sqlOfEvents = 'INSERT INTO events(adminUserId, intCreationDate, intDate, creationDate,' +
+                  'date, maxUsers, currentUsers, category, description, price,' +
+                  'isPrivate, eventImage, placeID, latitude, longitude) VALUES (' + placeholders + ')';
+        let sqlOfConnections = 'INSERT INTO connections(userId, eventId) VALUES(?,?)';
+        var lastEventID;
+        //Update Events table
+        db.run(sqlOfEvents, [adminUserId,creationDate,scheduledDate,creationDateText,scheduledDateText,
+               maxUsers, currentUsers, category, description, price, isPrivate,
+               eventImage, placeId, lat, longitude], function(err) {
 
-    db.run(sql, [adminUserId,creationDate,scheduledDate,creationDateText,scheduledDateText,
-                 maxUsers, currentUsers, category, description, price, eventUsersIds, isPrivate,
-                 eventImage, placeId, lat, longitude], function(err) {
-        if (err) {
-          return console.log(err.message);
-        }
-        // get the last insert id
-        res.send({"id":this.lastID});
+            if (err) {
+              return console.log(err.message);
+            }
+            // get the last insert id
+            lastEventID = this.lastID;
+        })
+        //Update connections table
+        .run(sqlOfConnections, [adminUserId, lastEventID], function(err) {
+             if (err) {
+               return console.log(err.message);
+             }
+             res.send({"id":lastEventID});
+        });
     });
 };
 
@@ -65,10 +72,9 @@ exports.findAll = function (req, res, next) {
             if (err) {
                 throw err;
             }
-            //console.log(rows);
+        //console.log(rows);
         rows.forEach((row) => {
         //    console.log(row.eventId);
-            friendsById = JSON.parse(row.friendsById);
             isPrivateInt = row.isPrivate;
             if (isPrivateInt == 1)
                 isPrivateBool = true;
@@ -76,14 +82,10 @@ exports.findAll = function (req, res, next) {
                 isPrivateBool = false;
 
             toSend.push(row);
-            toSend[toSend.length - 1].friendsById = friendsById;
             toSend[toSend.length - 1].isPrivate = isPrivateBool;
           });
         console.log(toSend);
         res.send(toSend);
-        /*res.send([{"adminUserId":0,"category":"Football","creationDate":"Jan 24, 2018 1:49:39 AM","currentUsers":0,"date":"Feb 24, 3918 1:48:39 AM","description":"great game! please dont be late and if you have a ball bring it","eventImage":"No image","friendsById":[1,2,3,4,5,-1],"id":0,"intCreationDate":1516754979,"intDate":1348035175,"isPrivate":false,"latitude":31.269231100000006,"longitude":34.7899561,"maxUsers":12,"placeID":"ChIJv2SgkolmAhURjzy_BwgSru0","price":0},
-                  {"adminUserId":0,"category":"Football","creationDate":"Jan 24, 2018 1:49:39 AM","currentUsers":4,"date":"Feb 24, 3918 1:48:39 AM","description":"great game! please dont be late and if you have a ball bring it","eventImage":"No image","friendsById":[1,2,3,4,5,-1],"id":0,"intCreationDate":1516754979,"intDate":1348035175,"isPrivate":false,"latitude":31.269231100000006,"longitude":34.7899561,"maxUsers":4,"placeID":"ChIJv2SgkolmAhURjzy_BwgSru0","price":2},
-                  {"adminUserId":0,"category":"Football","creationDate":"Jan 24, 2018 1:49:39 AM","currentUsers":9,"date":"Feb 24, 3918 1:48:39 AM","description":"great game! please dont be late and if you have a ball bring it","eventImage":"No image","friendsById":[1,2,3,4,5,-1],"id":0,"intCreationDate":1516754979,"intDate":1348035175,"isPrivate":false,"latitude":31.269231100000006,"longitude":34.7899561,"maxUsers":98,"placeID":"ChIJv2SgkolmAhURjzy_BwgSru0","price":70}]);*/
         });
     });
 };
@@ -94,81 +96,35 @@ exports.updateAttend = function (req, res, next) {
     console.log("userid = " + userid + ", eventid = " + eventid);
 
     db.serialize(() => {
-        var newfriendsById = [], attendingEventsIds = [],toSend = {};
+        sqlUpdateEvents = 'UPDATE events SET currentUsers = currentUsers + 1 WHERE id = ?';
+        sqlInsertConnections = 'INSERT INTO connections(userId, eventId) VALUES(?,?)';
+        var event={};
 
-        db.get('SELECT friendsById, currentUsers, maxUsers FROM events WHERE id = ?', [eventid], (err, row) => {
+        db.get('SELECT * FROM events WHERE id=?',[userid], (err,row) => {
             if (err) {
-                return console.error(err.message);
+                return console.log(err.message);
             }
-            if (row){
-                if (row.currentUsers + 1 <= row.maxUsers){
-                    newfriendsById = JSON.parse(row.friendsById);
-                    console.log("friendsById fresh from db - ");
-                    console.log(newfriendsById);
-                    newfriendsById.push(userid);
-                    console.log("original database friendsById: ");
-                    console.log(row.friendsById);
-                    newfriendsById = JSON.stringify(newfriendsById);
-                }
-                else res.send("Can't join a full event!");
+            if((row.currentUsers  + 1) > row.maxUsers){
+                console.log("Can't add users to a full event!");
+                res.send("Can't add users to a full event!");
             }
-            else
-                res.send("invalid event id");
+            else {
+                event = row;
+            }
         })
-        .get('SELECT attendingEventsIds FROM users WHERE userId = ?', [userid], (err, row) => {
+        .run(sqlUpdateEvents, [eventid], function(err) {
+           if (err) {
+             return console.log(err.message);
+           }
+           console.log("events table was updated (currentUsers)");
+        })
+        .run(sqlInsertConnections, [userid,eventid], function(err) {
             if (err) {
-                return console.error(err.message);
+              return console.log(err.message);
             }
-            if (row){
-                attendingEventsIds = JSON.parse(row.attendingEventsIds);
-                attendingEventsIds.push(eventid);
-                attendingEventsIds = JSON.stringify(attendingEventsIds);
-            }
-            else
-                res.send("invalid user id");
-        })
-
-        .run('UPDATE users SET attendingEventsIds = ? WHERE userId = ?',
-            [attendingEventsIds,userid], function(err) {
-            if (err) {
-              return console.error(err.message);
-            }
-            console.log('Row(s) updated: ${this.changes}');
-            console.log(attendingEventsIds);
-            console.log(JSON.stringify(attendingEventsIds));
-        })
-        .run('UPDATE events SET friendsById = ?, currentUsers = currentUsers + 1 WHERE id = ?',
-             [newfriendsById,eventid], function(err) {
-             if (err) {
-               return console.error(err.message);
-             }
-             console.log("Here is the stringified friendsById: ")
-             console.log(JSON.stringify(newfriendsById));
-             console.log("friendById not stringified:");
-             console.log(newfriendsById);
-         })
-         .get('SELECT * FROM events WHERE id = ?',[eventid], (err, row) => {
-             if (err) {
-                 throw err;
-             }
-
-             toSend = row;
-             friendsById = JSON.parse(row.friendsById);
-
-             console.log(row);
-
-             isPrivateInt = row.isPrivate;
-             if (isPrivateInt == 1)
-                 isPrivateBool = true;
-             else
-                 isPrivateBool = false;
-
-             toSend.friendsById = friendsById;
-             toSend.isPrivate = isPrivateBool;
-             res.send(toSend);
-             console.log("Event has been sent");
-             console.log(toSend);
-             });
+            console.log("connections table was updated, sending back event details");
+            res.send(event);
+        });
     });
 }
 
