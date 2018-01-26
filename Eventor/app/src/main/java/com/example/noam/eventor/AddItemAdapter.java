@@ -290,9 +290,6 @@ public class AddItemAdapter extends BaseAdapter {
                         GenericEvent event = gson.fromJson(tempresult, GenericEvent.class);
                         CurrentEvent eventInstance = CurrentEvent.getInstance();
                         eventInstance.setCurrentEvent(event);
-                        ArrayList<Integer> arr = new ArrayList<>();
-                        eventInstance.event.setFriendsById(arr);
-                        eventInstance.getCurrentEvent().AddFriendsById(CurrentUser.getInstance().getUser().getUserId());
                         Toast.makeText(context, "Joined to event!", Toast.LENGTH_SHORT).show();
                     }
                 });

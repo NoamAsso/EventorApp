@@ -24,31 +24,29 @@ public class GenericEvent {
     private int currentUsers;
     private String description;
     private int price;
-    private ArrayList<Integer> friendsById;
     private Boolean isPrivate;
     private String eventImage;
     private String placeID;
-    private Double longitude;
-    private Double latitude;
+    private double longitude;
+    private double latitude;
 
-    public GenericEvent() {
-        this.id = 0;
-        this.date = null;
-        this.adminUserId = 0;
+    public GenericEvent(Date date, int maxUsers, String description, int price,
+                        boolean isPrivate, String eventImage, String placeID, double longitude,
+                        double latitude) {
+        this.id = 0;            //received by the server
+        this.date = date;
+        this.adminUserId = 0;   //received by the server
         this.creationDate = new Date();
         this.intCreationDate = (int)(this.creationDate.getTime()/1000);
-        this.date = new Date();
-        this.maxUsers = 0;
-        this.currentUsers = 0;
-        this.description = null;
-        this.price = 0;
-        this.friendsById = new ArrayList<>();
-        this.isPrivate = false;
-        this.eventImage = null;
-        this.placeID = null;
-        this.longitude=0.0;
-        this.latitude=0.0;
-
+        this.maxUsers = maxUsers;
+        this.currentUsers = 1;          //Only the creator is in the event
+        this.description = description;
+        this.price = price;
+        this.isPrivate = isPrivate;
+        this.eventImage = eventImage;
+        this.placeID = placeID;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     public int getId() {
@@ -151,37 +149,6 @@ public class GenericEvent {
 
     public void setPrice(int price) {
         this.price = price;
-    }
-
-    public ArrayList<Integer> getFriendsById() {
-        return friendsById;
-    }
-
-    public void AddFriendsById(int i) {
-        this.friendsById.add(i);
-    }
-
-    public void setFriendsById(ArrayList friendsById) {
-        this.friendsById = friendsById;
-    }
-
-    public void addToFriendsById(Integer userId){
-        this.friendsById.add(userId);
-
-    }
-
-    public Integer removeFromFriendsById(int i){
-        if(!friendsById.isEmpty())
-            return friendsById.get(i);
-        else
-            return null;
-    }
-
-    public Integer getFromFriendsById(int i) {
-        if(!friendsById.isEmpty())
-            return friendsById.get(i);
-        else
-            return null;
     }
 
     public Boolean getPrivate() {

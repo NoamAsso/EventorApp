@@ -12,7 +12,6 @@ public class CurrentEvent {
     public static CurrentEvent getInstance() {
         if (sInstance == null) {
             sInstance = new CurrentEvent();
-            event = new GenericEvent();
         }
         return sInstance;
     }
