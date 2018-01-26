@@ -7,6 +7,7 @@ package com.example.noam.eventor;
 public class CurrentUser {
 
     User user;
+
     private static CurrentUser sInstance;
 
     public static CurrentUser getInstance() {

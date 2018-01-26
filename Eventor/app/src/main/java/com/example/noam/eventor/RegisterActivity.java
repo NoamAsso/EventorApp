@@ -71,7 +71,6 @@ public class RegisterActivity extends AppCompatActivity {
                 if(userName.getText().toString().matches("")){
                     error = true;
                     userName.setBackgroundResource(R.drawable.rounded_edittext_red );
-
                 }
                 if(userPassword.getText().toString().matches("")){
                     error = true;
