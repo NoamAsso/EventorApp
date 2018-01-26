@@ -50,6 +50,26 @@ public class GenericEvent {
         this.latitude = latitude;
     }
 
+
+    public GenericEvent() {
+        this.category="";
+        this.id = 0;            //received by the server
+        this.date = new Date();
+        this.adminUserId = 0;   //received by the server
+        this.creationDate = new Date();
+        this.intCreationDate = 0;
+        this.maxUsers = 0;
+        this.currentUsers = 1;          //Only the creator is in the event
+        this.description = "";
+        this.price = 0;
+        this.isPrivate = false;
+        this.eventImage = "";
+        this.placeID = "";
+        this.longitude = 0.0;
+        this.latitude = 0.0;
+    }
+
+
     public int getId() {
         return id;
     }

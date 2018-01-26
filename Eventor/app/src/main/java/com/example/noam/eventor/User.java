@@ -17,9 +17,7 @@ public class User {
     private String phoneNum;
     private String sex;
 
-    private ArrayList<Integer> attendingEventsIds;
-    private ArrayList<Integer> createdEventsIds;
-    private ArrayList<Integer> friendsIds;
+
 
     public User(int userId, String userName, String password, int age, String mail, String phoneNum, String sex) {
         this.userId = userId;
@@ -30,9 +28,7 @@ public class User {
         this.phoneNum = phoneNum;
         this.sex = sex;
 
-        this.attendingEventsIds = new ArrayList<Integer>();
-        this.createdEventsIds = new ArrayList<Integer>();
-        this.friendsIds = new ArrayList<Integer>();
+
     }
 
     public String getUserName() {
@@ -87,96 +83,7 @@ public class User {
         this.sex = sex;
     }
 
-    public ArrayList<Integer> getAttendingEventsIds() {
-        return attendingEventsIds;
-    }
 
-    public void setAttendingEventsIds(ArrayList<Integer> attendingEventsIds) {
-        this.attendingEventsIds = attendingEventsIds;
-    }
-
-    public ArrayList<Integer> getCreatedEventsIds() {
-        return createdEventsIds;
-    }
-
-    public void setCreatedEventsIds(ArrayList<Integer> createdEventsIds) {
-        this.createdEventsIds = createdEventsIds;
-    }
-
-    public ArrayList<Integer> getFriendsIds() {
-        return friendsIds;
-    }
-
-    public void setFriendsIds(ArrayList<Integer> friendsIds) {
-        this.friendsIds = friendsIds;
-    }
-    //#################################################
-
-    public void addToAttendingEventsIds(Integer eventID){
-        this.attendingEventsIds.add(eventID);
-    }
-
-    public Integer removeFromAttendingEventsIds(int i){
-        if(!attendingEventsIds.isEmpty())
-            return attendingEventsIds.get(i);
-        else
-            return null;
-    }
-
-    public ArrayList getFromAttendingEventsIds() {
-        if(!attendingEventsIds.isEmpty())
-            return attendingEventsIds;
-        else
-            return null;
-    }
-
-    public void clearAttendingEventsIds(){
-        this.attendingEventsIds.clear();
-    }
-    //#################################################
-    public void addToCreatedEventsIds(Integer eventID){
-        this.createdEventsIds.add(eventID);
-    }
-
-    public Integer removeFromCreatedEventsIds(int i){
-        if(!createdEventsIds.isEmpty())
-            return createdEventsIds.get(i);
-        else
-            return null;
-    }
-
-    public ArrayList getFromCreatedEventsIds() {
-        if(!createdEventsIds.isEmpty())
-            return createdEventsIds;
-        else
-            return null;
-    }
-
-    public void clearCreatedEventsIds(){
-        this.attendingEventsIds.clear();
-    }
-    //################################################# friendsIds
-    public void addToFriendsIds(Integer userID){
-        this.friendsIds.add(userID);
-    }
-
-    public Integer removeFromFriendsIds(int i){
-        if(!friendsIds.isEmpty())
-            return friendsIds.get(i);
-        else
-            return null;
-    }
-
-    public Integer getFromFriendsIds(int i) {
-        if(!friendsIds.isEmpty())
-            return friendsIds.get(i);
-        else
-            return null;
-    }
-
-    public void clearFriendsIds(){
-        this.friendsIds.clear();
-    }
     //#################################################
 
 }

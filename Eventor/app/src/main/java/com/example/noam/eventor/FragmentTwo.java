@@ -37,7 +37,7 @@ public class FragmentTwo extends Fragment {
         View view = inflater.inflate(R.layout.fragment_two, container, false);
 
 
-        perform(view);
+        //perform(view);
 
         return view;
     }

@@ -240,7 +240,7 @@ public class AddItemAdapter extends BaseAdapter {
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentUser.getFromAttendingEventsIds() == null) {
+                if (true) {
                     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -259,7 +259,7 @@ public class AddItemAdapter extends BaseAdapter {
                             .setNegativeButton("No", dialogClickListener).show();
 
                 } else {
-                    if (currentUser.getFromAttendingEventsIds().contains(currentItem.getId())) {
+                    if (true) {
                         Toast.makeText(context, "already joined.", Toast.LENGTH_SHORT).show();
                     }
 

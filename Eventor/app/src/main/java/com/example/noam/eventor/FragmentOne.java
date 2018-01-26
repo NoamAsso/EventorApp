@@ -43,9 +43,7 @@ public class FragmentOne extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_one, container, false);
         list = (ListView) v.findViewById(R.id.eventlist1);
-        adapter = AddItemAdapter.getInstance();
-        adapter.setContext(getActivity());
-        list.setAdapter(adapter);
+
 
         mSwipeRefreshView = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
         mSwipeRefreshView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -73,14 +71,26 @@ public class FragmentOne extends Fragment {
                     @Override
                     public void run() {
                         //Toast.makeText(getActivity().getApplicationContext(), "yay got the message!"+result, Toast.LENGTH_SHORT).show();
-                        ArrayList<GenericEvent> currentList;
+
+
+
                         if (result != "[]") {
+                            ArrayList<GenericEvent> currentList =new ArrayList<>();
                             Gson gson = new Gson();
-                            currentList = gson.fromJson(result, new TypeToken<List<GenericEvent>>() {
-                            }.getType());
+                            GenericEvent event = new GenericEvent();
+                            ArrayList<GenericEvent> temparr = new ArrayList<>();
+                            temparr.add(event);
+                            String temp2 = result;
+                            String temp = gson.toJson(temparr, new TypeToken<List<GenericEvent>>() {}.getType());;
+                            temparr = gson.fromJson(result, new TypeToken<List<GenericEvent>>() {}.getType());
+                            //currentList = gson.fromJson(temp2, new TypeToken<List<GenericEvent>>() {
+                            //}.getType());
+                            adapter = AddItemAdapter.getInstance();
 
                             //adapter.AddObj(eventTest);
-                            if (adapter.setModel(currentList)) {
+                            if (adapter.setModel(temparr)) {
+                                adapter.setContext(getActivity());
+                                list.setAdapter(adapter);
                                 adapter.notifyDataSetChanged();
                             }
                         } else
