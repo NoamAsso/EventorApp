@@ -70,10 +70,6 @@ public class UserAreaMain extends AppCompatActivity {
                 //finish();
             }
         });
-
-
-
-
     }
 
     @Override
