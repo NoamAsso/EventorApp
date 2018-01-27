@@ -144,6 +144,7 @@ exports.updateAttend = function (req, res, next) {
 exports.eventsById = function (req, res, next) {
     toSend = [];
     console.log("Sending events of given user ID:");
+    console.log(req.params.userid)
     sql = 'SELECT eventId FROM connections WHERE userId = ?';
     db.all(sql,[req.params.userid],(err,rows) => {
         if (err) {

@@ -40,21 +40,21 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         android.support.v7.app.ActionBar myActionBar = getSupportActionBar();
         myActionBar.hide();
-        Bundle b = getIntent().getExtras();
+        /*Bundle b = getIntent().getExtras();
         int value = -1; // or other values
         if(b != null)
-            value = b.getInt("key");
-        //ActionBar actionBar = getActionBar();
-        //actionBar.hide();
+            value = b.getInt("key");*/
 
-        if(value == 0){
+        int callingActivity = getIntent().getIntExtra("calling-activity", 0);
+
+        if(callingActivity == 700){
             Toast.makeText(getApplicationContext(), "Logout successfully", Toast.LENGTH_SHORT).show();
             SharedPreferences sharedPref = getSharedPreferences("preferences",
                     Context.MODE_PRIVATE);
             SharedPreferences.Editor e = sharedPref.edit();
             e.putBoolean("rememberMe", false);
             e.commit();
-            b.putInt("key",-1);
+            //b.putInt("key",-1);
         }
         else{
             SharedPreferences sharedPref = getSharedPreferences("preferences",
@@ -66,20 +66,12 @@ public class LoginActivity extends AppCompatActivity {
                 login();
             }
         }
-
-
         // Get value
 
-
         mVideoView = (VideoView) findViewById(R.id.bgVideoView);
-
         Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.kaki);
-
         mVideoView.setVideoURI(uri);
-
         mVideoView.start();
-
-
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {

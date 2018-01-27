@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class CurrentUserEvents {
 
-    static ArrayList<Integer> userEvents;
+    private ArrayList<Integer> userEvents;
     private static CurrentUserEvents sInstance;
 
     public static CurrentUserEvents getInstance() {
@@ -24,4 +24,5 @@ public class CurrentUserEvents {
     public ArrayList<Integer> getUserEvents() {
         return userEvents;
     }
+    public static void clearInstance() { sInstance = null; }
 }

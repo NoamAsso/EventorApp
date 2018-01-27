@@ -71,22 +71,13 @@ public class FragmentOne extends Fragment {
                     @Override
                     public void run() {
                         if (result != "[]") {
-                            ArrayList<GenericEvent> currentList =new ArrayList<>();
                             Gson gson = new Gson();
-                            GenericEvent event = new GenericEvent();
-                            ArrayList<GenericEvent> temparr = new ArrayList<>();
-                            temparr.add(event);
-                            String temp2 = result;
-                            String temp = gson.toJson(temparr, new TypeToken<List<GenericEvent>>() {}.getType());;
-                            temparr = gson.fromJson(result, new TypeToken<List<GenericEvent>>() {}.getType());
-                            //currentList = gson.fromJson(temp2, new TypeToken<List<GenericEvent>>() {
-                            //}.getType());
+                            ArrayList<GenericEvent> eventsArray;
+                            eventsArray = gson.fromJson(result, new TypeToken<List<GenericEvent>>() {}.getType());
+
                             adapter = AddItemAdapter.getInstance();
-
-                            //adapter.AddObj(eventTest);
-                            if (adapter.setModel(temparr)) {
+                            if (adapter.setModel(eventsArray)) {
                                 adapter.setContext(getActivity());
-
                             }
 
                             instance.addRequest(new GetEventsOfUserRequest(CurrentUser.getInstance().getUser().getUserId(),new ServerCallback() {
@@ -98,16 +89,15 @@ public class FragmentOne extends Fragment {
                                         @Override
                                         public void run() {
                                         Gson gson = new Gson();
-                                        ArrayList<Integer> intArr22= new ArrayList<>();
-                                        intArr22.add(4);
-                                        String mashu = gson.toJson(intArr22);
-                                            if (!result2.equals("[]")) {
-                                                intArr22 = gson.fromJson(result2, new TypeToken<List<Integer>>() {}.getType());
-                                                CurrentUserEvents.getInstance().setUserEvents(intArr22);
-                                            }
-                                        int i = 0;
-                                            list.setAdapter(adapter);
-                                            adapter.notifyDataSetChanged();
+                                        ArrayList<Integer> userEventsIDsArray;
+
+                                        if (!result2.equals("[]")) {
+                                            userEventsIDsArray = gson.fromJson(result2, new TypeToken<List<Integer>>() {}.getType());
+                                            CurrentUserEvents.getInstance().setUserEvents(userEventsIDsArray);
+                                        }
+
+                                        list.setAdapter(adapter);
+                                        adapter.notifyDataSetChanged();
                                         }
                                     });
                                 }

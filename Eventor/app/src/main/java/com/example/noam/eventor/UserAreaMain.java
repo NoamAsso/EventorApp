@@ -111,9 +111,11 @@ public class UserAreaMain extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.logout2) {
             Intent myIntent = new Intent(UserAreaMain.this, LoginActivity.class);
-            Bundle b = new Bundle();
+           /* Bundle b = new Bundle();
             b.putInt("key2", 1);
-            myIntent.putExtras(b);
+            myIntent.putExtras(b);*/
+            myIntent.putExtra("calling-activity", 700);
+            CurrentUserEvents.clearInstance();
             UserAreaMain.this.startActivity(myIntent);
             // Handle the camera action
         }
