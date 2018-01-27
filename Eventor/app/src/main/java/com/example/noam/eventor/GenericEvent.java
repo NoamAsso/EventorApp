@@ -32,11 +32,11 @@ public class GenericEvent {
 
     public GenericEvent(String category, Date date, int maxUsers, String description, int price,
                         boolean isPrivate, String eventImage, String placeID, double longitude,
-                        double latitude) {
+                        double latitude, int adminUserId) {
         this.category = category;
         this.id = 0;            //received by the server
         this.date = date;
-        this.adminUserId = 0;   //received by the server
+        this.adminUserId = adminUserId;   //received by the server
         this.creationDate = new Date();
         this.intCreationDate = (int)(this.creationDate.getTime()/1000);
         this.maxUsers = maxUsers;

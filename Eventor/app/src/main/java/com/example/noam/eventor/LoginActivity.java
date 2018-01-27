@@ -42,15 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         myActionBar.hide();
         //ActionBar actionBar = getActionBar();
         //actionBar.hide();
-        Gson gson = new Gson();
-        GenericEvent event = new GenericEvent();
-        ArrayList<GenericEvent> temparr = new ArrayList<>();
-        temparr.add(event);
-        String temp = gson.toJson(temparr, new TypeToken<List<GenericEvent>>() {
-        }.getType());
-        ;
-        temparr = gson.fromJson(temp, new TypeToken<List<GenericEvent>>() {
-        }.getType());
+
         SharedPreferences sharedPref = getSharedPreferences("preferences",
                 Context.MODE_PRIVATE);
 
@@ -128,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        switch (result) {
+                        switch(result){
                             case "1":
                                 Toast.makeText(getApplicationContext(), "This username doesn't exists", Toast.LENGTH_SHORT).show();
                                 break;

@@ -81,7 +81,7 @@ android:id="@+id/image_item"
 
                 <TextView
                     android:id="@+id/location_item"
-                    android:layout_width="match_parent"
+                    android:layout_width="210dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.73"
                     android:paddingStart="5dp"

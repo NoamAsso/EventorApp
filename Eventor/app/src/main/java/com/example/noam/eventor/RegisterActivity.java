@@ -104,7 +104,7 @@ public class RegisterActivity extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-
+                                    Toast.makeText(getApplicationContext(), "Register success!", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }

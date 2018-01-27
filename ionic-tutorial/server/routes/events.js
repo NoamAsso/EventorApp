@@ -141,11 +141,17 @@ exports.updateAttend = function (req, res, next) {
     });
 }
 
-/*
-exports.findById = function (req, res, next) {
-    var id = req.params.id;
-    res.send(events[id]);
-};*/
+exports.eventsById = function (req, res, next) {
+    console.log("Sending events of given user ID:");
+    sql = 'SELECT eventId FROM connections WHERE userId = ?';
+    db.all(sql,[req.params.userid],(err,rows) => {
+        if (err) {
+          return console.log(err.message);
+        }
+        console.log(rows);
+        res.send(rows);
+    });
+};
 
 exports.findCloseBy = function (req, res, next) {
     // Pseudo code
