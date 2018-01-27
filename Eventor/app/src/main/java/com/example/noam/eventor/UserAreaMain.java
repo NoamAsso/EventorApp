@@ -4,7 +4,9 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.mtp.MtpConstants;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,7 +20,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.support.v7.widget.Toolbar;
 
-public class UserAreaMain extends AppCompatActivity {
+public class UserAreaMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
     private DrawerLayout mDrawerLayout;
@@ -44,14 +46,9 @@ public class UserAreaMain extends AppCompatActivity {
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
 
-        //Menu menu = (Menu) findViewById(R.id.sideMenu);
-
-        //MenuItem logout = (MenuItem) findViewById(R.id.logout);
-        //onOptionsItemSelected(logout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        //toolbar = (Toolbar) findViewById(R.id.tool_bar);
-       // setSupportActionBar(toolbar);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         adapter =  new MyAdapter(getSupportFragmentManager(),Titles,Numboftabs);
         viewPager = (ViewPager) findViewById(R.id.view_pager);
@@ -76,25 +73,23 @@ public class UserAreaMain extends AppCompatActivity {
                 //finish();
             }
         });
+
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-       /* MenuItem item = menu.findItem(R.id.logout);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Intent myIntent = new Intent(UserAreaMain.this, LoginActivity.class);
-                Bundle b = new Bundle();
-                b.putInt("key2", 1);
-                myIntent.putExtras(b);
-                UserAreaMain.this.startActivity(myIntent);
-                return true;
-            }
-        });
-        return true;*/
-
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.navigation_menu, menu);
             return true;
@@ -103,19 +98,28 @@ public class UserAreaMain extends AppCompatActivity {
         @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(mToggle.onOptionsItemSelected(item)){
-            switch (item.getItemId()) {
-                case R.id.logout:
-                    Intent myIntent = new Intent(UserAreaMain.this, LoginActivity.class);
-                    Bundle b = new Bundle();
-                    b.putInt("key2", 1);
-                    myIntent.putExtras(b);
-                    UserAreaMain.this.startActivity(myIntent);
-                    return true;
-                default:
-                    break;
-            }
             return true;
         }
-            return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.logout2) {
+            Intent myIntent = new Intent(UserAreaMain.this, LoginActivity.class);
+            Bundle b = new Bundle();
+            b.putInt("key2", 1);
+            myIntent.putExtras(b);
+            UserAreaMain.this.startActivity(myIntent);
+            // Handle the camera action
+        }
+
+        //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }
