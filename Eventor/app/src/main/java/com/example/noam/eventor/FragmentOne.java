@@ -101,7 +101,10 @@ public class FragmentOne extends Fragment {
                                         ArrayList<Integer> intArr22= new ArrayList<>();
                                         intArr22.add(4);
                                         String mashu = gson.toJson(intArr22);
-                                        intArr22 = gson.fromJson(result2, new TypeToken<List<Integer>>() {}.getType());
+                                            if (!result2.equals("[]")) {
+                                                intArr22 = gson.fromJson(result2, new TypeToken<List<Integer>>() {}.getType());
+                                                CurrentUserEvents.getInstance().setUserEvents(intArr22);
+                                            }
                                         int i = 0;
                                             list.setAdapter(adapter);
                                             adapter.notifyDataSetChanged();

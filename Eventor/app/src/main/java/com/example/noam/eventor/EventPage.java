@@ -67,7 +67,7 @@ public class EventPage extends AppCompatActivity {
         eventId = (TextView) findViewById(R.id.event_id);
         eventCreator = (TextView) findViewById(R.id.event_creator_name);
         description = (TextView) findViewById(R.id.event_description);
-        image = (ImageView) findViewById(R.id.event_image);
+        image = (ImageView) findViewById(R.id.event_pic);
         Date datecheck = new Date();
         category.setText(event.getCategory().toString());
         description.setText(event.getDescription().toString());

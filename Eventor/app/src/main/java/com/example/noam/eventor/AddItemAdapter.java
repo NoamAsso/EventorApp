@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.util.Log;
@@ -139,9 +140,10 @@ public class AddItemAdapter extends BaseAdapter {
         currentUsers.setText(Integer.toString(currentItem.getCurrentUsers()));
 
         if (CurrentUserEvents.getInstance().getUserEvents() != null) {
-            if (CurrentUserEvents.getInstance().getUserEvents().contains((Integer) position)) {
+            if (CurrentUserEvents.getInstance().getUserEvents().contains((Integer) position+1)) {
                 join.setEnabled(false);
                 join.setText("Joined");
+                join.setTextColor(Color.GRAY);
                 join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
             }
         }
