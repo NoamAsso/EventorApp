@@ -86,19 +86,25 @@ public class FragmentOne extends Fragment {
                             //adapter.AddObj(eventTest);
                             if (adapter.setModel(temparr)) {
                                 adapter.setContext(getActivity());
-                                list.setAdapter(adapter);
-                                adapter.notifyDataSetChanged();
+
                             }
 
                             instance.addRequest(new GetEventsOfUserRequest(CurrentUser.getInstance().getUser().getUserId(),new ServerCallback() {
                                 @Override
                                 public void onSuccess(Object res, int statusCode) {
-                                    final String result = (String) res;
-                                    Log.e("Fragment One", result);
+                                    final String result2 = (String) res;
+                                    Log.e("Fragment One second", result2);
                                     getActivity().runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-
+                                        Gson gson = new Gson();
+                                        ArrayList<Integer> intArr22= new ArrayList<>();
+                                        intArr22.add(4);
+                                        String mashu = gson.toJson(intArr22);
+                                        intArr22 = gson.fromJson(result2, new TypeToken<List<Integer>>() {}.getType());
+                                        int i = 0;
+                                            list.setAdapter(adapter);
+                                            adapter.notifyDataSetChanged();
                                         }
                                     });
                                 }

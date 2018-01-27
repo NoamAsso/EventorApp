@@ -75,7 +75,6 @@ public class LoginMenu extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
                                     switch(result){
                                         case "1":
                                             Toast.makeText(getApplicationContext(), "This username doesn't exists", Toast.LENGTH_SHORT).show();
