@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private VideoView mVideoView;
     String username;
     String password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,14 +46,17 @@ public class LoginActivity extends AppCompatActivity {
         GenericEvent event = new GenericEvent();
         ArrayList<GenericEvent> temparr = new ArrayList<>();
         temparr.add(event);
-        String temp = gson.toJson(temparr, new TypeToken<List<GenericEvent>>() {}.getType());;
-        temparr = gson.fromJson(temp, new TypeToken<List<GenericEvent>>() {}.getType());
+        String temp = gson.toJson(temparr, new TypeToken<List<GenericEvent>>() {
+        }.getType());
+        ;
+        temparr = gson.fromJson(temp, new TypeToken<List<GenericEvent>>() {
+        }.getType());
         SharedPreferences sharedPref = getSharedPreferences("preferences",
                 Context.MODE_PRIVATE);
 
         // Get value
-        boolean remember = sharedPref.getBoolean("rememberMe",false);
-        if(remember){
+        boolean remember = sharedPref.getBoolean("rememberMe", false);
+        if (remember) {
             username = sharedPref.getString("username", null);
             password = sharedPref.getString("password", null);
             login();
@@ -60,12 +64,11 @@ public class LoginActivity extends AppCompatActivity {
 
         mVideoView = (VideoView) findViewById(R.id.bgVideoView);
 
-        Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.kaki);
+        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.kaki);
 
         mVideoView.setVideoURI(uri);
 
         mVideoView.start();
-
 
 
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -99,7 +102,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         mVideoView.start();
     }
-    public void login(){
+
+    public void login() {
 
         NetworkManager instance = NetworkManager.getInstance();
         JSONObject json2 = new JSONObject();
@@ -109,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         try {
-            json2.put("password",password);
+            json2.put("password", password);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -124,8 +128,7 @@ public class LoginActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
-                        switch(result){
+                        switch (result) {
                             case "1":
                                 Toast.makeText(getApplicationContext(), "This username doesn't exists", Toast.LENGTH_SHORT).show();
                                 break;
@@ -134,8 +137,8 @@ public class LoginActivity extends AppCompatActivity {
                                 break;
                             default:
                                 Gson gson = new Gson();
-                                User usertest = new User(2,"noam","12345",27,"noam@gmail.com","0524217111","Male");
-                                String temp = gson.toJson(usertest,User.class);
+                                User usertest = new User(2, "noam", "12345", 27, "noam@gmail.com", "0524217111", "Male");
+                                String temp = gson.toJson(usertest, User.class);
                                 usertest = gson.fromJson(temp, User.class);
                                 User user = gson.fromJson(result, User.class);
                                 CurrentUser userInstance = CurrentUser.getInstance();
@@ -150,6 +153,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
             }
+
             @Override
             public void onFailure(Object err, int statusCode) {
                 runOnUiThread(new Runnable() {

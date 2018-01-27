@@ -238,18 +238,9 @@
                                 android:background="@drawable/rounded_edittext" />
 
                         </LinearLayout>
-
-
-
-
-
-
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="20dp" />
-
-
-
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="10dp" />
@@ -264,10 +255,10 @@
                             android:gravity="center">
 
                             <CheckBox
-                                android:id="@+id/isGay"
+                                android:id="@+id/termsOfService"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="I agree to te terms of service"
+                                android:text="I agree to the terms of service"
                                 android:textColor="@android:color/white" />
                         </LinearLayout>
 

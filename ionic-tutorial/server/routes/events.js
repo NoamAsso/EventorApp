@@ -5,8 +5,8 @@ let db = new sqlite3.Database('./db/eventorDB.db');
 
 // insert one row into the langs table
 exports.insertRow = function (req, res, next) {
-
     console.log("Server inserts new row to db");
+
 //Missing - event id (The server gives the client the value)
     var adminUserId = req.body.adminUserId,
         category = req.body.category,
@@ -33,14 +33,15 @@ exports.insertRow = function (req, res, next) {
     eventImage = new Buffer(eventImage).toString('base64');
     console.log(typeof(eventImage));
 */
+    console.log(typeof(scheduledDateText));
     let placeholders = Array(16).join("?");
     placeholders = placeholders.split("").join(',');
 
+    let sqlOfEvents = 'INSERT INTO events(adminUserId, intCreationDate, intDate, creationDate,' +
+              'date, maxUsers, currentUsers, category, description, price,' +
+              'isPrivate, eventImage, placeID, latitude, longitude) VALUES (' + placeholders + ')';
+    let sqlOfConnections = 'INSERT INTO connections(userId, eventId) VALUES(?,?)';
     db.serialize(() => {
-        let sqlOfEvents = 'INSERT INTO events(adminUserId, intCreationDate, intDate, creationDate,' +
-                  'date, maxUsers, currentUsers, category, description, price,' +
-                  'isPrivate, eventImage, placeID, latitude, longitude) VALUES (' + placeholders + ')';
-        let sqlOfConnections = 'INSERT INTO connections(userId, eventId) VALUES(?,?)';
         var lastEventID;
         //Update Events table
         db.run(sqlOfEvents, [adminUserId,creationDate,scheduledDate,creationDateText,scheduledDateText,
@@ -52,15 +53,20 @@ exports.insertRow = function (req, res, next) {
             }
             // get the last insert id
             lastEventID = this.lastID;
+            //Update connections table
+            db.run(sqlOfConnections, [adminUserId, lastEventID], function(err) {
+                 if (err) {
+                   return console.log(err.message);
+                 }
+                 console.log("adminUserId: ");
+                 console.log(adminUserId);
+                 console.log("lastEventId: ");
+                 console.log(lastEventID);
+
+                 res.send({"id":lastEventID});
+            });
         })
-        //Update connections table
-        .run(sqlOfConnections, [adminUserId, lastEventID], function(err) {
-             if (err) {
-               return console.log(err.message);
-             }
-             res.send({"id":lastEventID});
-        });
-    });
+    }); //end serialize
 };
 
 exports.findAll = function (req, res, next) {
@@ -93,6 +99,7 @@ exports.findAll = function (req, res, next) {
 exports.updateAttend = function (req, res, next) {
     var userid =  parseInt(req.params.userid),
         eventid = parseInt(req.params.eventid);
+    var toSend = [];
     console.log("userid = " + userid + ", eventid = " + eventid);
 
     db.serialize(() => {
@@ -111,19 +118,25 @@ exports.updateAttend = function (req, res, next) {
             else {
                 event = row;
             }
-        })
-        .run(sqlUpdateEvents, [eventid], function(err) {
-           if (err) {
-             return console.log(err.message);
-           }
-           console.log("events table was updated (currentUsers)");
-        })
-        .run(sqlInsertConnections, [userid,eventid], function(err) {
-            if (err) {
-              return console.log(err.message);
-            }
-            console.log("connections table was updated, sending back event details");
-            res.send(event);
+            db.run(sqlUpdateEvents, [eventid], function(err) {
+               if (err) {
+                 return console.log(err.message);
+               }
+               console.log("events table was updated (currentUsers)");
+               db.run(sqlInsertConnections, [userid,eventid], function(err) {
+                    if (err) {
+                      return console.log(err.message);
+                    }
+                    console.log("connections table was updated, sending back the event's user list");
+                    db.all('SELECT userId FROM connections WHERE eventId = ?',[eventid], (err,rows) => {
+                        if (err) {
+                          return console.log(err.message);
+                        }
+                        console.log(rows);
+                        res.send(rows);
+                    })
+               });
+            });
         });
     });
 }

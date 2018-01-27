@@ -46,7 +46,6 @@ import com.google.gson.reflect.TypeToken;
  * Created by Noam on 19/01/2018.
  */
 
-
 public class AddItemAdapter extends BaseAdapter {
     private Context context; //context
     private static int currentIndex;
@@ -141,8 +140,8 @@ public class AddItemAdapter extends BaseAdapter {
         CurrentUser Uinstance = CurrentUser.getInstance();
         currentUser = Uinstance.getUser();
         currentUsers.setText(Integer.toString(currentItem.getCurrentUsers()));
-        /*
-        if(currentUser.getFromAttendingEventsIds() != null){
+
+        /*if(currentUser.getFromAttendingEventsIds() != null){
             if(currentUser.getFromAttendingEventsIds().contains(currentItem.getId())){
                 join.setText("Joined");
                 join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));

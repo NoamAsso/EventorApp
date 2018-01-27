@@ -10,7 +10,7 @@ db.serialize(() => {
     db.run('CREATE TABLE events(id INTEGER PRIMARY KEY, adminUserId int, intCreationDate int, ' +
            'intDate int, creationDate text, date text, ' +
            'maxUsers int, currentUsers int, category text, description text, ' +
-           'price int, isPrivate int, eventImage text, placeID text, latitude real, ' +
+           'price int, isPrivate int, eventImage blob, placeID text, latitude real, ' +
            'longitude real)')
 
       .run('CREATE TABLE users(userId INTEGER PRIMARY KEY, userName text, password text, ' +

@@ -60,20 +60,16 @@ public class FragmentOne extends Fragment {
     }
 
     public void GetListFromServer() {
-        NetworkManager instance = NetworkManager.getInstance();
+        final NetworkManager instance = NetworkManager.getInstance();
         instance.addRequest(new GetEventsRequest(new ServerCallback() {
 
             @Override
             public void onSuccess(Object res, int statusCode) {
                 final String result = (String) res;
-                Log.e("Fragment2", result);
+                Log.e("Fragment One", result);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        //Toast.makeText(getActivity().getApplicationContext(), "yay got the message!"+result, Toast.LENGTH_SHORT).show();
-
-
-
                         if (result != "[]") {
                             ArrayList<GenericEvent> currentList =new ArrayList<>();
                             Gson gson = new Gson();
@@ -93,8 +89,28 @@ public class FragmentOne extends Fragment {
                                 list.setAdapter(adapter);
                                 adapter.notifyDataSetChanged();
                             }
+
+                            instance.addRequest(new GetEventsOfUserRequest(CurrentUser.getInstance().getUser().getUserId(),new ServerCallback() {
+                                @Override
+                                public void onSuccess(Object res, int statusCode) {
+                                    final String result = (String) res;
+                                    Log.e("Fragment One", result);
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void onFailure(Object err, int statusCode) {
+                                    Toast.makeText(getActivity().getApplicationContext(), "failure to receive message", Toast.LENGTH_SHORT).show();
+                                    Log.e("Fragment2", "Connection to Server failed");
+                                }
+                            }));
                         } else
-                            Toast.makeText(getActivity(), "cant initial model", Toast.LENGTH_SHORT).show();
+                            Log.e("Fragment One","Can't initialize model");
                     }
                 });
             }
