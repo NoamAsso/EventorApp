@@ -47,13 +47,14 @@ public class LoginActivity extends AppCompatActivity {
         //ActionBar actionBar = getActionBar();
         //actionBar.hide();
 
-        if(value == 1){
+        if(value == 0){
             Toast.makeText(getApplicationContext(), "Logout successfully", Toast.LENGTH_SHORT).show();
             SharedPreferences sharedPref = getSharedPreferences("preferences",
                     Context.MODE_PRIVATE);
             SharedPreferences.Editor e = sharedPref.edit();
             e.putBoolean("rememberMe", false);
             e.commit();
+            b.putInt("key",-1);
         }
         else{
             SharedPreferences sharedPref = getSharedPreferences("preferences",

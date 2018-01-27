@@ -40,10 +40,12 @@ public class UserAreaMain extends AppCompatActivity implements NavigationView.On
         AddItemAdapter adapter1;
         adapter1 = AddItemAdapter.getInstance();
         adapter1.setContext(this);
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open, R.string.close);
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);

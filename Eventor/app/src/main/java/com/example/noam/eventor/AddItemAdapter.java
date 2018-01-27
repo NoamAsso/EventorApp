@@ -176,7 +176,7 @@ public class AddItemAdapter extends BaseAdapter {
             case "Football":
                 image.setBackground(context.getResources().getDrawable(R.drawable.football_icon));
                 break;
-            case "Baketball":
+            case "Basketball":
                 image.setBackground(context.getResources().getDrawable(R.drawable.basketball_iconn));
                 break;
             case "Volleyball":
