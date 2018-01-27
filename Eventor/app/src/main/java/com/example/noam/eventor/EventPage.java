@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class EventPage extends AppCompatActivity {
@@ -36,6 +38,7 @@ public class EventPage extends AppCompatActivity {
     TextView eventId;
     TextView eventCreator;
     TextView description;
+    ImageView image;
     Button joinEvent;
     ListView participants;
 
@@ -43,15 +46,17 @@ public class EventPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_page);
-        Intent intent = getIntent();
+        Bundle b = getIntent().getExtras();
+        int value = -1; // or other values
+        if(b != null)
+            value = b.getInt("key");
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floating_button);
 
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_event_page);
-// The View with the BottomSheetBehavior
-        CurrentEvent eventInstance = CurrentEvent.getInstance();
-        GenericEvent event = eventInstance.getCurrentEvent();
+
+        GenericEvent event = (GenericEvent)AddItemAdapter.getInstance().getModel().get(value);
 
         category = (TextView) findViewById(R.id.event_category);
         date = (TextView) findViewById(R.id.event_date);
@@ -62,6 +67,7 @@ public class EventPage extends AppCompatActivity {
         eventId = (TextView) findViewById(R.id.event_id);
         eventCreator = (TextView) findViewById(R.id.event_creator_name);
         description = (TextView) findViewById(R.id.event_description);
+        image = (ImageView) findViewById(R.id.event_image);
         Date datecheck = new Date();
         category.setText(event.getCategory().toString());
         description.setText(event.getDescription().toString());
@@ -89,6 +95,35 @@ public class EventPage extends AppCompatActivity {
         else
             time.setText("At: "+event.getDate().getHours()+":"+event.getDate().getMinutes());
 
+
+        String imageicon = event.getCategory();
+        switch (imageicon) {
+            case "Football":
+                image.setBackground(this.getResources().getDrawable(R.drawable.football_icon));
+                break;
+            case "Baketball":
+                image.setBackground(this.getResources().getDrawable(R.drawable.basketball_iconn));
+                break;
+            case "Volleyball":
+                image.setBackground(this.getResources().getDrawable(R.drawable.volleyball_icon));
+                break;
+            case "Tennis":
+                image.setBackground(this.getResources().getDrawable(R.drawable.tennis_icon));
+                break;
+            case "Baseball":
+                image.setBackground(this.getResources().getDrawable(R.drawable.baseball_icon));
+                break;
+            case "Cricket":
+                image.setBackground(this.getResources().getDrawable(R.drawable.cricket_icon));
+                break;
+            case "No image":
+                image.setBackground(this.getResources().getDrawable(R.drawable.add_image));
+                break;
+            default:
+                //image.setImageBitmap(StringToBitMap(event.getEventImage()));
+                break;
+        }
+
         GeoDataClient mGeoDataClient = Places.getGeoDataClient(this, null);
         String placeId = event.getPlaceID();
         mGeoDataClient.getPlaceById(placeId).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
@@ -108,7 +143,7 @@ public class EventPage extends AppCompatActivity {
         });
         currentUsers.setText(Integer.toString(event.getCurrentUsers()));
         maxUsers.setText(Integer.toString(event.getMaxUsers()));
-        eventId.setText(Integer.toString(event.getId()));
+        eventId.setText("Event ID: "+Integer.toString(event.getId()));
         //eventCreator.setText(event.getAdminUserId());
         View bottomSheet = coordinatorLayout.findViewById(R.id.bottom_sheet);
         final BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);

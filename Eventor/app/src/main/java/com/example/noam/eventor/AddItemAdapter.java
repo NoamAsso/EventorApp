@@ -54,7 +54,7 @@ public class AddItemAdapter extends BaseAdapter {
     private static AddItemAdapter sInstance;
     private LayoutInflater layoutInflater;
     private User currentUser;
-
+    Button join;
     private AddItemAdapter() {
         model = new ArrayList<>();
         this.context = null;
@@ -124,8 +124,6 @@ public class AddItemAdapter extends BaseAdapter {
         }
 
         final GenericEvent currentItem = (GenericEvent) getItem(position);
-        CurrentEvent eventInstance = CurrentEvent.getInstance();
-        eventInstance.setCurrentEvent(currentItem);
         GeoDataClient mGeoDataClient = Places.getGeoDataClient(context, null);
         PlaceDetectionClient mPlaceDetectionClient = Places.getPlaceDetectionClient(context, null);
         Button detailButton = (Button) convertView.findViewById(R.id.details_button);
@@ -136,20 +134,18 @@ public class AddItemAdapter extends BaseAdapter {
         TextView date = (TextView) convertView.findViewById(R.id.event_date_item);
         final TextView location = (TextView) convertView.findViewById(R.id.location_item);
         ImageView image = (ImageView) convertView.findViewById(R.id.image_item);
-        Button join = (Button) convertView.findViewById(R.id.event_join);
-        CurrentEvent Einstance = CurrentEvent.getInstance();
+        join = (Button) convertView.findViewById(R.id.event_join);
         CurrentUser Uinstance = CurrentUser.getInstance();
-        currentUser = Uinstance.getUser();
+        currentUser = CurrentUser.getInstance().getUser();
         currentUsers.setText(Integer.toString(currentItem.getCurrentUsers()));
-        /*
-        if(currentUser.getFromAttendingEventsIds() != null){
-            if(currentUser.getFromAttendingEventsIds().contains(currentItem.getId())){
+
+        if (CurrentUserEvents.getInstance().getUserEvents() != null) {
+            if (CurrentUserEvents.getInstance().getUserEvents().contains((Integer) position)) {
+                join.setEnabled(false);
                 join.setText("Joined");
                 join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
             }
-        }*/
-
-
+        }
         //sets the text for item name and item description from the current item object
         title.setText(currentItem.getCategory());
         year = currentItem.getDate().getYear();
@@ -167,7 +163,6 @@ public class AddItemAdapter extends BaseAdapter {
                     date.setText(Integer.toString(day) + "/" + Integer.toString(month) + "/" + Integer.toString(year));
             }
         }
-
         if (currentItem.getDate().getMinutes() < 10 && currentItem.getDate().getHours() > 9) {
             timeHrsMin.setText("At: " + currentItem.getDate().getHours() + ":0" + currentItem.getDate().getMinutes());
         } else if (currentItem.getDate().getHours() < 10 && currentItem.getDate().getMinutes() > 9) {
@@ -176,14 +171,14 @@ public class AddItemAdapter extends BaseAdapter {
             timeHrsMin.setText("At: " + currentItem.getDate().getHours() + ":0" + currentItem.getDate().getMinutes());
         else
             timeHrsMin.setText("At: " + currentItem.getDate().getHours() + ":" + currentItem.getDate().getMinutes());
-        //date.setText(currentItem.getstringDate());
-        String test = currentItem.getCategory();
-        switch (test) {
+
+        String imageicon = currentItem.getCategory();
+        switch (imageicon) {
             case "Football":
                 image.setBackground(context.getResources().getDrawable(R.drawable.football_icon));
                 break;
             case "Baketball":
-                image.setBackground(context.getResources().getDrawable(R.drawable.basketball_icon));
+                image.setBackground(context.getResources().getDrawable(R.drawable.basketball_iconn));
                 break;
             case "Volleyball":
                 image.setBackground(context.getResources().getDrawable(R.drawable.volleyball_icon));
@@ -223,16 +218,14 @@ public class AddItemAdapter extends BaseAdapter {
                 }
             }
         });
-        //String address = String.format("%s, %s",currentItem.getplaceID().getLocale(),currentItem.getplaceID().getAddress());
-        //location.setText(address);
-
 
         detailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentIndex = position;
                 Intent myIntent = new Intent(context, EventPage.class);
-                //myIntent.putExtra("key", value); //Optional parameters
+                Bundle b = new Bundle();
+                b.putInt("key", position);
+                myIntent.putExtras(b);
                 context.startActivity(myIntent);
                 //finish();
             }
@@ -240,7 +233,7 @@ public class AddItemAdapter extends BaseAdapter {
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (true) {
+                if (CheckIfJoined(position)) {
                     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -259,10 +252,7 @@ public class AddItemAdapter extends BaseAdapter {
                             .setNegativeButton("No", dialogClickListener).show();
 
                 } else {
-                    if (true) {
                         Toast.makeText(context, "already joined.", Toast.LENGTH_SHORT).show();
-                    }
-
                 }
 
                 //finish();
@@ -288,8 +278,8 @@ public class AddItemAdapter extends BaseAdapter {
                     public void run() {
                         Gson gson = new Gson();
                         GenericEvent event = gson.fromJson(tempresult, GenericEvent.class);
-                        CurrentEvent eventInstance = CurrentEvent.getInstance();
-                        eventInstance.setCurrentEvent(event);
+                        join.setText("Joined");
+                        join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
                         Toast.makeText(context, "Joined to event!", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -315,5 +305,8 @@ public class AddItemAdapter extends BaseAdapter {
             e.getMessage();
             return null;
         }
+    }
+    public boolean CheckIfJoined(int position){
+return false;
     }
 }

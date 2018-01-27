@@ -218,7 +218,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                                        int arg2, long arg3) {
                 // TODO Auto-generated method stub
                 String chosenOption=spinner.getSelectedItem().toString();
-                if(chosenOption.matches("Costume")){
+                if(chosenOption.matches("custom")){
                     ViewGroup.LayoutParams params = spinner.getLayoutParams();
                     params.height = 0;
                     spinner.setLayoutParams(params);
@@ -305,7 +305,8 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                             bitmapString,
                             placeId,
                             place.getLatLng().longitude,
-                            place.getLatLng().latitude
+                            place.getLatLng().latitude,
+                            CurrentUser.getInstance().getUser().getUserId()
                     );
 
                     String json = gson.toJson(event);
