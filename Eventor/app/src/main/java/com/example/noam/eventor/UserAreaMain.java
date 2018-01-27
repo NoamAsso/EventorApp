@@ -10,6 +10,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -41,8 +43,11 @@ public class UserAreaMain extends AppCompatActivity {
         mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open, R.string.close);
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
-        MenuItem logout = (MenuItem) findViewById(R.id.logout);
-        onOptionsItemSelected(logout);
+
+        //Menu menu = (Menu) findViewById(R.id.sideMenu);
+
+        //MenuItem logout = (MenuItem) findViewById(R.id.logout);
+        //onOptionsItemSelected(logout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //toolbar = (Toolbar) findViewById(R.id.tool_bar);
@@ -61,8 +66,6 @@ public class UserAreaMain extends AppCompatActivity {
             }
         });
 
-
-
         FloatingActionButton addEvent = (FloatingActionButton) findViewById(R.id.add);
         addEvent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,15 +79,43 @@ public class UserAreaMain extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+       /* MenuItem item = menu.findItem(R.id.logout);
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent myIntent = new Intent(UserAreaMain.this, LoginActivity.class);
+                Bundle b = new Bundle();
+                b.putInt("key2", 1);
+                myIntent.putExtras(b);
+                UserAreaMain.this.startActivity(myIntent);
+                return true;
+            }
+        });
+        return true;*/
+
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.navigation_menu, menu);
+            return true;
+    }
+
+        @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(mToggle.onOptionsItemSelected(item)){
-            Intent myIntent = new Intent(UserAreaMain.this, LoginActivity.class);
-            Bundle b = new Bundle();
-            b.putInt("key2", 1);
-            myIntent.putExtras(b);
-            UserAreaMain.this.startActivity(myIntent);
+            switch (item.getItemId()) {
+                case R.id.logout:
+                    Intent myIntent = new Intent(UserAreaMain.this, LoginActivity.class);
+                    Bundle b = new Bundle();
+                    b.putInt("key2", 1);
+                    myIntent.putExtras(b);
+                    UserAreaMain.this.startActivity(myIntent);
+                    return true;
+                default:
+                    break;
+            }
             return true;
         }
-        return super.onOptionsItemSelected(item);
+            return super.onOptionsItemSelected(item);
     }
 }
