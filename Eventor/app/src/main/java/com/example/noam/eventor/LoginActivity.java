@@ -40,19 +40,35 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         android.support.v7.app.ActionBar myActionBar = getSupportActionBar();
         myActionBar.hide();
+        Bundle b = getIntent().getExtras();
+        int value = -1; // or other values
+        if(b != null)
+            value = b.getInt("key");
         //ActionBar actionBar = getActionBar();
         //actionBar.hide();
 
-        SharedPreferences sharedPref = getSharedPreferences("preferences",
-                Context.MODE_PRIVATE);
+        if(value == 1){
+            Toast.makeText(getApplicationContext(), "Logout successfully", Toast.LENGTH_SHORT).show();
+            SharedPreferences sharedPref = getSharedPreferences("preferences",
+                    Context.MODE_PRIVATE);
+            SharedPreferences.Editor e = sharedPref.edit();
+            e.putBoolean("rememberMe", false);
+            e.commit();
+        }
+        else{
+            SharedPreferences sharedPref = getSharedPreferences("preferences",
+                    Context.MODE_PRIVATE);
+            boolean remember = sharedPref.getBoolean("rememberMe", false);
+            if (remember) {
+                username = sharedPref.getString("username", null);
+                password = sharedPref.getString("password", null);
+                login();
+            }
+        }
+
 
         // Get value
-        boolean remember = sharedPref.getBoolean("rememberMe", false);
-        if (remember) {
-            username = sharedPref.getString("username", null);
-            password = sharedPref.getString("password", null);
-            login();
-        }
+
 
         mVideoView = (VideoView) findViewById(R.id.bgVideoView);
 

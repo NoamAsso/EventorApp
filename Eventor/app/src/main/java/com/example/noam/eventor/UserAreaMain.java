@@ -1,5 +1,6 @@
 package com.example.noam.eventor;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.mtp.MtpConstants;
 import android.support.design.widget.FloatingActionButton;
@@ -36,10 +37,11 @@ public class UserAreaMain extends AppCompatActivity {
         adapter1 = AddItemAdapter.getInstance();
         adapter1.setContext(this);
        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-      mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open, R.string.close);
+       mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open, R.string.close);
        mDrawerLayout.addDrawerListener(mToggle);
        mToggle.syncState();
-
+        MenuItem logout = (MenuItem) findViewById(R.id.logout);
+        onOptionsItemSelected(logout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //toolbar = (Toolbar) findViewById(R.id.tool_bar);
@@ -79,6 +81,11 @@ public class UserAreaMain extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(mToggle.onOptionsItemSelected(item)){
+            Intent myIntent = new Intent(UserAreaMain.this, LoginActivity.class);
+            Bundle b = new Bundle();
+            b.putInt("key2", 1);
+            myIntent.putExtras(b);
+            UserAreaMain.this.startActivity(myIntent);
             return true;
         }
         return super.onOptionsItemSelected(item);
