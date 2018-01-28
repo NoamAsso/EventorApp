@@ -23,7 +23,7 @@ public class GenericEvent {
     private int maxUsers;
     private int currentUsers;
     private String description;
-    private int price;
+    private int price = 0;
     private Boolean isPrivate;
     private String eventImage;
     private String placeID;
@@ -36,7 +36,7 @@ public class GenericEvent {
         this.category = category;
         this.id = 0;            //received by the server
         this.date = date;
-        this.adminUserId = adminUserId;   //received by the server
+        this.adminUserId = adminUserId;
         this.creationDate = new Date();
         this.intCreationDate = (int)(this.creationDate.getTime()/1000);
         this.maxUsers = maxUsers;
@@ -49,26 +49,6 @@ public class GenericEvent {
         this.longitude = longitude;
         this.latitude = latitude;
     }
-
-
-    public GenericEvent() {
-        this.category="";
-        this.id = 0;            //received by the server
-        this.date = new Date();
-        this.adminUserId = 0;   //received by the server
-        this.creationDate = new Date();
-        this.intCreationDate = 0;
-        this.maxUsers = 0;
-        this.currentUsers = 1;          //Only the creator is in the event
-        this.description = "";
-        this.price = 0;
-        this.isPrivate = false;
-        this.eventImage = "";
-        this.placeID = "";
-        this.longitude = 0.0;
-        this.latitude = 0.0;
-    }
-
 
     public int getId() {
         return id;

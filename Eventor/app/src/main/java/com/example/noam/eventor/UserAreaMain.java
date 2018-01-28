@@ -63,7 +63,6 @@ public class UserAreaMain extends AppCompatActivity implements NavigationView.On
             }
         });
 
-
         FloatingActionButton addEvent = (FloatingActionButton) findViewById(R.id.add);
         addEvent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +70,6 @@ public class UserAreaMain extends AppCompatActivity implements NavigationView.On
                 Intent myIntent = new Intent(UserAreaMain.this, AddEvent.class);
                 //myIntent.putExtra("key", value); //Optional parameters
                 UserAreaMain.this.startActivity(myIntent);
-                //finish();
             }
         });
 
@@ -91,12 +89,12 @@ public class UserAreaMain extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.navigation_menu, menu);
+            return true;
     }
 
-    @Override
+        @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(mToggle.onOptionsItemSelected(item)){
             return true;
@@ -114,9 +112,10 @@ public class UserAreaMain extends AppCompatActivity implements NavigationView.On
 
             CurrentUserEvents x = CurrentUserEvents.getInstance();
             Intent myIntent = new Intent(UserAreaMain.this, LoginActivity.class);
-            Bundle b = new Bundle();
+           /* Bundle b = new Bundle();
             b.putInt("key2", 1);
-            myIntent.putExtras(b);
+            myIntent.putExtras(b);*/
+            myIntent.putExtra("calling-activity", 700);
             UserAreaMain.this.startActivity(myIntent);
             // Handle the camera action
         }

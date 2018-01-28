@@ -107,7 +107,7 @@ exports.updateAttend = function (req, res, next) {
         sqlInsertConnections = 'INSERT INTO connections(userId, eventId) VALUES(?,?)';
         var event={};
 
-        db.get('SELECT * FROM events WHERE id=?',[userid], (err,row) => {
+        db.get('SELECT * FROM events WHERE id=?',[eventid], (err,row) => {
             if (err) {
                 return console.log(err.message);
             }
@@ -128,12 +128,27 @@ exports.updateAttend = function (req, res, next) {
                       return console.log(err.message);
                     }
                     console.log("connections table was updated, sending back the event's user list");
+                    usersToSend = [];
                     db.all('SELECT userId FROM connections WHERE eventId = ?',[eventid], (err,rows) => {
                         if (err) {
                           return console.log(err.message);
                         }
-                        console.log(rows);
-                        res.send(rows);
+                        rows.forEach((row) => {
+                            usersToSend.push(row.userId);
+                        });
+
+                        db.all('SELECT * FROM users WHERE userId IN ' +
+                        '( ' + usersToSend.map(function(){ return '?' }).join(',') +
+                        ' )',usersToSend,(err,userRows) => {
+                            if (err) {
+                              return console.log(err.message);
+                            }                            
+                            userRows.forEach((userRow) => {
+                                toSend.push(userRow);
+                            });
+                            console.log(toSend);
+                            res.send(toSend);
+                        });
                     })
                });
             });
@@ -144,6 +159,7 @@ exports.updateAttend = function (req, res, next) {
 exports.eventsById = function (req, res, next) {
     toSend = [];
     console.log("Sending events of given user ID:");
+    console.log(req.params.userid)
     sql = 'SELECT eventId FROM connections WHERE userId = ?';
     db.all(sql,[req.params.userid],(err,rows) => {
         if (err) {

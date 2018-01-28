@@ -2,6 +2,7 @@ package com.example.noam.eventor;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -32,12 +33,11 @@ public class FragmentOne extends Fragment {
     ListView list;
     AddItemAdapter adapter;
    // String result;
+    SwipeRefreshLayout mSwipeRefreshView;
 
     public FragmentOne() {
         // Required empty public constructor
     }
-
-    SwipeRefreshLayout mSwipeRefreshView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +54,7 @@ public class FragmentOne extends Fragment {
                 mSwipeRefreshView.setRefreshing(false);
             }
         });
+
 
         list.setOnScrollListener(new AbsListView.OnScrollListener() {
 
@@ -81,6 +82,12 @@ public class FragmentOne extends Fragment {
         return v;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        GetListFromServer();
+    }
+
     public void GetListFromServer() {
         final NetworkManager instance = NetworkManager.getInstance();
         instance.addRequest(new GetEventsRequest(new ServerCallback() {
@@ -93,22 +100,13 @@ public class FragmentOne extends Fragment {
                     @Override
                     public void run() {
                         if (result != "[]") {
-                            ArrayList<GenericEvent> currentList =new ArrayList<>();
                             Gson gson = new Gson();
-                            GenericEvent event = new GenericEvent();
-                            ArrayList<GenericEvent> temparr = new ArrayList<>();
-                            temparr.add(event);
-                            String temp2 = result;
-                            String temp = gson.toJson(temparr, new TypeToken<List<GenericEvent>>() {}.getType());;
-                            temparr = gson.fromJson(result, new TypeToken<List<GenericEvent>>() {}.getType());
-                            //currentList = gson.fromJson(temp2, new TypeToken<List<GenericEvent>>() {
-                            //}.getType());
+                            ArrayList<GenericEvent> eventsArray;
+                            eventsArray = gson.fromJson(result, new TypeToken<List<GenericEvent>>() {}.getType());
+
                             adapter = AddItemAdapter.getInstance();
-
-                            //adapter.AddObj(eventTest);
-                            if (adapter.setModel(temparr)) {
+                            if (adapter.setModel(eventsArray)) {
                                 adapter.setContext(getActivity());
-
                             }
 
                             instance.addRequest(new GetEventsOfUserRequest(CurrentUser.getInstance().getUser().getUserId(),new ServerCallback() {
@@ -120,15 +118,17 @@ public class FragmentOne extends Fragment {
                                         @Override
                                         public void run() {
                                         Gson gson = new Gson();
-                                        ArrayList<Integer> intArr22= new ArrayList<>();
-                                        intArr22.add(4);
-                                        String mashu = gson.toJson(intArr22);
-                                                intArr22 = gson.fromJson(result2, new TypeToken<List<Integer>>() {}.getType());
-                                                CurrentUserEvents.getInstance().setUserEvents(intArr22);
 
-                                        int i = 0;
-                                            list.setAdapter(adapter);
-                                            adapter.notifyDataSetChanged();
+                                        ArrayList<Integer> userEventsIDsArray;
+
+                                        if (!result2.equals("[]")) {
+                                            userEventsIDsArray = gson.fromJson(result2, new TypeToken<List<Integer>>() {
+                                            }.getType());
+                                            CurrentUserEvents.getInstance().setUserEvents(userEventsIDsArray);
+                                        }
+
+                                        list.setAdapter(adapter);
+                                        adapter.notifyDataSetChanged();
                                         }
                                     });
                                 }

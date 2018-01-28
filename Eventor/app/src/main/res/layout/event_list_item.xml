@@ -146,12 +146,12 @@ android:id="@+id/image_item"
                     android:visibility="invisible" />
 
                 <TextView
-                    android:id="@+id/max_num_users"
+                    android:id="@+id/price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:paddingRight="50dp"
-                    android:text="Created by:"
+                    android:text="Price: "
                     android:textSize="10sp" />
             </LinearLayout>
 

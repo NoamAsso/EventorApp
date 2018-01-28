@@ -30,6 +30,7 @@ public class LoginMenu extends AppCompatActivity {
     CheckBox remember;
     String userName;
     String password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +48,9 @@ public class LoginMenu extends AppCompatActivity {
             public void onClick(View v) {
                 userName = username.getText().toString();
                 password = userPassword.getText().toString();
-                if(userName == "" || password == "")
+                if (userName == "" || password == "")
                     Toast.makeText(getApplicationContext(), "Empty fields", Toast.LENGTH_SHORT).show();
-                else{
+                else {
 
 
                     NetworkManager instance = NetworkManager.getInstance();
@@ -60,7 +61,7 @@ public class LoginMenu extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     try {
-                        json2.put("password",password);
+                        json2.put("password", password);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -75,7 +76,7 @@ public class LoginMenu extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    switch(result){
+                                    switch (result) {
                                         case "1":
                                             Toast.makeText(getApplicationContext(), "This username doesn't exists", Toast.LENGTH_SHORT).show();
                                             break;
@@ -83,7 +84,7 @@ public class LoginMenu extends AppCompatActivity {
                                             Toast.makeText(getApplicationContext(), "Wrong password", Toast.LENGTH_SHORT).show();
                                             break;
                                         default:
-                                            if(remember.isChecked()){
+                                            if (remember.isChecked()) {
                                                 SharedPreferences sharedPref = getSharedPreferences("preferences",
                                                         Context.MODE_PRIVATE);
                                                 SharedPreferences.Editor e = sharedPref.edit();
@@ -94,8 +95,8 @@ public class LoginMenu extends AppCompatActivity {
                                                 //am.addAccount()
                                             }
                                             Gson gson = new Gson();
-                                            User usertest = new User(2,"noam","12345",27,"noam@gmail.com","0524217111","Male");
-                                            String temp = gson.toJson(usertest,User.class);
+                                            User usertest = new User(2, "noam", "12345", 27, "noam@gmail.com", "0524217111", "Male");
+                                            String temp = gson.toJson(usertest, User.class);
                                             usertest = gson.fromJson(temp, User.class);
                                             User user = gson.fromJson(result, User.class);
                                             CurrentUser userInstance = CurrentUser.getInstance();
@@ -110,6 +111,7 @@ public class LoginMenu extends AppCompatActivity {
                                 }
                             });
                         }
+
                         @Override
                         public void onFailure(Object err, int statusCode) {
                             runOnUiThread(new Runnable() {
@@ -123,9 +125,6 @@ public class LoginMenu extends AppCompatActivity {
                         }
                     }));
                 }
-
-
-                //finish();
             }
         });
 

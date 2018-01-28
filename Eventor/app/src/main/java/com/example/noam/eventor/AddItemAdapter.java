@@ -20,16 +20,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Toast;
 
 import com.google.android.gms.location.places.GeoDataClient;
@@ -37,11 +30,9 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBufferResponse;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 /**
  * Created by Noam on 19/01/2018.
@@ -78,7 +69,7 @@ public class AddItemAdapter extends BaseAdapter {
 
     public void setContext(Context context) {
         this.context = context;
-        layoutInflater = LayoutInflater.from(context);
+        this.layoutInflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -132,6 +123,7 @@ public class AddItemAdapter extends BaseAdapter {
         TextView maxNumOfUsers = (TextView) convertView.findViewById(R.id.max_num_users);
         TextView currentUsers = (TextView) convertView.findViewById(R.id.current_num_users);
         TextView date = (TextView) convertView.findViewById(R.id.event_date_item);
+        TextView price = convertView.findViewById(R.id.price);
         final TextView location = (TextView) convertView.findViewById(R.id.location_item);
         ImageView image = (ImageView) convertView.findViewById(R.id.image_item);
         join = (Button) convertView.findViewById(R.id.event_join);
@@ -139,14 +131,23 @@ public class AddItemAdapter extends BaseAdapter {
         currentUser = CurrentUser.getInstance().getUser();
         currentUsers.setText(Integer.toString(currentItem.getCurrentUsers()));
 
+        if (CheckIfJoined(position)) {
+            join.setEnabled(false);
+            join.setText("Joined");
+            join.setTextColor(Color.GRAY);
+            join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
+        }
+
+        /*
         if (CurrentUserEvents.getInstance().getUserEvents() != null) {
-            if (CurrentUserEvents.getInstance().getUserEvents().contains((Integer) position+1)) {
+            if (CurrentUserEvents.getInstance().getUserEvents().contains(position+1)) {
                 join.setEnabled(false);
                 join.setText("Joined");
                 join.setTextColor(Color.GRAY);
                 join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
             }
         }
+         */
         //sets the text for item name and item description from the current item object
         title.setText(currentItem.getCategory());
         year = currentItem.getDate().getYear();
@@ -201,7 +202,14 @@ public class AddItemAdapter extends BaseAdapter {
                 break;
         }
 
-        maxNumOfUsers.setText(Integer.toString(currentItem.getMaxUsers()));
+        if (currentItem.getMaxUsers() == Integer.MAX_VALUE) {
+            maxNumOfUsers.setText("Unlimited");
+        }
+        else {
+            maxNumOfUsers.setText(Integer.toString(currentItem.getMaxUsers()));
+        }
+
+        price.append(Integer.toString(currentItem.getPrice()));
         String placeId = currentItem.getPlaceID();
         mGeoDataClient.getPlaceById(placeId).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
             public static final String TAG = "AddItemAdapter";
@@ -235,16 +243,17 @@ public class AddItemAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 if (!CheckIfJoined(position)) {
+
                     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            switch (which) {
-                                case DialogInterface.BUTTON_POSITIVE:
-                                    JoinEvent((GenericEvent) getItem(position));
-                                    break;
-                                case DialogInterface.BUTTON_NEGATIVE:
-                                    break;
-                            }
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                 JoinEvent((GenericEvent) getItem(position));
+                                 break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                 break;
+                        }
                         }
                     };
 
@@ -277,15 +286,19 @@ public class AddItemAdapter extends BaseAdapter {
                 ((Activity) context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Gson gson = new Gson();
-                        GenericEvent event = gson.fromJson(tempresult, GenericEvent.class);
-                        join.setText("Joined");
-                        join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
-                        Toast.makeText(context, "Joined to event!", Toast.LENGTH_SHORT).show();
+                    /*Gson gson = new Gson();
+                    GenericEvent event = gson.fromJson(tempresult, GenericEvent.class);*/
+                    join.setText("Joined");
+                    join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
+                    Toast.makeText(context, "Joined to event!", Toast.LENGTH_SHORT).show();
+
+                    Intent myIntent = new Intent(context, EventPage.class);
+                    Bundle b = new Bundle();
+                    b.putInt("key", 2);
+                    myIntent.putExtras(b);
+                    context.startActivity(myIntent);
                     }
                 });
-                //Toast.makeText(getActivity().getApplicationContext(), "yay got the message!"+result, Toast.LENGTH_SHORT).show();
-
             }
 
             @Override
@@ -294,7 +307,7 @@ public class AddItemAdapter extends BaseAdapter {
                 Log.e("Join request", "Connection to Server failed");
             }
         }));
-    }//fetchFromNetwork
+    }//JoinEvent
 
 
     public Bitmap StringToBitMap(String encodedString) {
@@ -307,10 +320,12 @@ public class AddItemAdapter extends BaseAdapter {
             return null;
         }
     }
+
     public boolean CheckIfJoined(int position){
-        if(CurrentUserEvents.getInstance().getUserEvents().contains(position)){
+        if(CurrentUserEvents.getInstance().getUserEvents().contains(position+1)){
             return true;
         }
     return false;
+
     }
 }
