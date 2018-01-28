@@ -23,7 +23,7 @@ app.all('*', function(req, res, next) {
 app.get('/events', events.findAll);         //Retrieve all events
 app.post('/addRow', events.insertRow);      //Insert new event
 app.post('/register', users.addUser);      //Insert new user
-app.post('/login', users.findByUsername); //Check user login and return user details
+app.post('/login', users.loginProcess); //Check user login and return user details
 app.get('/joinEvent/:userid/:eventid',events.updateAttend);
 app.get('/eventsById/:userid',events.eventsById);
 

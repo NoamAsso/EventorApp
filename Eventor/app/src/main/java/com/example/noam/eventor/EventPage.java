@@ -47,7 +47,7 @@ public class EventPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_page);
         Bundle b = getIntent().getExtras();
-        int value = -1; // or other values
+        int value = -1;
         if(b != null)
             value = b.getInt("key");
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -142,7 +142,14 @@ public class EventPage extends AppCompatActivity {
             }
         });
         currentUsers.setText(Integer.toString(event.getCurrentUsers()));
-        maxUsers.setText(Integer.toString(event.getMaxUsers()));
+
+        if (event.getMaxUsers() == Integer.MAX_VALUE) {
+            maxUsers.setText("Unlimited");
+        }
+        else {
+            maxUsers.setText(Integer.toString(event.getMaxUsers()));
+        }
+
         eventId.setText("Event ID: "+Integer.toString(event.getId()));
         //eventCreator.setText(event.getAdminUserId());
         View bottomSheet = coordinatorLayout.findViewById(R.id.bottom_sheet);

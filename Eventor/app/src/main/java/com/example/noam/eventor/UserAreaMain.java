@@ -70,7 +70,6 @@ public class UserAreaMain extends AppCompatActivity implements NavigationView.On
                 Intent myIntent = new Intent(UserAreaMain.this, AddEvent.class);
                 //myIntent.putExtra("key", value); //Optional parameters
                 UserAreaMain.this.startActivity(myIntent);
-                //finish();
             }
         });
 

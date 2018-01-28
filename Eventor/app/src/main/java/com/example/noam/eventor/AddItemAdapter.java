@@ -285,11 +285,17 @@ public class AddItemAdapter extends BaseAdapter {
                 ((Activity) context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Gson gson = new Gson();
-                        GenericEvent event = gson.fromJson(tempresult, GenericEvent.class);
-                        join.setText("Joined");
-                        join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
-                        Toast.makeText(context, "Joined to event!", Toast.LENGTH_SHORT).show();
+                    /*Gson gson = new Gson();
+                    GenericEvent event = gson.fromJson(tempresult, GenericEvent.class);*/
+                    join.setText("Joined");
+                    join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
+                    Toast.makeText(context, "Joined to event!", Toast.LENGTH_SHORT).show();
+
+                    Intent myIntent = new Intent(context, EventPage.class);
+                    Bundle b = new Bundle();
+                    b.putInt("key", 2);
+                    myIntent.putExtras(b);
+                    context.startActivity(myIntent);
                     }
                 });
             }
@@ -300,7 +306,7 @@ public class AddItemAdapter extends BaseAdapter {
                 Log.e("Join request", "Connection to Server failed");
             }
         }));
-    }//fetchFromNetwork
+    }//JoinEvent
 
 
     public Bitmap StringToBitMap(String encodedString) {

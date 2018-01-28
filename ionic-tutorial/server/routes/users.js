@@ -47,7 +47,7 @@ exports.addUser = function (req, res, next) {
 // 1. when registering, check if username already exists
 // 2. find user by name. if not found return 1. if password wrong return 2. otherwise return user
 
-exports.findByUsername = function (req, res, next) {
+exports.loginProcess = function (req, res, next) {
     console.log("user is trying to log in");
     console.log(req.body);
 
@@ -70,7 +70,6 @@ exports.findByUsername = function (req, res, next) {
       else {
         toSend = "1";
       }
-
       res.send(toSend);
     });
 };
