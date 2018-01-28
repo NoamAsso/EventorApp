@@ -234,7 +234,7 @@ public class AddItemAdapter extends BaseAdapter {
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (CheckIfJoined(position)) {
+                if (!CheckIfJoined(position)) {
                     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -308,6 +308,9 @@ public class AddItemAdapter extends BaseAdapter {
         }
     }
     public boolean CheckIfJoined(int position){
-return false;
+        if(CurrentUserEvents.getInstance().getUserEvents().contains(position)){
+            return true;
+        }
+    return false;
     }
 }

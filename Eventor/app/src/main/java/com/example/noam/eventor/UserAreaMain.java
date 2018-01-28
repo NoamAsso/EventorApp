@@ -111,6 +111,8 @@ public class UserAreaMain extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.logout2) {
+
+            CurrentUserEvents x = CurrentUserEvents.getInstance();
             Intent myIntent = new Intent(UserAreaMain.this, LoginActivity.class);
             Bundle b = new Bundle();
             b.putInt("key2", 1);

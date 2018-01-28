@@ -41,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         android.support.v7.app.ActionBar myActionBar = getSupportActionBar();
         myActionBar.hide();
         Bundle b = getIntent().getExtras();
+
         int value = -1; // or other values
         if(b != null)
             value = b.getInt("key");
@@ -55,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
             e.putBoolean("rememberMe", false);
             e.commit();
             b.putInt("key",-1);
+            b.clear();
         }
         else{
             SharedPreferences sharedPref = getSharedPreferences("preferences",
@@ -95,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                 LoginActivity.this.startActivity(myIntent);
             }
         });
-        TextView registeractivity = (TextView) findViewById(R.id.register);
+        Button registeractivity = (Button) findViewById(R.id.register);
         registeractivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

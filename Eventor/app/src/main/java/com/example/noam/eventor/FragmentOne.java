@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -53,6 +54,27 @@ public class FragmentOne extends Fragment {
                 mSwipeRefreshView.setRefreshing(false);
             }
         });
+
+        list.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                boolean enable = false;
+                if(list != null && list.getChildCount() > 0){
+                    // check if the first item of the list is visible
+                    boolean firstItemVisible = list.getFirstVisiblePosition() == 0;
+                    // check if the top of the first item is visible
+                    boolean topOfFirstItemVisible = list.getChildAt(0).getTop() == 0;
+                    // enabling or disabling the refresh layout
+                    enable = firstItemVisible && topOfFirstItemVisible;
+                }
+                mSwipeRefreshView.setEnabled(enable);
+            }});
 
         GetListFromServer();
 
@@ -101,10 +123,9 @@ public class FragmentOne extends Fragment {
                                         ArrayList<Integer> intArr22= new ArrayList<>();
                                         intArr22.add(4);
                                         String mashu = gson.toJson(intArr22);
-                                            if (!result2.equals("[]")) {
                                                 intArr22 = gson.fromJson(result2, new TypeToken<List<Integer>>() {}.getType());
                                                 CurrentUserEvents.getInstance().setUserEvents(intArr22);
-                                            }
+
                                         int i = 0;
                                             list.setAdapter(adapter);
                                             adapter.notifyDataSetChanged();

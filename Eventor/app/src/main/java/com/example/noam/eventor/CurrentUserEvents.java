@@ -24,4 +24,5 @@ public class CurrentUserEvents {
     public ArrayList<Integer> getUserEvents() {
         return userEvents;
     }
+
 }
