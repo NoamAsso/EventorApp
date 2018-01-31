@@ -83,7 +83,6 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
     public static final int Selected_Image = 1;
     int PLACE_PICKER_REQUEST = 2;
-    EditText eventTitle;
     EditText eventDescription;
     ImageButton datePick;
     Bitmap bitmap;
@@ -187,7 +186,6 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mGeoDataClient = Places.getGeoDataClient(AddEvent.this, null);
         mPlaceDetectionClient = Places.getPlaceDetectionClient(this, null);
-        eventTitle = (EditText) findViewById(R.id.event_title);
         eventDescription = (EditText) findViewById(R.id.description_text);
         eventImage = (ImageButton) findViewById(R.id.event_image);
         datePick = (ImageButton) findViewById(R.id.date_choose);
@@ -247,10 +245,6 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
             public void onClick(View view) {
                 EditTextNormalize();
                 boolean error = false;
-                if (eventTitle.getText().toString().matches("")) {
-                    error = true;
-                    eventTitle.setBackgroundResource(R.drawable.rounded_edittext_red);
-                }
                 if (eventDescription.getText().toString().matches("")) {
                     error = true;
                     eventDescription.setBackgroundResource(R.drawable.rounded_edittext_red);
@@ -411,6 +405,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                 year = cal.get(Calendar.YEAR);
 
                 DatePickerDialog datePickerDialog = new DatePickerDialog(AddEvent.this, AddEvent.this, year, month, day);
+                datePickerDialog.getDatePicker().setMinDate(new Date().getTime());
                 datePickerDialog.show();
             }
         });
@@ -452,7 +447,6 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && (data != null)) {
-            eventTitle.setText(Integer.toString(requestCode));
             if (requestCode == Selected_Image) {
                 Uri imageUri = data.getData();
                 try {
@@ -473,7 +467,6 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     }
 
     public void EditTextNormalize() {
-        eventTitle.setBackgroundResource(R.drawable.rounded_edittext);
         eventDescription.setBackgroundResource(R.drawable.rounded_edittext);
         if (noLimit.isChecked())
             numParticipant.setBackgroundResource(R.drawable.rounded_edittext_gray);

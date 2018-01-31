@@ -139,9 +139,36 @@ public class LoginActivity extends AppCompatActivity {
                                 User user = gson.fromJson(result, User.class);
                                 CurrentUser userInstance = CurrentUser.getInstance();
                                 userInstance.setUser(user);
-                                Intent myIntent = new Intent(LoginActivity.this, UserAreaMain.class);
-                                myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                LoginActivity.this.startActivity(myIntent);
+                                final NetworkManager instance = NetworkManager.getInstance();
+                                instance.addRequest(new GetEventsOfUserRequest(CurrentUser.getInstance().getUser().getUserId(), new ServerCallback() {
+                                    @Override
+                                    public void onSuccess(Object res, int statusCode) {
+                                        final String result2 = (String) res;
+                                        Log.e("Fragment One second", result2);
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Gson gson = new Gson();
+
+                                                ArrayList<Integer> userEventsIDsArray;
+                                                userEventsIDsArray = gson.fromJson(result2, new TypeToken<List<Integer>>() {
+                                                }.getType());
+                                                CurrentUserEvents.getInstance().setUserEvents(userEventsIDsArray);
+                                                Intent myIntent = new Intent(LoginActivity.this, UserAreaMain.class);
+                                                myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                LoginActivity.this.startActivity(myIntent);
+
+                                            }
+                                        });
+                                    }
+
+                                    @Override
+                                    public void onFailure(Object err, int statusCode) {
+                                        Toast.makeText(getApplicationContext(), "failure to receive message", Toast.LENGTH_SHORT).show();
+                                        Log.e("main menu", "Connection to Server failed for userEvents");
+                                    }
+                                }));
+
                                 finish();
                                 break;
                         }

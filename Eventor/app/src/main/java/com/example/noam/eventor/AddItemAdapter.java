@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,8 +45,10 @@ public class AddItemAdapter extends BaseAdapter {
     private ArrayList<GenericEvent> model;
     private static AddItemAdapter sInstance;
     private LayoutInflater layoutInflater;
+    private static int positionL;
     private User currentUser;
     Button join;
+
     private AddItemAdapter() {
         model = new ArrayList<>();
         this.context = null;
@@ -106,6 +109,10 @@ public class AddItemAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+        Log.e("GetView", "position " + position);
+        if(position==13){
+            int i  = 0;
+        }
         int year, month, day;
         Date datecheck = new Date();
         // inflate the layout for each list row
@@ -113,7 +120,6 @@ public class AddItemAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).
                     inflate(R.layout.event_list_item, parent, false);
         }
-
         final GenericEvent currentItem = (GenericEvent) getItem(position);
         GeoDataClient mGeoDataClient = Places.getGeoDataClient(context, null);
         PlaceDetectionClient mPlaceDetectionClient = Places.getPlaceDetectionClient(context, null);
@@ -136,18 +142,14 @@ public class AddItemAdapter extends BaseAdapter {
             join.setText("Joined");
             join.setTextColor(Color.GRAY);
             join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
-        }
-
-        /*
-        if (CurrentUserEvents.getInstance().getUserEvents() != null) {
-            if (CurrentUserEvents.getInstance().getUserEvents().contains(position+1)) {
-                join.setEnabled(false);
-                join.setText("Joined");
-                join.setTextColor(Color.GRAY);
-                join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
+        } else {
+            if (join.getText() == "Joined") {
+                join.setEnabled(true);
+                join.setText("Join");
+                join.setTextColor(Color.WHITE);
+                join.setBackground(context.getResources().getDrawable(R.drawable.curve_edges_button_location));
             }
         }
-         */
         //sets the text for item name and item description from the current item object
         title.setText(currentItem.getCategory());
         year = currentItem.getDate().getYear();
@@ -204,12 +206,11 @@ public class AddItemAdapter extends BaseAdapter {
 
         if (currentItem.getMaxUsers() == Integer.MAX_VALUE) {
             maxNumOfUsers.setText("Unlimited");
-        }
-        else {
+        } else {
             maxNumOfUsers.setText(Integer.toString(currentItem.getMaxUsers()));
         }
 
-        price.append(Integer.toString(currentItem.getPrice()));
+        price.setText(Integer.toString(position));
         String placeId = currentItem.getPlaceID();
         mGeoDataClient.getPlaceById(placeId).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
             public static final String TAG = "AddItemAdapter";
@@ -231,6 +232,7 @@ public class AddItemAdapter extends BaseAdapter {
         detailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                currentIndex = position;
                 Intent myIntent = new Intent(context, EventPage.class);
                 Bundle b = new Bundle();
                 b.putInt("key", position);
@@ -247,27 +249,33 @@ public class AddItemAdapter extends BaseAdapter {
                     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case DialogInterface.BUTTON_POSITIVE:
-                                 JoinEvent((GenericEvent) getItem(position));
-                                 break;
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                 break;
-                        }
+                            switch (which) {
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    JoinEvent((GenericEvent) getItem(position));
+                                    join.setEnabled(false);
+                                    join.setText("Joined");
+                                    join.setTextColor(Color.GRAY);
+                                    join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
+
+                                    break;
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    break;
+                            }
                         }
                     };
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                    builder.setMessage("Are you sure you want to join this game?").setPositiveButton("Yes", dialogClickListener)
                             .setNegativeButton("No", dialogClickListener).show();
 
                 } else {
-                        Toast.makeText(context, "already joined.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "already joined.", Toast.LENGTH_SHORT).show();
                 }
 
                 //finish();
             }
         });
+
         return convertView;
     }
 
@@ -288,15 +296,15 @@ public class AddItemAdapter extends BaseAdapter {
                     public void run() {
                     /*Gson gson = new Gson();
                     GenericEvent event = gson.fromJson(tempresult, GenericEvent.class);*/
-                    join.setText("Joined");
-                    join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
-                    Toast.makeText(context, "Joined to event!", Toast.LENGTH_SHORT).show();
+                        join.setText("Joined");
+                        join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
+                        Toast.makeText(context, "Joined to event!", Toast.LENGTH_SHORT).show();
 
-                    Intent myIntent = new Intent(context, EventPage.class);
-                    Bundle b = new Bundle();
-                    b.putInt("key", 2);
-                    myIntent.putExtras(b);
-                    context.startActivity(myIntent);
+                        Intent myIntent = new Intent(context, EventPage.class);
+                        Bundle b = new Bundle();
+                        b.putInt("key", 2);
+                        myIntent.putExtras(b);
+                        context.startActivity(myIntent);
                     }
                 });
             }
@@ -321,11 +329,16 @@ public class AddItemAdapter extends BaseAdapter {
         }
     }
 
-    public boolean CheckIfJoined(int position){
-        if(CurrentUserEvents.getInstance().getUserEvents().contains(position+1)){
+    public boolean CheckIfJoined(int position) {
+        ArrayList<Integer> text = CurrentUserEvents.getInstance().getUserEvents();
+        GenericEvent temp = (GenericEvent) getItem(position);
+        int x = temp.getId();
+        if (text.contains(temp.getId())) {
             return true;
+        } else {
+            return false;
         }
-    return false;
+
 
     }
 }

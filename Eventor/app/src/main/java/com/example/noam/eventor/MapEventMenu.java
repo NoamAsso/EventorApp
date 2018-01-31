@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -54,16 +55,16 @@ public class MapEventMenu extends Fragment implements OnMapReadyCallback {
     private static final int REQUEST_CODE = 1;
     MapView mapView;
     GoogleMap map;
-    Button myLocation;
+    FloatingActionButton myLocation;
     LocationManager mLocationManager;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_map_event_menu, container, false);
-        Button myLocation = (Button) v.findViewById(R.id.my_location_button);
+
+        myLocation = (FloatingActionButton) v.findViewById(R.id.my_location_button);
         // Gets the MapView from the XML layout and creates it
         mapView = (MapView) v.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
-        myLocation = (Button) v.findViewById(R.id.my_location_button);
         //mapView.loca = YES;
 
         mapView.getMapAsync(this);

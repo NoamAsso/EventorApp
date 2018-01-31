@@ -32,7 +32,7 @@ import java.util.List;
 public class FragmentOne extends Fragment {
     ListView list;
     AddItemAdapter adapter;
-   // String result;
+    // String result;
     SwipeRefreshLayout mSwipeRefreshView;
 
     public FragmentOne() {
@@ -45,7 +45,7 @@ public class FragmentOne extends Fragment {
         View v = inflater.inflate(R.layout.fragment_one, container, false);
         list = (ListView) v.findViewById(R.id.eventlist1);
 
-
+        adapter = AddItemAdapter.getInstance();
         mSwipeRefreshView = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
         mSwipeRefreshView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -66,7 +66,7 @@ public class FragmentOne extends Fragment {
             public void onScroll(AbsListView view, int firstVisibleItem,
                                  int visibleItemCount, int totalItemCount) {
                 boolean enable = false;
-                if(list != null && list.getChildCount() > 0){
+                if (list != null && list.getChildCount() > 0) {
                     // check if the first item of the list is visible
                     boolean firstItemVisible = list.getFirstVisiblePosition() == 0;
                     // check if the top of the first item is visible
@@ -75,9 +75,10 @@ public class FragmentOne extends Fragment {
                     enable = firstItemVisible && topOfFirstItemVisible;
                 }
                 mSwipeRefreshView.setEnabled(enable);
-            }});
+            }
+        });
 
-        GetListFromServer();
+        //GetListFromServer();
 
         return v;
     }
@@ -85,7 +86,7 @@ public class FragmentOne extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        GetListFromServer();
+        //GetListFromServer();
     }
 
     public void GetListFromServer() {
@@ -102,45 +103,20 @@ public class FragmentOne extends Fragment {
                         if (result != "[]") {
                             Gson gson = new Gson();
                             ArrayList<GenericEvent> eventsArray;
-                            eventsArray = gson.fromJson(result, new TypeToken<List<GenericEvent>>() {}.getType());
+                            eventsArray = gson.fromJson(result, new TypeToken<List<GenericEvent>>() {
+                            }.getType());
+                            adapter.setModel(null);
 
-                            adapter = AddItemAdapter.getInstance();
+
                             if (adapter.setModel(eventsArray)) {
                                 adapter.setContext(getActivity());
+                                adapter.notifyDataSetChanged();
+                                list.setAdapter(adapter);
                             }
 
-                            instance.addRequest(new GetEventsOfUserRequest(CurrentUser.getInstance().getUser().getUserId(),new ServerCallback() {
-                                @Override
-                                public void onSuccess(Object res, int statusCode) {
-                                    final String result2 = (String) res;
-                                    Log.e("Fragment One second", result2);
-                                    getActivity().runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                        Gson gson = new Gson();
 
-                                        ArrayList<Integer> userEventsIDsArray;
-
-                                        if (!result2.equals("[]")) {
-                                            userEventsIDsArray = gson.fromJson(result2, new TypeToken<List<Integer>>() {
-                                            }.getType());
-                                            CurrentUserEvents.getInstance().setUserEvents(userEventsIDsArray);
-                                        }
-
-                                        list.setAdapter(adapter);
-                                        adapter.notifyDataSetChanged();
-                                        }
-                                    });
-                                }
-
-                                @Override
-                                public void onFailure(Object err, int statusCode) {
-                                    Toast.makeText(getActivity().getApplicationContext(), "failure to receive message", Toast.LENGTH_SHORT).show();
-                                    Log.e("Fragment2", "Connection to Server failed");
-                                }
-                            }));
                         } else
-                            Log.e("Fragment One","Can't initialize model");
+                            Log.e("Fragment One", "Can't initialize model");
                     }
                 });
             }
