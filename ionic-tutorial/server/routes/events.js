@@ -142,7 +142,7 @@ exports.updateAttend = function (req, res, next) {
                         ' )',usersToSend,(err,userRows) => {
                             if (err) {
                               return console.log(err.message);
-                            }                            
+                            }
                             userRows.forEach((userRow) => {
                                 toSend.push(userRow);
                             });

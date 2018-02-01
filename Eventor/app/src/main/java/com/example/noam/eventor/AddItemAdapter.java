@@ -138,16 +138,6 @@ public class AddItemAdapter extends BaseAdapter {
             join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
         }
 
-        /*
-        if (CurrentUserEvents.getInstance().getUserEvents() != null) {
-            if (CurrentUserEvents.getInstance().getUserEvents().contains(position+1)) {
-                join.setEnabled(false);
-                join.setText("Joined");
-                join.setTextColor(Color.GRAY);
-                join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
-            }
-        }
-         */
         //sets the text for item name and item description from the current item object
         title.setText(currentItem.getCategory());
         year = currentItem.getDate().getYear();
@@ -248,7 +238,7 @@ public class AddItemAdapter extends BaseAdapter {
                         public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
-                                 JoinEvent((GenericEvent) getItem(position));
+                                 JoinEvent((GenericEvent) getItem(position),position);
                                  break;
                             case DialogInterface.BUTTON_NEGATIVE:
                                  break;
@@ -270,7 +260,7 @@ public class AddItemAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void JoinEvent(GenericEvent event) {
+    public void JoinEvent(GenericEvent event, final int position) {
 
         NetworkManager instance = NetworkManager.getInstance();
         CurrentUser uInstance = CurrentUser.getInstance();
@@ -293,7 +283,7 @@ public class AddItemAdapter extends BaseAdapter {
 
                     Intent myIntent = new Intent(context, EventPage.class);
                     Bundle b = new Bundle();
-                    b.putInt("key", 2);
+                    b.putInt("key", position);
                     myIntent.putExtras(b);
                     context.startActivity(myIntent);
                     }
