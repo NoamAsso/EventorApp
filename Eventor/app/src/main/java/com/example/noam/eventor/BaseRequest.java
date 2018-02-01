@@ -1,5 +1,10 @@
 package com.example.noam.eventor;
 
+
+/**
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
+ */
 /**
  * Created by itayrin on 1/19/2018.
  */

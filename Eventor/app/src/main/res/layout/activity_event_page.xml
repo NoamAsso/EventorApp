@@ -9,356 +9,377 @@
     tools:context="com.example.noam.eventor.EventPage">
 
 
-
-
     <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="550dp"
-            android:layout_above="@+id/bottom_navigation"
-            android:layout_alignParentTop="true">
-    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
+        android:layout_height="580dp"
+        android:layout_above="@+id/bottom_navigation"
+        android:layout_alignParentTop="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp">
-
-            <RelativeLayout
-                android:layout_width="0dip"
-                android:layout_height="fill_parent"
-                android:layout_weight="0.03"></RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dip"
-                android:layout_height="fill_parent"
-                android:layout_weight="0.94">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/event_page_background2"
-                    android:orientation="vertical">
+            android:orientation="vertical">
 
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp">
 
-                        <TextView
-                            android:id="@+id/createdBy"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="Created by:"
-                            android:textColor="@android:color/black"
-                            android:textSize="12sp" />
+                <RelativeLayout
+                    android:layout_width="0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.03"></RelativeLayout>
 
-                        <TextView
-                            android:id="@+id/event_creator_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="10dp"
-                            android:text="username"
-                            android:textColor="@android:color/black"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="20dp" />
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center">
-
-                        <TextView
-                            android:id="@+id/event_category"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Football"
-                            android:textStyle="bold"
-                            android:textColor="@android:color/black"
-                            android:textSize="30sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="10dp"
-                            android:text="game"
-                            android:textStyle="bold"
-                            android:textColor="@android:color/black"
-                            android:textSize="30sp" />
-                    </LinearLayout>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="10dp" />
-                    <ImageView
-                        android:id="@+id/event_pic"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        android:paddingBottom="20dp"
-                        android:paddingTop="10dp"
-                        android:background="@drawable/add_image" />
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="20dp" />
-                    <View
-                        android:layout_width="240dp"
-                        android:layout_height="1dp"
-                        android:layout_gravity="center"
-                        android:background="#303030"
-                        android:paddingTop="2dp" />
-
-
+                <RelativeLayout
+                    android:layout_width="0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.94">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center">
-
-                        <TextView
-                            android:id="@+id/event_date"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingBottom="3dp"
-                            android:text="Today"
-                            android:paddingRight="30dp"
-                            android:textColor="@android:color/black"
-                            android:textSize="20sp" />
-
-                        <TextView
-                            android:id="@+id/event_time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingBottom="3dp"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="20dp"
-                            android:text="At: 20:00"
-                            android:textColor="@android:color/black"
-                            android:textSize="30sp" />
-
-
-                    </LinearLayout>
-                    <Button
-                        android:id="@+id/reminder"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center"
-                        android:text="Set reminder"
-                        android:textAllCaps="false" />
-                    <View
-                        android:layout_width="240dp"
-                        android:layout_height="1dp"
-                        android:layout_gravity="center"
-                        android:background="#303030"
-                        android:paddingTop="2dp" />
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="10dp" />
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:gravity="center"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/event_page_background2"
                         android:orientation="vertical">
-                        <TextView
-                            android:id="@+id/game_address"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:paddingBottom="1dp"
-                            android:paddingTop="10dp"
-                            android:text="Game address:"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:textColor="@android:color/black"
-                            android:textSize="15sp" />
-                        <TextView
-                            android:id="@+id/place_address"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:paddingBottom="10dp"
-                            android:paddingTop="3dp"
-                            android:text="Location"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:textColor="@android:color/black"
-                            android:textSize="20sp" />
-                        <Button
-                            android:id="@+id/get_directions"
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:text="Get directions"
-                            android:paddingRight="10dp"
-                            android:paddingLeft="10dp"
-                            android:textAllCaps="false"
-                            android:background="@drawable/curve_edges_register"/>
 
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="10dp" />
-                    <View
-                        android:layout_width="320dp"
-                        android:layout_height="1dp"
-                        android:layout_gravity="center"
-                        android:background="#303030"
-                        android:paddingTop="2dp" />
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="10dp" />
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/createdBy"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Created by:"
+                                android:textColor="@android:color/black"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/event_creator_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="10dp"
+                                android:text="username"
+                                android:textColor="@android:color/black"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/event_category"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Football"
+                                android:textColor="@android:color/black"
+                                android:textSize="30sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="10dp"
+                                android:text="game"
+                                android:textColor="@android:color/black"
+                                android:textSize="30sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp" />
+
+                        <ImageView
+                            android:id="@+id/event_pic"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/add_image"
+                            android:paddingBottom="20dp"
+                            android:paddingTop="10dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp" />
+
+                        <View
+                            android:layout_width="240dp"
+                            android:layout_height="1dp"
+                            android:layout_gravity="center"
+                            android:background="#303030"
+                            android:paddingTop="2dp" />
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/event_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingBottom="3dp"
+                                android:paddingRight="30dp"
+                                android:text="Today"
+                                android:textColor="@android:color/black"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/event_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingBottom="3dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="20dp"
+                                android:text="At: 20:00"
+                                android:textColor="@android:color/black"
+                                android:textSize="30sp" />
+
+
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/reminder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:text="Set reminder"
+                            android:textAllCaps="false" />
+
+                        <View
+                            android:layout_width="240dp"
+                            android:layout_height="1dp"
+                            android:layout_gravity="center"
+                            android:background="#303030"
+                            android:paddingTop="2dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp">
+
+                            <TextView
+                                android:id="@+id/game_address"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:paddingBottom="1dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:paddingTop="10dp"
+                                android:text="Game address:"
+                                android:textColor="@android:color/black"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:id="@+id/place_address"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:paddingBottom="10dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:paddingTop="3dp"
+                                android:text="Location"
+                                android:textColor="@android:color/black"
+                                android:textSize="20sp" />
+
+                            <Button
+                                android:id="@+id/get_directions"
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/curve_edges_register"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:text="Get directions"
+                                android:textAllCaps="false" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp" />
+
+                        <View
+                            android:layout_width="320dp"
+                            android:layout_height="1dp"
+                            android:layout_gravity="center"
+                            android:background="#303030"
+                            android:paddingTop="2dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="Description:"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="16sp" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="70dp"
+                                    android:background="@drawable/event_page_background3"
+                                    android:gravity="center">
+
+                                    <TextView
+                                        android:id="@+id/event_description"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingLeft="10dp"
+                                        android:text="blalalcccaccccccccccccclalalalalalalallalalalalalalalal"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="18sp" />
+
+                                </LinearLayout>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="7dp"
+                            android:paddingTop="7dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="Description:"
+                                android:paddingLeft="10dp"
+                                android:text="Joined:"
                                 android:textColor="@android:color/black"
-                                android:textSize="16sp" />
+                                android:textSize="20sp" />
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="70dp"
-                                android:background="@drawable/event_page_background3"
-                                android:gravity="center">
+                            <TextView
+                                android:id="@+id/current_joined_number"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="0"
+                                android:textColor="@android:color/black"
+                                android:textSize="20sp" />
 
-                                <TextView
-                                    android:id="@+id/event_description"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:paddingLeft="10dp"
-                                    android:text="blalalcccaccccccccccccclalalalalalalallalalalalalalalal"
-                                    android:textColor="@android:color/black"
-                                    android:textSize="18sp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="/"
+                                android:textColor="@android:color/black"
+                                android:textSize="20sp" />
 
-                            </LinearLayout>
+                            <TextView
+                                android:id="@+id/max_joined_number"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="max"
+                                android:textColor="@android:color/black"
+                                android:textSize="20sp" />
+
+                            <View
+                                android:layout_width="130dp"
+                                android:layout_height="match_parent" />
+
+                            <Button
+                                android:id="@+id/change"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:layout_gravity="end"
+                                android:background="@drawable/curve_edges_button_login"
+                                android:text="change"
+                                android:textAllCaps="false"
+                                android:textColor="@android:color/white" />
+
                         </LinearLayout>
 
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="7dp"
-                        android:paddingTop="7dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:paddingLeft="10dp"
-                            android:text="Joined:"
-                            android:textColor="@android:color/black"
-                            android:textSize="20sp" />
-                        <TextView
-                            android:id="@+id/current_joined_number"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="0"
-                            android:textColor="@android:color/black"
-                            android:textSize="20sp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="/"
-                            android:textColor="@android:color/black"
-                            android:textSize="20sp" />
-                        <TextView
-                            android:id="@+id/max_joined_number"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="max"
-                            android:textColor="@android:color/black"
-                            android:textSize="20sp" />
                         <View
-                            android:layout_width="130dp"
-                            android:layout_height="match_parent" />
-                        <Button
-                            android:id="@+id/change"
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp" />
+
+                        <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="35dp"
-                            android:layout_gravity="end"
-                            android:background="@drawable/curve_edges_button_login"
-                            android:text="change"
-                            android:textAllCaps="false"
-                            android:textColor="@android:color/white" />
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Testling list (no real values)" />
+
+                        <ListView
+                            android:id="@+id/user_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="500dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp" />
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp" />
+
+                        <TextView
+                            android:id="@+id/event_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Event ID: 53"
+                            android:textColor="@android:color/black"
+                            android:textSize="12dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp" />
 
                     </LinearLayout>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Testling list (no real values)"
-                        android:layout_gravity="center"/>
+                </RelativeLayout>
 
-                    <ListView
-                        android:id="@+id/user_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="500dp"/>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="20dp" />
+                <RelativeLayout
+                    android:layout_width="0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.03"></RelativeLayout>
 
 
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="10dp" />
-
-                    <TextView
-                        android:id="@+id/event_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="Event ID: 53"
-                        android:textColor="@android:color/black"
-                        android:textSize="12dp" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp" />
-
-                </LinearLayout>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dip"
-                android:layout_height="fill_parent"
-                android:layout_weight="0.03"></RelativeLayout>
-
+            </LinearLayout>
 
         </LinearLayout>
-
-    </LinearLayout>
         <!-- Here you put the rest of your current view-->
     </android.support.v4.widget.NestedScrollView>
 
@@ -370,6 +391,7 @@
 
         app:behavior_hideable="true"
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floating_button"
             android:layout_width="wrap_content"
@@ -386,9 +408,7 @@
             android:layout_gravity="bottom"></fragment>
 
 
-
     </FrameLayout>
-
 
 
 </android.support.design.widget.CoordinatorLayout>

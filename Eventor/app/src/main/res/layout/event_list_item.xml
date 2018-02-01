@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="380dp"
         android:layout_height="108dp"
@@ -13,10 +13,12 @@
             android:layout_width="match_parent"
             android:layout_height="4dp"
             android:visibility="invisible" />
+
         <LinearLayout
             android:layout_width="378dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <RelativeLayout
                 android:layout_width="4dp"
                 android:layout_height="match_parent"></RelativeLayout>
@@ -100,8 +102,8 @@
 
                         <LinearLayout
                             android:layout_width="68dp"
-                            android:layout_gravity="left"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left">
 
                             <LinearLayout
                                 android:layout_width="68dp"
@@ -208,10 +210,12 @@
                         android:visibility="invisible" />
                 </LinearLayout>
             </LinearLayout>
+
             <View
                 android:layout_width="4dp"
                 android:layout_height="match_parent"
                 android:visibility="invisible" />
+
             <RelativeLayout
                 android:layout_width="5dp"
                 android:layout_height="match_parent"></RelativeLayout>
@@ -222,6 +226,7 @@
             android:layout_width="match_parent"
             android:layout_height="4dp"
             android:visibility="invisible" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="4dp"

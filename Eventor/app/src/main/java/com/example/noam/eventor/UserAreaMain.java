@@ -19,20 +19,24 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.support.v7.widget.Toolbar;
-
+/**
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
+ */
 public class UserAreaMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
+//main screen after login activity!
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     ViewPager viewPager;
     TabLayout tabLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Toolbar toolbar;
         MyAdapter adapter;
-        CharSequence Titles[]={"Recent Events","My Events","Invitations"};
-        int Numboftabs =3;
+        CharSequence Titles[] = {"Recent Events", "My Events", "Invitations"};
+        int Numboftabs = 3;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_area_main);
         Intent intent = getIntent();
@@ -42,7 +46,7 @@ public class UserAreaMain extends AppCompatActivity implements NavigationView.On
         adapter1.setContext(this);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open, R.string.close);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
 
@@ -50,11 +54,11 @@ public class UserAreaMain extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        adapter =  new MyAdapter(getSupportFragmentManager(),Titles,Numboftabs);
+        adapter = new MyAdapter(getSupportFragmentManager(), Titles, Numboftabs);
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
 
-        viewPager.setAdapter(new MyAdapter(getSupportFragmentManager(),Titles,Numboftabs));
+        viewPager.setAdapter(new MyAdapter(getSupportFragmentManager(), Titles, Numboftabs));
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.post(new Runnable() {
             @Override
@@ -74,7 +78,6 @@ public class UserAreaMain extends AppCompatActivity implements NavigationView.On
         });
 
 
-
     }
 
     @Override
@@ -89,14 +92,14 @@ public class UserAreaMain extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-            MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.navigation_menu, menu);
-            return true;
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.navigation_menu, menu);
+        return true;
     }
 
-        @Override
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(mToggle.onOptionsItemSelected(item)){
+        if (mToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);

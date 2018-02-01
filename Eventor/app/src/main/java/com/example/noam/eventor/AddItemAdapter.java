@@ -36,7 +36,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 
 /**
- * Created by Noam on 19/01/2018.
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
  */
 
 public class AddItemAdapter extends BaseAdapter {
@@ -111,14 +112,15 @@ public class AddItemAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         Log.e("GetView", "position " + position);
         positionL = position;
-        int year, month, day;
+
         Date datecheck = new Date();
         // inflate the layout for each list row
         if (convertView == null) {
             convertView = LayoutInflater.from(context).
                     inflate(R.layout.event_list_item, parent, false);
         }
-        final GenericEvent currentItem = (GenericEvent) getItem(position);
+        final GenericEvent currentItem = (GenericEvent) getItem(position);//current event on list
+
         GeoDataClient mGeoDataClient = Places.getGeoDataClient(context, null);
         PlaceDetectionClient mPlaceDetectionClient = Places.getPlaceDetectionClient(context, null);
         Button detailButton = (Button) convertView.findViewById(R.id.details_button);
@@ -131,17 +133,25 @@ public class AddItemAdapter extends BaseAdapter {
         final TextView location = (TextView) convertView.findViewById(R.id.location_item);
         ImageView image = (ImageView) convertView.findViewById(R.id.image_item);
         join = (Button) convertView.findViewById(R.id.event_join);
+
         CurrentUser Uinstance = CurrentUser.getInstance();
         currentUser = CurrentUser.getInstance().getUser();
+
+        title.setText(currentItem.getCategory());
         currentUsers.setText(Integer.toString(currentItem.getCurrentUsers()));
 
-        if (CheckIfJoined(position)) {
+        if (currentItem.getMaxUsers() == currentItem.getCurrentUsers()) {
+            join.setEnabled(false);
+            join.setText("Full");
+            join.setTextColor(Color.RED);
+            join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
+        } else if (CheckIfJoined(position)) {
             join.setEnabled(false);
             join.setText("Joined");
             join.setTextColor(Color.GRAY);
             join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
         } else {
-            if (join.getText() == "Joined") {
+            if (join.getText() == "Joined" || join.getText() == "Full") {
                 join.setEnabled(true);
                 join.setText("Join");
                 join.setTextColor(Color.WHITE);
@@ -149,7 +159,7 @@ public class AddItemAdapter extends BaseAdapter {
             }
         }
         //sets the text for item name and item description from the current item object
-        title.setText(currentItem.getCategory());
+        int year, month, day;
         year = currentItem.getDate().getYear();
         month = currentItem.getDate().getMonth();
         day = currentItem.getDate().getDate();
@@ -164,8 +174,10 @@ public class AddItemAdapter extends BaseAdapter {
                 default:
                     date.setText(Integer.toString(day) + "/" + Integer.toString(month) + "/" + Integer.toString(year));
             }
-        }
-        date.setText(Integer.toString(day) + "/" + Integer.toString(month) + "/" + Integer.toString(year));
+        } else
+            date.setText(Integer.toString(day) + "/" + Integer.toString(month) + "/" + Integer.toString(year));
+
+        //fixing time text
         if (currentItem.getDate().getMinutes() < 10 && currentItem.getDate().getHours() > 9) {
             timeHrsMin.setText("At: " + currentItem.getDate().getHours() + ":0" + currentItem.getDate().getMinutes());
         } else if (currentItem.getDate().getHours() < 10 && currentItem.getDate().getMinutes() > 9) {
@@ -175,6 +187,7 @@ public class AddItemAdapter extends BaseAdapter {
         else
             timeHrsMin.setText("At: " + currentItem.getDate().getHours() + ":" + currentItem.getDate().getMinutes());
 
+        //setting game icon
         String imageicon = currentItem.getCategory();
         switch (imageicon) {
             case "Football":
@@ -203,13 +216,16 @@ public class AddItemAdapter extends BaseAdapter {
                 break;
         }
 
+
         if (currentItem.getMaxUsers() == Integer.MAX_VALUE) {
             maxNumOfUsers.setText("Unlimited");
         } else {
             maxNumOfUsers.setText(Integer.toString(currentItem.getMaxUsers()));
         }
 
-        price.setText("Price: "+Integer.toString(currentItem.getPrice())+"₪");
+        price.setText("Price: " + Integer.toString(currentItem.getPrice()) + "₪");
+
+        //getting address from PlaceID google map API
         String placeId = currentItem.getPlaceID();
         mGeoDataClient.getPlaceById(placeId).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
             public static final String TAG = "AddItemAdapter";
@@ -234,26 +250,28 @@ public class AddItemAdapter extends BaseAdapter {
                 currentIndex = position;
                 UserListAdapter adapter = UserListAdapter.getInstance();
                 ArrayList<User> test = new ArrayList<>();//future list', just a test
+
+                //hard coded list for debug, will be dynamic in the future
                 User user = CurrentUser.getInstance().getUser();
-                User user2 = new User(0,"Jacob",
+                User user2 = new User(0, "Jacob",
                         "12345",
                         26,
                         "test",
                         "123456",
                         "Male");
-                User user3 = new User(0,"David",
+                User user3 = new User(0, "David",
                         "12345",
                         21,
                         "test",
                         "123456",
                         "Male");
-                User user4 = new User(0,"Json",
+                User user4 = new User(0, "Json",
                         "12345",
                         23,
                         "test",
                         "123456",
                         "Male");
-                User user5 = new User(0,"Kevin",
+                User user5 = new User(0, "Kevin",
                         "12345",
                         22,
                         "test",
@@ -267,13 +285,13 @@ public class AddItemAdapter extends BaseAdapter {
                 adapter.setModel(test);
                 adapter.notifyDataSetChanged();
 
+                //lunching Event detalis page
                 Intent myIntent = new Intent(context, EventPage.class);
                 Bundle b = new Bundle();
                 b.putInt("key", position);
                 b.putInt("from", 1);
                 myIntent.putExtras(b);
                 context.startActivity(myIntent);
-                //finish();
             }
         });
         join.setOnClickListener(new View.OnClickListener() {
@@ -287,12 +305,13 @@ public class AddItemAdapter extends BaseAdapter {
 
                             switch (which) {
                                 case DialogInterface.BUTTON_POSITIVE:
-                                    JoinEvent((GenericEvent) getItem(position),position);
+                                    CurrentUserEvents.getInstance().addEventId(currentItem.getId());
+                                    currentItem.setCurrentUsers(currentItem.getCurrentUsers() + 1);
                                     join.setEnabled(false);
                                     join.setText("Joined");
                                     join.setTextColor(Color.GRAY);
                                     join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
-
+                                    JoinEvent((GenericEvent) getItem(position),position);
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
                                     break;
@@ -363,15 +382,12 @@ public class AddItemAdapter extends BaseAdapter {
     }
 
     public boolean CheckIfJoined(int position) {
-        ArrayList<Integer> text = CurrentUserEvents.getInstance().getUserEvents();
-        GenericEvent temp = (GenericEvent) getItem(position);
-        int x = temp.getId();
-        if (text.contains(temp.getId())) {
+        ArrayList<Integer> events = CurrentUserEvents.getInstance().getUserEvents();
+        GenericEvent eventToCheck = (GenericEvent) getItem(position);
+        if (events.contains(eventToCheck.getId())) {
             return true;
         } else {
             return false;
         }
-
-
     }
 }

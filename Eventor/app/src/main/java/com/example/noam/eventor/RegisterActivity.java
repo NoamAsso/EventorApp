@@ -20,8 +20,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
-
-public class RegisterActivity extends AppCompatActivity {
+/**
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
+ */
+public class RegisterActivity extends AppCompatActivity {// register to eventer
 
 
     EditText userName;
@@ -45,7 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
         registerButton = (Button) findViewById(R.id.register_button);
 
         final Spinner spinnerGender = (Spinner) findViewById(R.id.spinner_gender);
-        String[] items = new String[] {"Male", "Female", "Gay"};
+        String[] items = new String[] {"Male", "Female"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -89,7 +92,7 @@ public class RegisterActivity extends AppCompatActivity {
                     userAge.setBackgroundResource(R.drawable.rounded_edittext_red );
                 }
                 if(!error){
-                    User user = new User(0,userName.getText().toString(),
+                    User user = new User(0, userName.getText().toString(),
                             userPassword.getText().toString(),
                             Integer.parseInt(userAge.getText().toString()),
                             userEmail.getText().toString(),

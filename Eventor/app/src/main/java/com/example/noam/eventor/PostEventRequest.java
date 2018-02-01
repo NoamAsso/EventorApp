@@ -7,7 +7,10 @@ import static com.example.noam.eventor.NetworkManager.ReqMethod.POST;
 /**
  * Created by itayrin on 1/22/2018.
  */
-
+/**
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
+ */
 public class PostEventRequest extends BaseRequest {
 
     String json;

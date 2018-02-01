@@ -48,7 +48,10 @@ import static android.content.Context.LOCATION_SERVICE;
 /**
  * Created by Itay on 18/1/2018
  */
-
+/**
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
+ */
 public class MapEventMenu extends Fragment implements OnMapReadyCallback {
     private static final String DESCRIBABLE_KEY = "describable_key";
 

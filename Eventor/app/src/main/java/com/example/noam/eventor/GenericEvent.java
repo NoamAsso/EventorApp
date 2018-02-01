@@ -3,7 +3,10 @@ package com.example.noam.eventor;
 /**
  * Created by Noam on 13/01/2018.
  */
-
+/**
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
+ */
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -11,7 +14,7 @@ import java.util.Date;
  * Created by Noam on 12/01/2018.
  */
 
-public class GenericEvent {
+public class GenericEvent {//Eevent object!
 
     private int id;
     private int adminUserId;

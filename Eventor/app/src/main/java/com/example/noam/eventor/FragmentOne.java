@@ -31,12 +31,16 @@ import java.util.List;
 /**
  * Created by Itay on 18/1/2018
  */
-
+/**
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
+ */
 public class FragmentOne extends Fragment {
     ListView list;
     TextView recentEvents;
     AddItemAdapter adapter;
     // String result;
+    ArrayList<GenericEvent> eventsArray;
     SwipeRefreshLayout mSwipeRefreshView;
 
     public FragmentOne() {
@@ -53,7 +57,7 @@ public class FragmentOne extends Fragment {
         adapter.setContext(getActivity());
         adapter.notifyDataSetChanged();
         list.setAdapter(adapter);
-        Typeface myFont = Typeface.createFromAsset(getActivity().getAssets(),"fonts/myriad_light.otf");
+        Typeface myFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/myriad_light.otf");
         mSwipeRefreshView = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
         mSwipeRefreshView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -86,10 +90,11 @@ public class FragmentOne extends Fragment {
             }
         });
 
-        GetListFromServer();
+        //GetListFromServer();
 
         return v;
     }
+
     public void GetListFromServer() {
         final NetworkManager instance = NetworkManager.getInstance();
         instance.addRequest(new GetEventsRequest(new ServerCallback() {
@@ -103,15 +108,11 @@ public class FragmentOne extends Fragment {
                     public void run() {
                         if (result != "[]") {
                             Gson gson = new Gson();
-                            ArrayList<GenericEvent> eventsArray;
+
                             eventsArray = gson.fromJson(result, new TypeToken<List<GenericEvent>>() {
                             }.getType());
-                            adapter.setModel(null);
-                            if (adapter.setModel(eventsArray)) {
-                                adapter.setContext(getActivity());
-                                adapter.notifyDataSetChanged();
-                                list.setAdapter(adapter);
-                            }
+                            UpdateCurrentUser();
+
 
                         } else
                             Log.e("Fragment One", "Can't initialize model");
@@ -126,12 +127,47 @@ public class FragmentOne extends Fragment {
             }
         }));
     }//fetchFromNetwork
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //GetListFromServer();
+        GetListFromServer();
     }
 
+    public void UpdateCurrentUser() {
+
+        final NetworkManager instance = NetworkManager.getInstance();
+        instance.addRequest(new GetEventsOfUserRequest(CurrentUser.getInstance().getUser().getUserId(), new ServerCallback() {
+            @Override
+            public void onSuccess(Object res, int statusCode) {
+                final String result2 = (String) res;
+                Log.e("Fragment One second", result2);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Gson gson = new Gson();
+                        ArrayList<Integer> userEventsIDsArray;
+                        userEventsIDsArray = gson.fromJson(result2, new TypeToken<List<Integer>>() {
+                        }.getType());
+                        CurrentUserEvents.getInstance().setUserEvents(userEventsIDsArray);
+                        adapter.setModel(null);
+                        if (adapter.setModel(eventsArray)) {
+                            adapter.setContext(getActivity());
+                            adapter.notifyDataSetChanged();
+                            list.setAdapter(adapter);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Object err, int statusCode) {
+                Toast.makeText(getActivity().getApplicationContext(), "failure to receive message", Toast.LENGTH_SHORT).show();
+                Log.e("main menu", "Connection to Server failed for userEvents");
+            }
+        }));
+
+    }
 
 }

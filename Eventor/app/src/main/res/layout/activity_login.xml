@@ -7,19 +7,21 @@
     tools:context="com.example.noam.eventor.LoginActivity">
 
     <VideoView
+        android:id="@+id/bgVideoView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:id="@+id/bgVideoView"
-        app:layout_constraintTop_toTopOf= "parent"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent" android:layout_height="fill_parent"
-        android:id="@+id/layoutContainer" android:orientation="horizontal">
+        android:id="@+id/layoutContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal">
+
         <RelativeLayout
             android:layout_width="0dip"
             android:layout_height="fill_parent"
@@ -43,9 +45,10 @@
                 android:layout_alignParentTop="true"
                 android:gravity="center"
                 android:paddingTop="100dp"
-                android:text="Evnter8"
+                android:text="Eventer8"
                 android:textColor="@android:color/white"
-                android:textSize="80sp" />
+                android:textSize="70sp" />
+
             <TextView
                 android:id="@+id/app_slogan"
                 android:layout_width="match_parent"
@@ -56,7 +59,7 @@
                 android:layout_marginLeft="32dp"
                 android:layout_marginStart="32dp"
                 android:gravity="center"
-                android:paddingTop="200dp"
+                android:paddingTop="190dp"
                 android:text="Creat. Join. play."
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
@@ -90,6 +93,7 @@
 
 
                 <Button
+                    android:id="@+id/facebook"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/curve_edges_button_facebook"
@@ -98,22 +102,23 @@
                     android:text="Facebook login"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"></Button>
+
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="10dp"
                     android:visibility="invisible"></View>
+
                 <Button
                     android:id="@+id/register"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="center"
                     android:background="@drawable/curve_edges_register"
+                    android:gravity="center"
 
                     android:text="Register"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"></Button>
-
 
 
                 <CheckBox
@@ -123,16 +128,15 @@
                     android:visibility="invisible" />
 
 
-
             </LinearLayout>
             <!-- 70% Width End-->
 
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="0dip"
             android:layout_height="fill_parent"
-            android:layout_weight="0.15">
-        </RelativeLayout>
+            android:layout_weight="0.15"></RelativeLayout>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

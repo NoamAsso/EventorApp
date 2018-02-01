@@ -25,7 +25,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
+ */
 public class LoginMenu extends AppCompatActivity {
     EditText username;
     EditText userPassword;
@@ -34,6 +37,7 @@ public class LoginMenu extends AppCompatActivity {
     String userName;
     String password;
     AddItemAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,9 +48,9 @@ public class LoginMenu extends AppCompatActivity {
         TextView title = (TextView) findViewById(R.id.app_title2);
         TextView slogan = (TextView) findViewById(R.id.app_slogan2);
         TextView logint = (TextView) findViewById(R.id.logintext);
-        Typeface myFont = Typeface.createFromAsset(getAssets(),"fonts/avefedan.ttf");
-        Typeface myFont2 = Typeface.createFromAsset(getAssets(),"fonts/Quikhand.ttf");
-        Typeface myFont3 = Typeface.createFromAsset(getAssets(),"fonts/myriad_light.otf");
+        Typeface myFont = Typeface.createFromAsset(getAssets(), "fonts/avefedan.ttf");
+        Typeface myFont2 = Typeface.createFromAsset(getAssets(), "fonts/Quikhand.ttf");
+        Typeface myFont3 = Typeface.createFromAsset(getAssets(), "fonts/myriad_light.otf");
         title.setTypeface(myFont);
         slogan.setTypeface(myFont2);
         logint.setTypeface(myFont3);
@@ -165,6 +169,7 @@ public class LoginMenu extends AppCompatActivity {
 
 
     }
+
     public void GetListFromServer() {
         final NetworkManager instance = NetworkManager.getInstance();
         instance.addRequest(new GetEventsRequest(new ServerCallback() {

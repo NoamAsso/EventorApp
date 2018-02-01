@@ -22,7 +22,10 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
+ */
 /**
  * Created by Itay on 18/1/2018
  */
@@ -31,6 +34,7 @@ public class FragmentTwo extends Fragment {
 
     ListView list;
     String result;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -41,6 +45,7 @@ public class FragmentTwo extends Fragment {
 
         return view;
     }
+
     public void perform(View v) {
 
         list = (ListView) v.findViewById(R.id.eventlist2);
@@ -68,14 +73,14 @@ public class FragmentTwo extends Fragment {
         ArrayList<Integer> userEvents = CurrentUserEvents.getInstance().getUserEvents();
         //adapter.AddObj(eventTest);
 
-            for (int i = 0; i < eventList.size(); i++) {
-                for (int j = 0; j < userEvents.size(); j++) {
-                    if (eventList.get(i).getId() == userEvents.get(j))
-                        myEvents.add(eventList.get(i));
-                }
+        for (int i = 0; i < eventList.size(); i++) {
+            for (int j = 0; j < userEvents.size(); j++) {
+                if (eventList.get(i).getId() == userEvents.get(j))
+                    myEvents.add(eventList.get(i));
             }
-            adapter.setModel(myEvents);
-            adapter.notifyDataSetChanged();
-            list.setAdapter(adapter);
+        }
+        adapter.setModel(myEvents);
+        adapter.notifyDataSetChanged();
+        list.setAdapter(adapter);
     }//fetchFromNetwork
 }

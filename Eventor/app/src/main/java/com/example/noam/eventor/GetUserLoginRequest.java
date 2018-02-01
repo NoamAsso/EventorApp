@@ -5,7 +5,10 @@ import static com.example.noam.eventor.NetworkManager.ReqMethod.POST;
 /**
  * Created by itayrin on 1/25/2018.
  */
-
+/**
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
+ */
 public class GetUserLoginRequest extends BaseRequest {
     String json;
 

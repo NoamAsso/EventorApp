@@ -28,7 +28,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private VideoView mVideoView;
@@ -76,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
-                mediaPlayer.setVolume(0f, 0f);
+                //mediaPlayer.setVolume(0f, 0f);
                 mediaPlayer.setLooping(true);
             }
         });
@@ -94,6 +97,13 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent myIntent = new Intent(LoginActivity.this, RegisterActivity.class);
                 LoginActivity.this.startActivity(myIntent);
+            }
+        });
+        Button facebook = (Button) findViewById(R.id.facebook);
+        facebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Not available yet", Toast.LENGTH_SHORT).show();
             }
         });
 

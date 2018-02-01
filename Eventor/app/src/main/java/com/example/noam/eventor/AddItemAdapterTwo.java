@@ -1,5 +1,6 @@
 package com.example.noam.eventor;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,7 +31,10 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.Date;
-
+/**
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
+ */
 /**
  * Created by Noam on 24/01/2018.
  */
@@ -43,6 +47,7 @@ public class AddItemAdapterTwo extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private Button join;
     private User currentUser;
+    private int positionL;
 
     private AddItemAdapterTwo() {
         model = new ArrayList<>();
@@ -62,13 +67,15 @@ public class AddItemAdapterTwo extends BaseAdapter {
         return currentIndex;
     }
 
-    public void AddObj(GenericEvent obj){
+    public void AddObj(GenericEvent obj) {
         model.add(obj);
     }
-    public void setContext (Context context){
+
+    public void setContext(Context context) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
     }
+
     @Override
     public int getCount() {
         return model.size();
@@ -76,22 +83,22 @@ public class AddItemAdapterTwo extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        if(!model.isEmpty())
+        if (!model.isEmpty())
             return model.get(i);
 
         else
             return null;
     }
-    public ArrayList getModel(){
-        return  model;
+
+    public ArrayList getModel() {
+        return model;
     }
 
-    public boolean setModel(ArrayList<GenericEvent> list){
-        if(list != null){
+    public boolean setModel(ArrayList<GenericEvent> list) {
+        if (list != null) {
             this.model = list;
             return true;
-        }
-        else
+        } else
             return false;
 
     }
@@ -103,6 +110,8 @@ public class AddItemAdapterTwo extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+        Log.e("GetView", "position " + position);
+        positionL = position;
         int year, month, day;
         Date datecheck = new Date();
         // inflate the layout for each list row
@@ -110,7 +119,6 @@ public class AddItemAdapterTwo extends BaseAdapter {
             convertView = LayoutInflater.from(context).
                     inflate(R.layout.event_list_item, parent, false);
         }
-
         final GenericEvent currentItem = (GenericEvent) getItem(position);
         GeoDataClient mGeoDataClient = Places.getGeoDataClient(context, null);
         PlaceDetectionClient mPlaceDetectionClient = Places.getPlaceDetectionClient(context, null);
@@ -127,21 +135,25 @@ public class AddItemAdapterTwo extends BaseAdapter {
         CurrentUser Uinstance = CurrentUser.getInstance();
         currentUser = CurrentUser.getInstance().getUser();
         currentUsers.setText(Integer.toString(currentItem.getCurrentUsers()));
-
-        if (CheckIfJoined(position)) {
+        if (currentItem.getMaxUsers() == currentItem.getCurrentUsers()) {
+            join.setEnabled(false);
+            join.setText("Full");
+            join.setTextColor(Color.RED);
+            join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
+        } else if (CheckIfJoined(position)) {
             join.setEnabled(false);
             join.setText("Joined");
             join.setTextColor(Color.GRAY);
             join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
-        }
-        else{
-            if(join.getText()=="Joined"){
+        } else {
+            if (join.getText() == "Joined") {
                 join.setEnabled(true);
                 join.setText("Join");
                 join.setTextColor(Color.WHITE);
                 join.setBackground(context.getResources().getDrawable(R.drawable.curve_edges_button_location));
             }
         }
+
         //sets the text for item name and item description from the current item object
         title.setText(currentItem.getCategory());
         year = currentItem.getDate().getYear();
@@ -159,6 +171,7 @@ public class AddItemAdapterTwo extends BaseAdapter {
                     date.setText(Integer.toString(day) + "/" + Integer.toString(month) + "/" + Integer.toString(year));
             }
         }
+        date.setText(Integer.toString(day) + "/" + Integer.toString(month) + "/" + Integer.toString(year));
         if (currentItem.getDate().getMinutes() < 10 && currentItem.getDate().getHours() > 9) {
             timeHrsMin.setText("At: " + currentItem.getDate().getHours() + ":0" + currentItem.getDate().getMinutes());
         } else if (currentItem.getDate().getHours() < 10 && currentItem.getDate().getMinutes() > 9) {
@@ -202,7 +215,7 @@ public class AddItemAdapterTwo extends BaseAdapter {
             maxNumOfUsers.setText(Integer.toString(currentItem.getMaxUsers()));
         }
 
-        price.setText("Price: "+Integer.toString(currentItem.getPrice())+"₪");
+        price.setText("Price: " + Integer.toString(currentItem.getPrice()) + "₪");
         String placeId = currentItem.getPlaceID();
         mGeoDataClient.getPlaceById(placeId).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
             public static final String TAG = "AddItemAdapter";
@@ -225,6 +238,41 @@ public class AddItemAdapterTwo extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 currentIndex = position;
+                UserListAdapter adapter = UserListAdapter.getInstance();
+                ArrayList<User> test = new ArrayList<>();//future list', just a test
+                User user = CurrentUser.getInstance().getUser();
+                User user2 = new User(0, "Jacob",
+                        "12345",
+                        26,
+                        "test",
+                        "123456",
+                        "Male");
+                User user3 = new User(0, "David",
+                        "12345",
+                        21,
+                        "test",
+                        "123456",
+                        "Male");
+                User user4 = new User(0, "Json",
+                        "12345",
+                        23,
+                        "test",
+                        "123456",
+                        "Male");
+                User user5 = new User(0, "Kevin",
+                        "12345",
+                        22,
+                        "test",
+                        "123456",
+                        "Male");
+                test.add(user);
+                test.add(user2);
+                test.add(user3);
+                test.add(user4);
+                test.add(user5);
+                adapter.setModel(test);
+                adapter.notifyDataSetChanged();
+
                 Intent myIntent = new Intent(context, EventPage.class);
                 Bundle b = new Bundle();
                 b.putInt("key", position);
@@ -244,12 +292,13 @@ public class AddItemAdapterTwo extends BaseAdapter {
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which) {
                                 case DialogInterface.BUTTON_POSITIVE:
-                                    //JoinEvent((GenericEvent) getItem(position));
+                                    CurrentUserEvents.getInstance().addEventId(currentItem.getId());
+                                    currentItem.setCurrentUsers(currentItem.getCurrentUsers() + 1);
                                     join.setEnabled(false);
                                     join.setText("Joined");
                                     join.setTextColor(Color.GRAY);
                                     join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
-
+                                    JoinEvent((GenericEvent) getItem(position));
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
                                     break;
@@ -268,29 +317,66 @@ public class AddItemAdapterTwo extends BaseAdapter {
                 //finish();
             }
         });
+
         return convertView;
     }
 
-    public Bitmap StringToBitMap(String encodedString){
+    public void JoinEvent(GenericEvent event) {
+
+        NetworkManager instance = NetworkManager.getInstance();
+        CurrentUser uInstance = CurrentUser.getInstance();
+        User user = uInstance.getUser();
+        instance.addRequest(new UpdateJoinRequest(user.getUserId(), event.getId(), new ServerCallback() {
+
+            @Override
+            public void onSuccess(Object res, int statusCode) {
+                final String tempresult = (String) res;
+                Log.e("AddItemAdapter", tempresult);
+
+                ((Activity) context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                    /*Gson gson = new Gson();
+                    GenericEvent event = gson.fromJson(tempresult, GenericEvent.class);*/
+                        Toast.makeText(context, "Joined to event!", Toast.LENGTH_SHORT).show();
+
+                        Intent myIntent = new Intent(context, EventPage.class);
+                        Bundle b = new Bundle();
+                        b.putInt("key", positionL);
+                        b.putInt("from", 2);
+                        myIntent.putExtras(b);
+                        context.startActivity(myIntent);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Object err, int statusCode) {
+                Toast.makeText(context.getApplicationContext(), "failure to receive message", Toast.LENGTH_SHORT).show();
+                Log.e("Join request", "Connection to Server failed");
+            }
+        }));
+    }//JoinEvent
+
+
+    public Bitmap StringToBitMap(String encodedString) {
         try {
-            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
             return bitmap;
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.getMessage();
             return null;
         }
     }
+
     public boolean CheckIfJoined(int position) {
-        ArrayList<Integer> text = CurrentUserEvents.getInstance().getUserEvents();
-        GenericEvent temp = (GenericEvent) getItem(position);
-        int x = temp.getId();
-        if (text.contains(temp.getId())) {
+        ArrayList<Integer> events = CurrentUserEvents.getInstance().getUserEvents();
+        GenericEvent eventToCheck = (GenericEvent) getItem(position);
+        if (events.contains(eventToCheck.getId())) {
             return true;
         } else {
             return false;
         }
-
-
     }
 }
