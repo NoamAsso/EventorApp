@@ -3,22 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#30ffffff"
-    android:orientation="vertical"
-    android:gravity="bottom">
-    <android.support.v4.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="bottom"
+    android:orientation="vertical">
+
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swiperefresh2"
         android:layout_width="match_parent"
-        android:gravity="bottom"
-        android:layout_height="510dp">
+        android:layout_height="510dp"
+        android:gravity="bottom">
 
         <ListView
             android:id="@+id/eventlist2"
 
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="7"
-            />
+            android:layout_weight="7" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

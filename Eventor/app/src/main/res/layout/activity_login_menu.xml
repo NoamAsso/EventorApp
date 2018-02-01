@@ -22,6 +22,7 @@
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="0.9">
+
             <TextView
                 android:id="@+id/app_title2"
                 android:layout_width="match_parent"
@@ -31,9 +32,10 @@
                 android:layout_alignParentTop="true"
                 android:gravity="center"
                 android:paddingTop="30dp"
-                android:text="Evnter8"
+                android:text="Eventer8"
                 android:textColor="@android:color/white"
-                android:textSize="80sp" />
+                android:textSize="70sp" />
+
             <TextView
                 android:id="@+id/app_slogan2"
                 android:layout_width="match_parent"
@@ -44,103 +46,104 @@
                 android:layout_marginLeft="32dp"
                 android:layout_marginStart="32dp"
                 android:gravity="center"
-                android:paddingTop="130dp"
+                android:paddingTop="120dp"
                 android:text="Creat. Join. play."
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/logintext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Login"
+                    android:textColor="@android:color/white"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+
+                <EditText
+                    android:id="@+id/username_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/rounded_edittext"
+                    android:cursorVisible="true"
+                    android:hint="Username"
+                    android:inputType="text"
+                    android:paddingStart="10dp"
+                    android:textColorHint="#616161" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+
+                <EditText
+                    android:id="@+id/password_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/rounded_edittext"
+                    android:cursorVisible="true"
+                    android:hint="Password"
+                    android:inputType="text"
+                    android:paddingStart="10dp"
+                    android:password="true"
+                    android:textColorHint="#616161" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/logintext"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="Login"
-                        android:textColor="@android:color/white"
-                        android:textSize="25sp"
-                        />
+                    android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="10dp" />
-
-                    <EditText
-                        android:id="@+id/username_login"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@drawable/rounded_edittext"
-                        android:hint="Username"
-                        android:paddingStart="10dp"
-                        android:cursorVisible="true"
-                        android:inputType="text"
-                        android:textColorHint="#616161"
-                        />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="10dp" />
-
-                    <EditText
-                        android:id="@+id/password_login"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@drawable/rounded_edittext"
-                        android:hint="Password"
-                        android:paddingStart="10dp"
-                        android:password="true"
-                        android:cursorVisible="true"
-                        android:inputType="text"
-                        android:textColorHint="#616161"
-                        />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="3dp" />
-
-                    <LinearLayout
+                    <CheckBox
+                        android:id="@+id/remember"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <CheckBox
-                            android:id="@+id/remember"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.97"
-                            android:checked="true"
-                            android:text="Remember me"
-                            android:textColor="@android:color/white"
-                            />
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.97"
-                            android:paddingEnd="7dp"
-                            android:gravity="right"
-                            android:text="Forgot password?"
-                            android:textColor="@android:color/white"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="10dp" />
-
-                    <Button
-                        android:id="@+id/loginButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:background="@drawable/curve_edges_button_login"
-                        android:text="Login"
-
-
-                        android:textAllCaps="false"
+                        android:layout_weight="0.97"
+                        android:checked="true"
+                        android:text="Remember me"
                         android:textColor="@android:color/white" />
 
-
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.97"
+                        android:gravity="right"
+                        android:paddingEnd="7dp"
+                        android:text="Forgot password?"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp" />
                 </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+
+                <Button
+                    android:id="@+id/loginButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:background="@drawable/curve_edges_button_login"
+                    android:text="Login"
+
+
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white" />
+
+
+            </LinearLayout>
 
 
             <TextView
@@ -149,9 +152,8 @@
                 android:layout_alignParentBottom="true"
                 android:gravity="center"
                 android:text="®all rights reserved to Eventer 2018"
-                android:textSize="10sp"
                 android:textColor="#FFFFFF"
-                ></TextView>
+                android:textSize="10sp"></TextView>
 
 
         </RelativeLayout>
@@ -163,8 +165,6 @@
 
 
     </LinearLayout>
-
-
 
 
 </android.support.constraint.ConstraintLayout>

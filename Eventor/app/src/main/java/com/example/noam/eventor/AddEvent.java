@@ -184,6 +184,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mGeoDataClient = Places.getGeoDataClient(AddEvent.this, null);
         mPlaceDetectionClient = Places.getPlaceDetectionClient(this, null);
         eventDescription = (EditText) findViewById(R.id.description_text);
@@ -203,9 +204,8 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         numParticipant.setEnabled(false);
         price.setEnabled(false);
         locationText.setEnabled(false);
-
-
         context = getApplicationContext();
+
         //spinner
         String[] items = new String[]{"Football", "Basketball", "Volleyball", "Tennis", "Baseball", "Cricket", "Custom"};
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_catgory);
@@ -243,6 +243,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
             @Override
             public void onClick(View view) {
+                //check if valid fields
                 EditTextNormalize();
                 boolean error = false;
                 if (eventDescription.getText().toString().matches("")) {
@@ -265,7 +266,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     error = true;
                     locationText.setBackgroundResource(R.drawable.rounded_edittext_red);
                 }
-                if (!error) {
+                if (!error) {  //all fields are valid creat event
                     Gson gson = new Gson();
                     Date date = new Date();
                     String category;
@@ -292,7 +293,6 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     date.setMinutes(fminute);
 
                     String placeId = place.getId();
-
                     event = new GenericEvent(
                             category,
                             date,
@@ -307,9 +307,9 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                             CurrentUser.getInstance().getUser().getUserId()
                     );
 
+                    //send event to server
                     String json = gson.toJson(event);
                     String toSend = json.toString();
-
                     NetworkManager instance = NetworkManager.getInstance();
                     instance.addRequest(new PostEventRequest(toSend, new ServerCallback() {
 
@@ -320,7 +320,10 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(),"Event successfuly created!", Toast.LENGTH_SHORT).show();
+                                    Intent myIntent = new Intent(AddEvent.this, UserAreaMain.class);
+                                    //myIntent.putExtra("key", value); //Optional parameters
+                                    AddEvent.this.startActivity(myIntent);
                                 }
                             });
                         }
@@ -330,19 +333,14 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                             Log.e("AddEvent", "Connection to Server failed");
                         }
                     }));
-
-
-                    Intent myIntent = new Intent(AddEvent.this, UserAreaMain.class);
-                    //myIntent.putExtra("key", value); //Optional parameters
-                    AddEvent.this.startActivity(myIntent);
                     //finish();
                 } else {
-
                     Toast.makeText(getApplicationContext(), "Some fields are missing", Toast.LENGTH_SHORT).show();
                 }
             }
-            //create button
-        });
+        });//end create button
+
+
 
         locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -411,14 +409,6 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         });
 
     }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent myIntent = new Intent(getApplicationContext(), UserAreaMain.class);
-        startActivityForResult(myIntent, 0);
-        return true;
-
-    }
-
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
         fyear = i;
@@ -481,23 +471,17 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
-
     }
 
     @Override
     public void onConnected(Bundle bundle) {
-
-
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-
     }
 
     private String getStringFromBitmap(Bitmap bitmapPicture) {
-
         final int COMPRESSION_QUALITY = 100;
         String encodedImage;
         ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();

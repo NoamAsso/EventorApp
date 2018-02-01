@@ -21,7 +21,7 @@ import org.json.JSONObject;
 
 import java.util.Date;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {// register to eventer
 
 
     EditText userName;
@@ -89,7 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
                     userAge.setBackgroundResource(R.drawable.rounded_edittext_red );
                 }
                 if(!error){
-                    User user = new User(0,userName.getText().toString(),
+                    User user = new User(0, userName.getText().toString(),
                             userPassword.getText().toString(),
                             Integer.parseInt(userAge.getText().toString()),
                             userEmail.getText().toString(),

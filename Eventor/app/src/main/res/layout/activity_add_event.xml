@@ -10,8 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#24000000">
+        android:background="#24000000"
+        android:orientation="vertical">
 
 
         <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -66,9 +66,9 @@
                                 android:id="@+id/spinner_catgory"
                                 android:layout_width="wrap_content"
                                 android:layout_height="40dp"
-                                android:gravity="center"
                                 android:layout_gravity="center"
-                                android:background="@drawable/rounded_edittext" />
+                                android:background="@drawable/rounded_edittext"
+                                android:gravity="center" />
 
                             <EditText
                                 android:id="@+id/costume_category"
@@ -80,7 +80,6 @@
                                 android:textColorHint="#e9e9e9" />
 
                         </LinearLayout>
-
 
 
                         <LinearLayout
@@ -97,6 +96,7 @@
 
                                 android:textColor="@android:color/white"
                                 android:textSize="18sp" />
+
                             <EditText
                                 android:id="@+id/description_text"
                                 android:layout_width="fill_parent"
@@ -113,15 +113,17 @@
                                 android:textColorHint="#e9e9e9" />
 
 
-
                         </LinearLayout>
+
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="10dp" />
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -130,25 +132,26 @@
                                 android:text="Starts at:"
                                 android:textColor="@android:color/white"
                                 android:textSize="18sp" />
+
                             <TextView
                                 android:id="@+id/date_text"
                                 android:layout_width="match_parent"
                                 android:layout_height="30dp"
-                                android:layout_weight="0.5"
-                                android:gravity="center"
                                 android:layout_gravity="center"
-                                android:text=""
-                                android:textSize="20sp"
+                                android:layout_weight="0.5"
                                 android:background="@drawable/rounded_edittext"
-                                android:textColor="@android:color/white"/>
+                                android:gravity="center"
+                                android:text=""
+                                android:textColor="@android:color/white"
+                                android:textSize="20sp" />
+
                             <ImageButton
                                 android:id="@+id/date_choose"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="0.8"
                                 android:background="#00ffffff"
-                                android:src = "@drawable/ic_event_white_24dp"/>
-
+                                android:src="@drawable/ic_event_white_24dp" />
 
 
                         </LinearLayout>
@@ -190,11 +193,11 @@
                                 android:layout_weight="0.7"
                                 android:background="@drawable/rounded_edittext_gray"
                                 android:hint="Max No. of participants"
+                                android:inputType="number"
                                 android:maxLength="3"
                                 android:paddingStart="10dp"
                                 android:textColorHint="#e9e9e9"
-                                android:textSize="12sp"
-                                android:inputType="number"/>
+                                android:textSize="12sp" />
 
                             <CheckBox
                                 android:id="@+id/noLimit"
@@ -203,8 +206,7 @@
                                 android:layout_weight="0.97"
                                 android:checked="true"
                                 android:text="No limit"
-                                android:textColor="@android:color/white"
-                                 />
+                                android:textColor="@android:color/white" />
 
                         </LinearLayout>
 
@@ -233,11 +235,11 @@
                                 android:layout_weight="0.7"
                                 android:background="@drawable/rounded_edittext_gray"
                                 android:hint="0₪"
+                                android:inputType="number"
                                 android:maxLength="5"
                                 android:paddingStart="10dp"
                                 android:textColorHint="#e9e9e9"
-                                android:textSize="14sp"
-                                android:inputType="number"/>
+                                android:textSize="14sp" />
 
                             <CheckBox
                                 android:id="@+id/isFree"
@@ -249,7 +251,7 @@
                                 android:text="Free"
                                 android:textColor="@android:color/white"
 
-                                 />
+                                />
 
 
                         </LinearLayout>
@@ -264,41 +266,45 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
+
                             <ImageButton
                                 android:id="@+id/loaction_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src = "@drawable/ic_add_location_white_48dp"
-                            android:layout_gravity="center"
-                            android:background="#00ffffff"/>
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="#00ffffff"
+                                android:src="@drawable/ic_add_location_white_48dp" />
+
                             <EditText
                                 android:id="@+id/location_text"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="0.7"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp"
                                 android:background="@drawable/rounded_edittext"
-                                android:hint="Location Description"
                                 android:gravity="center"
+                                android:hint="Location Description"
+                                android:paddingBottom="5dp"
                                 android:paddingStart="10dp"
+                                android:paddingTop="5dp"
                                 android:textColor="#000000"
                                 android:textColorHint="#696969"
-                                android:textSize="14sp"
-                                />
+                                android:textSize="14sp" />
                         </LinearLayout>
+
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="10dp" />
+
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:background="@android:color/darker_gray" />
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:orientation="horizontal">
 
                             <CheckBox
                                 android:id="@+id/isPrivate"
@@ -312,8 +318,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:background="@android:color/darker_gray" />
-
-
 
 
                         <LinearLayout
@@ -330,10 +334,11 @@
                                 android:background="@drawable/curve_edges_button_create"
                                 android:text="Create" />
                         </LinearLayout>
+
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="20dp"
-                            android:visibility="invisible"/>
+                            android:visibility="invisible" />
                     </LinearLayout>
                 </RelativeLayout>
 

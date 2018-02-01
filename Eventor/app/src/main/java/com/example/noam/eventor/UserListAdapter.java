@@ -36,7 +36,7 @@ import java.util.Date;
  * Created by Noam on 01/02/2018.
  */
 
-public class UserListAdapter extends BaseAdapter{
+public class UserListAdapter extends BaseAdapter {//adapter for list of users that joined a specific
     private Context context; //context
     private static int currentIndex;
     private ArrayList<User> model;
@@ -126,8 +126,6 @@ public class UserListAdapter extends BaseAdapter{
 
         return convertView;
     }
-
-
 
 
     public Bitmap StringToBitMap(String encodedString) {

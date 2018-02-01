@@ -63,41 +63,41 @@ public class EventPage extends AppCompatActivity {
     String addressString;
     String addressString2;
     LocationManager mLocationManager;
-    @Override
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle b = getIntent().getExtras();
+
         final android.support.v7.app.ActionBar myActionBar = getSupportActionBar();
         myActionBar.hide();
+
+        //getting event id from previous activity
         int value = -1;
         int from = -1;
-        if(b != null){
+        if (b != null) {
             value = b.getInt("key");
             from = b.getInt("from");
         }
-
+        //sending event ID to fragment
         MapEventMenu f = new MapEventMenu();
         // Supply index input as an argument.
         Bundle args = new Bundle();
         args.putInt("index", value);
         f.setArguments(args);
-
         setContentView(R.layout.activity_event_page);
 
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floating_button);
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_event_page);
-        if(from==1){
-            event = (GenericEvent)AddItemAdapter.getInstance().getModel().get(value);
+        if (from == 1) {
+            event = (GenericEvent) AddItemAdapter.getInstance().getModel().get(value);
+        } else if (from == 2) {
+            event = (GenericEvent) AddItemAdapterTwo.getInstance().getModel().get(value);
         }
 
-        else if(from==2){
-            event = (GenericEvent)AddItemAdapterTwo.getInstance().getModel().get(value);
-        }
 
-
-        Typeface myFont = Typeface.createFromAsset(getAssets(),"fonts/myriad_light.otf");
+        Typeface myFont = Typeface.createFromAsset(getAssets(), "fonts/myriad_light.otf");
         reminder = (Button) findViewById(R.id.reminder);
         change = (Button) findViewById(R.id.change);
         participants = (ListView) findViewById(R.id.user_list);
@@ -114,40 +114,47 @@ public class EventPage extends AppCompatActivity {
         description = (TextView) findViewById(R.id.event_description);
         image = (ImageView) findViewById(R.id.event_pic);
         coor = (CoordinatorLayout) findViewById(R.id.main_event_page);
-        Date datecheck = new Date();
+
+
         category.setText(event.getCategory().toString());
         description.setText(event.getDescription().toString());
         time.setTypeface(myFont);
         address.setTypeface(myFont);
         //getDirections.setTypeface(myFont);
         gameAddress.setTypeface(myFont);
+
+        //setting user list adapter
         UserListAdapter adapter = UserListAdapter.getInstance();
         adapter.setContext(this);
         participants.setAdapter(adapter);
+
         int year = event.getDate().getYear();
         int month = event.getDate().getMonth();
         int day = event.getDate().getDate();
-        if((year == (datecheck.getYear()+1900)) && (month == (datecheck.getMonth()+1))){
-            switch (day-datecheck.getDate()){
+        Date datecheck = new Date();
+        if ((year == (datecheck.getYear() + 1900)) && (month == (datecheck.getMonth() + 1))) {
+            switch (day - datecheck.getDate()) {
                 case 0:
-                    date.setText("Today");break;
+                    date.setText("Today");
+                    break;
                 case 1:
-                    date.setText("Tommorow");break;
+                    date.setText("Tommorow");
+                    break;
                 default:
-                    date.setText(Integer.toString(day)+"/"+Integer.toString(month)+"/"+Integer.toString(year));
+                    date.setText(Integer.toString(day) + "/" + Integer.toString(month) + "/" + Integer.toString(year));
             }
-        }
-        if(event.getDate().getMinutes()<10 && event.getDate().getHours()>9){
-            time.setText("At: "+event.getDate().getHours()+":0"+event.getDate().getMinutes());
-        }
-        else if(event.getDate().getHours()<10 && event.getDate().getMinutes()>9){
-            time.setText("At: 0"+event.getDate().getHours()+":"+event.getDate().getMinutes());
-        }
-        else if((event.getDate().getHours()<10 && event.getDate().getMinutes()<10))
-            time.setText("At: "+event.getDate().getHours()+":0"+event.getDate().getMinutes());
+        } else
+            date.setText(Integer.toString(day) + "/" + Integer.toString(month) + "/" + Integer.toString(year));
+        if (event.getDate().getMinutes() < 10 && event.getDate().getHours() > 9) {
+            time.setText("At: " + event.getDate().getHours() + ":0" + event.getDate().getMinutes());
+        } else if (event.getDate().getHours() < 10 && event.getDate().getMinutes() > 9) {
+            time.setText("At: 0" + event.getDate().getHours() + ":" + event.getDate().getMinutes());
+        } else if ((event.getDate().getHours() < 10 && event.getDate().getMinutes() < 10))
+            time.setText("At: " + event.getDate().getHours() + ":0" + event.getDate().getMinutes());
         else
-            time.setText("At: "+event.getDate().getHours()+":"+event.getDate().getMinutes());
+            time.setText("At: " + event.getDate().getHours() + ":" + event.getDate().getMinutes());
 
+        //scroll settings
         participants.setOnScrollListener(new AbsListView.OnScrollListener() {
 
             @Override
@@ -168,13 +175,14 @@ public class EventPage extends AppCompatActivity {
                 }
             }
         });
+
         String imageicon = event.getCategory();
         switch (imageicon) {
             case "Football":
                 image.setBackground(this.getResources().getDrawable(R.drawable.football_icon));
                 //coor.setBackground(this.getResources().getDrawable(R.drawable.soccer_wallpaper));
                 break;
-            case "Baketball":
+            case "Basketball":
                 image.setBackground(this.getResources().getDrawable(R.drawable.basketball_iconn));
                 //coor.setBackground(this.getResources().getDrawable(R.drawable.basketball_wallpaper2));
                 break;
@@ -201,11 +209,12 @@ public class EventPage extends AppCompatActivity {
                 //image.setImageBitmap(StringToBitMap(event.getEventImage()));
                 break;
         }
-
+        //event address from PlaceID - google maps API
         GeoDataClient mGeoDataClient = Places.getGeoDataClient(this, null);
         String placeId = event.getPlaceID();
         mGeoDataClient.getPlaceById(placeId).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
             public static final String TAG = "AddItemAdapter";
+
             @Override
             public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
                 if (task.isSuccessful()) {
@@ -213,7 +222,7 @@ public class EventPage extends AppCompatActivity {
                     place2 = places.get(0);
                     addressString = place2.getAddress().toString();
                     addressString2 = place2.getName().toString();
-                    address.setText(place2.getName()+", "+place2.getAddress());
+                    address.setText(place2.getName() + ", " + place2.getAddress());
 
                     Log.i(TAG, "Place found: " + place2.getName() + place2.getAddress());
                     places.release();
@@ -222,17 +231,18 @@ public class EventPage extends AppCompatActivity {
                 }
             }
         });
+
         currentUsers.setText(Integer.toString(event.getCurrentUsers()));
 
         if (event.getMaxUsers() == Integer.MAX_VALUE) {
             maxUsers.setText("Unlimited");
-        }
-        else {
+        } else {
             maxUsers.setText(Integer.toString(event.getMaxUsers()));
         }
 
-        eventId.setText("Event ID: "+Integer.toString(event.getId()));
+        eventId.setText("Event ID: " + Integer.toString(event.getId()));
         //eventCreator.setText(event.getAdminUserId());
+
         View bottomSheet = coordinatorLayout.findViewById(R.id.bottom_sheet);
         final BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
         behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -240,10 +250,10 @@ public class EventPage extends AppCompatActivity {
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_DRAGGING) {
                     behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    fab.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.ic_arrow_downward_white_24dp ));
+                    fab.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.ic_arrow_downward_white_24dp));
 
                 }
-                if(behavior.getState() == BottomSheetBehavior.STATE_COLLAPSED){
+                if (behavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
 
                 }
             }
@@ -257,15 +267,15 @@ public class EventPage extends AppCompatActivity {
             public void onClick(View view) {
                 if (behavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
                     behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    fab.setImageResource(R.drawable.ic_arrow_downward_white_24dp );
+                    fab.setImageResource(R.drawable.ic_arrow_downward_white_24dp);
                 } else {
                     behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    fab.setImageResource(R.drawable.ic_arrow_upward_white_24dp );
+                    fab.setImageResource(R.drawable.ic_arrow_upward_white_24dp);
                 }
             }
         });
-    behavior.setHideable(false);
-        behavior.setPeekHeight(300);
+        behavior.setHideable(false);
+        behavior.setPeekHeight(200);
 
         getDirections.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -273,7 +283,7 @@ public class EventPage extends AppCompatActivity {
                 Location myLocation = getLastKnownLocation();
                 String logtitude = String.valueOf(myLocation.getLongitude());
                 String latitude = String.valueOf(myLocation.getLatitude());
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/maps/dir/?api=1&origin="+latitude+","+logtitude+"&destination="+addressString2+" "+addressString+"&travelmode=driving"));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/maps/dir/?api=1&origin=" + latitude + "," + logtitude + "&destination=" + addressString2 + " " + addressString + "&travelmode=driving"));
                 startActivity(browserIntent);
             }
         });
@@ -291,10 +301,11 @@ public class EventPage extends AppCompatActivity {
         });
 
     }
+
     private Location getLastKnownLocation() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            mLocationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
+            mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
             List<String> providers = mLocationManager.getProviders(true);
             Location bestLocation = null;
             for (String provider : providers) {
@@ -308,7 +319,7 @@ public class EventPage extends AppCompatActivity {
                 }
             }
             return bestLocation;
-        } else{
+        } else {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     REQUEST_CODE);

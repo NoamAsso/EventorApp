@@ -8,19 +8,20 @@
         android:layout_width="360dp"
         android:layout_height="90dp"
         android:layout_gravity="center|top"
-        android:orientation="horizontal"
-        android:background="#30ffffff">
+        android:background="#30ffffff"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="90dp"
             android:layout_height="match_parent"
             android:gravity="center">
+
             <ImageView
                 android:id="@+id/image_item"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:background="@drawable/user_icon_list"/>
+                android:background="@drawable/user_icon_list" />
         </LinearLayout>
 
         <LinearLayout
@@ -41,8 +42,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Username"
-                    android:textStyle="bold"
-                    android:textSize="20dp"/>
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="50dp"
@@ -52,23 +53,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Age: " />
+
                 <TextView
                     android:id="@+id/age_list"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="27" />
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp"></View>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Rating: " />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rating: " />
+
                 <TextView
                     android:id="@+id/rating_list"
                     android:layout_width="wrap_content"

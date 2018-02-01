@@ -12,7 +12,7 @@ import android.view.ViewGroup;
  * www.snowcorp.org
  */
 
-public class FragmentThree extends Fragment {
+public class FragmentThree extends Fragment {//not implemented yet, should be invitations list
 
     public FragmentThree() {
         // Required empty public constructor

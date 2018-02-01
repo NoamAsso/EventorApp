@@ -11,7 +11,7 @@ import java.util.Date;
  * Created by Noam on 12/01/2018.
  */
 
-public class GenericEvent {
+public class GenericEvent {//Eevent object!
 
     private int id;
     private int adminUserId;

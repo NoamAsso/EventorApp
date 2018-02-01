@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Created by Noam on 25/01/2018.
  */
 
-public class CurrentUserEvents {
+public class CurrentUserEvents {// holds the events that the user is registered to
 
     private ArrayList<Integer> userEvents;
     private static CurrentUserEvents sInstance;
@@ -23,6 +23,10 @@ public class CurrentUserEvents {
 
     public ArrayList<Integer> getUserEvents() {
         return userEvents;
+    }
+
+    public void addEventId(int id){
+        userEvents.add(id);
     }
 
 }
