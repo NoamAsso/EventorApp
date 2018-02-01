@@ -34,17 +34,20 @@
             android:layout_weight="0.7">
 
 
-
             <TextView
+                android:id="@+id/app_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity = "center"
-                android:text="Evnter"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
                 android:paddingTop="100dp"
-
+                android:text="Evnter8"
                 android:textColor="@android:color/white"
-                android:textSize="80sp"/>
+                android:textSize="80sp" />
             <TextView
+                android:id="@+id/app_slogan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -53,10 +56,10 @@
                 android:layout_marginLeft="32dp"
                 android:layout_marginStart="32dp"
                 android:gravity="center"
-                android:paddingTop="190dp"
-                android:text="social sports"
+                android:paddingTop="200dp"
+                android:text="Creat. Join. play."
                 android:textColor="@android:color/white"
-                android:textSize="12sp" />
+                android:textSize="18sp" />
             <!-- This is the part that's 70% of the total width. I'm inserting a LinearLayout and buttons.-->
             <LinearLayout
                 android:id="@+id/linearLayout"

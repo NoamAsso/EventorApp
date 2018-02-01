@@ -178,7 +178,6 @@
                                 android:layout_weight="0.17"
                                 android:gravity="center"
                                 android:text="Phone number:"
-
                                 android:textColor="@android:color/white"
                                 android:textSize="18sp" />
 
@@ -190,6 +189,7 @@
                                 android:background="@drawable/rounded_edittext"
                                 android:paddingLeft="4dp"
                                 android:hint="Enter phone number"
+                                android:inputType="number"
                                 android:textSize="16sp"
                                 android:textColorHint="#e9e9e9" />
                         </LinearLayout>
@@ -215,9 +215,12 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="0.10"
+                                android:inputType="number"
                                 android:background="@drawable/rounded_edittext"
                                 android:gravity="center"
                                 android:hint="Enter age"
+                                android:maxLength="3"
+
                                 android:textSize="16sp"
                                 android:textColorHint="#e9e9e9" />
 

@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
@@ -56,28 +57,31 @@ public class MapEventMenu extends Fragment implements OnMapReadyCallback {
     MapView mapView;
     GoogleMap map;
     FloatingActionButton myLocation;
+    FloatingActionButton myPinLocation;
     LocationManager mLocationManager;
+    AddItemAdapter adapter;
+    GenericEvent currentevent;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_map_event_menu, container, false);
+        adapter = AddItemAdapter.getInstance();
+        currentevent = (GenericEvent) adapter.getModel().get(adapter.getCurrentIndex());
 
-        myLocation = (FloatingActionButton) v.findViewById(R.id.my_location_button);
+        myPinLocation = (FloatingActionButton) v.findViewById(R.id.pin_location_button);
         // Gets the MapView from the XML layout and creates it
         mapView = (MapView) v.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         //mapView.loca = YES;
-
         mapView.getMapAsync(this);
-        myLocation.setOnClickListener(new View.OnClickListener() {
+        myPinLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LocationManager lm2 = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
                 if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
                     return;
                 }
-                Location location2 = getLastKnownLocation();
-                double longitude = location2.getLongitude();
-                double latitude = location2.getLatitude();
+                double longitude = currentevent.getLongitude();
+                double latitude = currentevent.getLatitude();
                 final CameraUpdate cameraUpdate2 = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15);
                 map.animateCamera(cameraUpdate2);
             }
@@ -90,54 +94,22 @@ public class MapEventMenu extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
 
-        map.getUiSettings().setMyLocationButtonEnabled(false);
-        ActivityCompat.requestPermissions(getActivity(),
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                REQUEST_CODE);
+
+
+
+
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             map.setMyLocationEnabled(true);
-        } else
-            map.setMyLocationEnabled(true);
+            SetMap();
+        } else{
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_CODE);
+        }
 
 
 
-
-
-        Location myLocation = getLastKnownLocation();
-
-
-
-        //LocationManager lm = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-        //ocation location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        double longitude = myLocation.getLongitude();
-        double latitude = myLocation.getLatitude();
-        final CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15);
-
-
-        AddItemAdapter adapter = AddItemAdapter.getInstance();
-        GenericEvent currentevent = (GenericEvent) adapter.getModel().get(adapter.getCurrentIndex());
-        String placeId = currentevent.getPlaceID();
-        GeoDataClient mGeoDataClient = Places.getGeoDataClient(getActivity(), null);
-        mGeoDataClient.getPlaceById(placeId).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
-            public static final String TAG = "AddItemAdapter";
-
-            @Override
-            public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
-                if (task.isSuccessful()) {
-                    PlaceBufferResponse places = task.getResult();
-                    Place place2 = places.get(0);
-                    map.addMarker(new MarkerOptions()
-                            .position(place2.getLatLng())
-                            .title(place2.getName()+", "+place2.getAddress()));
-                    map.animateCamera(cameraUpdate);
-                    places.release();
-                } else {
-                    Log.e(TAG, "Place not found.");
-                }
-            }
-
-        });
 
     }
 
@@ -166,19 +138,90 @@ public class MapEventMenu extends Fragment implements OnMapReadyCallback {
         mapView.onLowMemory();
     }
     private Location getLastKnownLocation() {
-        mLocationManager = (LocationManager)getActivity().getSystemService(LOCATION_SERVICE);
-        List<String> providers = mLocationManager.getProviders(true);
-        Location bestLocation = null;
-        for (String provider : providers) {
-            Location l = mLocationManager.getLastKnownLocation(provider);
-            if (l == null) {
-                continue;
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mLocationManager = (LocationManager)getActivity().getSystemService(LOCATION_SERVICE);
+            List<String> providers = mLocationManager.getProviders(true);
+            Location bestLocation = null;
+            for (String provider : providers) {
+                Location l = mLocationManager.getLastKnownLocation(provider);
+                if (l == null) {
+                    continue;
+                }
+                if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                    // Found best last known location: %s", l);
+                    bestLocation = l;
+                }
             }
-            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
-                // Found best last known location: %s", l);
-                bestLocation = l;
-            }
+            return bestLocation;
+        } else{
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_CODE);
+            return null;
         }
-        return bestLocation;
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    SetMap();
+                    map.getUiSettings().setMyLocationButtonEnabled(true);
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(getActivity(), "Permission denied to use your location", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+
+    public void SetMap(){
+        map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+        Location myLocation = getLastKnownLocation();
+        //LocationManager lm = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+        //ocation location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        double longitude = currentevent.getLongitude();
+        double latitude = currentevent.getLatitude();
+        final CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15);
+
+
+
+        String placeId = currentevent.getPlaceID();
+        GeoDataClient mGeoDataClient = Places.getGeoDataClient(getActivity(), null);
+        mGeoDataClient.getPlaceById(placeId).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
+            public static final String TAG = "AddItemAdapter";
+
+            @Override
+            public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
+                if (task.isSuccessful()) {
+                    PlaceBufferResponse places = task.getResult();
+                    Place place2 = places.get(0);
+                    map.addMarker(new MarkerOptions()
+                            .position(place2.getLatLng())
+                            .title(place2.getName()+", "+place2.getAddress()));
+                    map.animateCamera(cameraUpdate);
+                    places.release();
+                } else {
+                    Log.e(TAG, "Place not found.");
+                }
+            }
+
+        });
     }
 }

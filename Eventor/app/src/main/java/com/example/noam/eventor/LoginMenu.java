@@ -5,6 +5,7 @@ import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -31,7 +33,7 @@ public class LoginMenu extends AppCompatActivity {
     CheckBox remember;
     String userName;
     String password;
-
+    AddItemAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,11 +41,20 @@ public class LoginMenu extends AppCompatActivity {
         final Intent intent = getIntent();
         android.support.v7.app.ActionBar myActionBar = getSupportActionBar();
         myActionBar.hide();
+        TextView title = (TextView) findViewById(R.id.app_title2);
+        TextView slogan = (TextView) findViewById(R.id.app_slogan2);
+        TextView logint = (TextView) findViewById(R.id.logintext);
+        Typeface myFont = Typeface.createFromAsset(getAssets(),"fonts/avefedan.ttf");
+        Typeface myFont2 = Typeface.createFromAsset(getAssets(),"fonts/Quikhand.ttf");
+        Typeface myFont3 = Typeface.createFromAsset(getAssets(),"fonts/myriad_light.otf");
+        title.setTypeface(myFont);
+        slogan.setTypeface(myFont2);
+        logint.setTypeface(myFont3);
         username = (EditText) findViewById(R.id.username_login);
         userPassword = (EditText) findViewById(R.id.password_login);
         loginactivity = (Button) findViewById(R.id.loginButton);
         remember = (CheckBox) findViewById(R.id.remember);
-
+        adapter = AddItemAdapter.getInstance();
         loginactivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,15 +123,11 @@ public class LoginMenu extends AppCompatActivity {
                                                         @Override
                                                         public void run() {
                                                             Gson gson = new Gson();
-
                                                             ArrayList<Integer> userEventsIDsArray;
                                                             userEventsIDsArray = gson.fromJson(result2, new TypeToken<List<Integer>>() {
                                                             }.getType());
                                                             CurrentUserEvents.getInstance().setUserEvents(userEventsIDsArray);
-                                                            Intent myIntent = new Intent(LoginMenu.this, UserAreaMain.class);
-                                                            myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                            LoginMenu.this.startActivity(myIntent);
-
+                                                            GetListFromServer();
                                                         }
                                                     });
                                                 }
@@ -158,4 +165,46 @@ public class LoginMenu extends AppCompatActivity {
 
 
     }
+    public void GetListFromServer() {
+        final NetworkManager instance = NetworkManager.getInstance();
+        instance.addRequest(new GetEventsRequest(new ServerCallback() {
+
+            @Override
+            public void onSuccess(Object res, int statusCode) {
+                final String result = (String) res;
+                Log.e("Login menu", result);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (result != "[]") {
+                            Gson gson = new Gson();
+                            ArrayList<GenericEvent> eventsArray;
+
+                            eventsArray = gson.fromJson(result, new TypeToken<List<GenericEvent>>() {
+                            }.getType());
+                            adapter.setModel(null);
+
+
+                            if (adapter.setModel(eventsArray)) {
+
+                                adapter.notifyDataSetChanged();
+
+                            }
+                            Intent myIntent = new Intent(LoginMenu.this, UserAreaMain.class);
+                            myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            LoginMenu.this.startActivity(myIntent);
+
+                        } else
+                            Log.e("Fragment One", "Can't initialize model");
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Object err, int statusCode) {
+                Toast.makeText(getApplicationContext(), "failure to receive message", Toast.LENGTH_SHORT).show();
+                Log.e("Fragment2", "Connection to Server failed");
+            }
+        }));
+    }//fetchFromNetwork
 }

@@ -21,13 +21,16 @@
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="0.94">
-            <ListView
-                android:id="@+id/eventlist1"
 
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="7"
-                />
+                <ListView
+                    android:id="@+id/eventlist1"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    />
+
+
         </RelativeLayout>
 
 

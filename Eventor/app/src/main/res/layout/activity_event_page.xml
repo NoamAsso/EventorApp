@@ -5,7 +5,7 @@
     android:id="@+id/main_event_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/baseball_wallpaper"
+    android:background="@drawable/nature"
     tools:context="com.example.noam.eventor.EventPage">
 
 
@@ -13,7 +13,7 @@
 
     <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="490dp"
+            android:layout_height="550dp"
             android:layout_above="@+id/bottom_navigation"
             android:layout_alignParentTop="true">
     <LinearLayout
@@ -42,7 +42,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/event_page_background"
+                    android:background="@drawable/event_page_background2"
                     android:orientation="vertical">
 
 
@@ -110,7 +110,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="20dp" />
                     <View
-                        android:layout_width="320dp"
+                        android:layout_width="240dp"
                         android:layout_height="1dp"
                         android:layout_gravity="center"
                         android:background="#303030"
@@ -129,6 +129,7 @@
                             android:layout_height="wrap_content"
                             android:paddingBottom="3dp"
                             android:text="Today"
+                            android:paddingRight="30dp"
                             android:textColor="@android:color/black"
                             android:textSize="20sp" />
 
@@ -141,17 +142,19 @@
                             android:paddingRight="20dp"
                             android:text="At: 20:00"
                             android:textColor="@android:color/black"
-                            android:textSize="20sp" />
+                            android:textSize="30sp" />
 
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:text="Set reminder"
-                            android:textAllCaps="false" />
+
                     </LinearLayout>
-
+                    <Button
+                        android:id="@+id/reminder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:text="Set reminder"
+                        android:textAllCaps="false" />
                     <View
-                        android:layout_width="320dp"
+                        android:layout_width="240dp"
                         android:layout_height="1dp"
                         android:layout_gravity="center"
                         android:background="#303030"
@@ -159,19 +162,52 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="10dp" />
-                    <TextView
-                        android:id="@+id/place_address"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
                         android:gravity="center"
-                        android:paddingBottom="10dp"
-                        android:background="@drawable/rounded_edittext_gray"
-                        android:text="Location"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:textColor="@android:color/black"
-                        android:textSize="20sp" />
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/game_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:paddingBottom="1dp"
+                            android:paddingTop="10dp"
+                            android:text="Game address:"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="15sp" />
+                        <TextView
+                            android:id="@+id/place_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="3dp"
+                            android:text="Location"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="20sp" />
+                        <Button
+                            android:id="@+id/get_directions"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:text="Get directions"
+                            android:paddingRight="10dp"
+                            android:paddingLeft="10dp"
+                            android:textAllCaps="false"
+                            android:background="@drawable/curve_edges_register"/>
+
+                    </LinearLayout>
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="10dp" />
@@ -205,10 +241,9 @@
                                 android:textSize="16sp" />
 
                             <LinearLayout
-
                                 android:layout_width="match_parent"
                                 android:layout_height="70dp"
-                                android:background="@drawable/rounded_edittext_gray"
+                                android:background="@drawable/event_page_background3"
                                 android:gravity="center">
 
                                 <TextView
@@ -216,9 +251,10 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:paddingLeft="10dp"
-                                    android:text="blalalalalalalalalalallalalalalalalalal"
-                                    android:textColor="@android:color/white"
+                                    android:text="blalalcccaccccccccccccclalalalalalalallalalalalalalalal"
+                                    android:textColor="@android:color/black"
                                     android:textSize="18sp" />
+
                             </LinearLayout>
                         </LinearLayout>
 
@@ -229,7 +265,14 @@
                         android:layout_height="wrap_content"
                         android:paddingBottom="7dp"
                         android:paddingTop="7dp">
-
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:paddingLeft="10dp"
+                            android:text="Joined:"
+                            android:textColor="@android:color/black"
+                            android:textSize="20sp" />
                         <TextView
                             android:id="@+id/current_joined_number"
                             android:layout_width="wrap_content"
@@ -238,7 +281,6 @@
                             android:text="0"
                             android:textColor="@android:color/black"
                             android:textSize="20sp" />
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -246,7 +288,6 @@
                             android:text="/"
                             android:textColor="@android:color/black"
                             android:textSize="20sp" />
-
                         <TextView
                             android:id="@+id/max_joined_number"
                             android:layout_width="wrap_content"
@@ -255,15 +296,13 @@
                             android:text="max"
                             android:textColor="@android:color/black"
                             android:textSize="20sp" />
-
                         <View
                             android:layout_width="130dp"
                             android:layout_height="match_parent" />
-
                         <Button
-                            android:id="@+id/join_event_button"
+                            android:id="@+id/change"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="35dp"
                             android:layout_gravity="end"
                             android:background="@drawable/curve_edges_button_login"
                             android:text="change"
@@ -271,25 +310,25 @@
                             android:textColor="@android:color/white" />
 
                     </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Testling list (no real values)"
+                        android:layout_gravity="center"/>
 
                     <ListView
                         android:id="@+id/user_list"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="7" />
+                        android:layout_height="500dp"/>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="20dp" />
 
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/join_game_button"
-                        android:gravity="center"
-                        android:text="Join game"
-                        android:textColor="@android:color/white"
-                        android:textSize="20sp" />
+
 
                     <View
                         android:layout_width="match_parent"
@@ -346,14 +385,7 @@
             android:layout_height="320dp"
             android:layout_gravity="bottom"></fragment>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingLeft="10dp"
-            android:text="Joined:"
-            android:textColor="@android:color/black"
-            android:textSize="20sp" />
+
 
     </FrameLayout>
 

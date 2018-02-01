@@ -44,6 +44,7 @@ public class FragmentTwo extends Fragment {
     public void perform(View v) {
 
         list = (ListView) v.findViewById(R.id.eventlist2);
+        //GetListFromServer();
         GetListFromServer();
         final SwipeRefreshLayout mSwipeRefreshView;
         mSwipeRefreshView = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh2);
@@ -61,28 +62,20 @@ public class FragmentTwo extends Fragment {
         AddItemAdapterTwo adapter;
         adapter = AddItemAdapterTwo.getInstance();
         adapter.setContext(getActivity());
-        ArrayList<GenericEvent> currentList = AddItemAdapter.getInstance().getModel();
+        AddItemAdapter adapterOne = AddItemAdapter.getInstance();
+        ArrayList<GenericEvent> eventList = AddItemAdapter.getInstance().getModel();
+        ArrayList<GenericEvent> myEvents = new ArrayList<>();
         ArrayList<Integer> userEvents = CurrentUserEvents.getInstance().getUserEvents();
         //adapter.AddObj(eventTest);
-        boolean flag = false;
-        if(adapter.setModel(currentList)) {
-            for (int i = 0; i < currentList.size(); i++) {
-                for (int j = 0; j < userEvents.size(); j++) {
-                    if(currentList.get(i).getId()==userEvents.get(j)){
-                        flag = true;
-                    }
-                }
-                if(!flag){
-                    currentList.remove(i);
-                    i--;
-                }
 
-                flag = false;
+            for (int i = 0; i < eventList.size(); i++) {
+                for (int j = 0; j < userEvents.size(); j++) {
+                    if (eventList.get(i).getId() == userEvents.get(j))
+                        myEvents.add(eventList.get(i));
+                }
             }
-            adapter.setModel(currentList);
+            adapter.setModel(myEvents);
             adapter.notifyDataSetChanged();
             list.setAdapter(adapter);
-        }
-
     }//fetchFromNetwork
 }

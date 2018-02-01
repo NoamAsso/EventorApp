@@ -7,6 +7,7 @@ import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,16 +34,21 @@ public class LoginActivity extends AppCompatActivity {
     private VideoView mVideoView;
     String username;
     String password;
-
+    AddItemAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         android.support.v7.app.ActionBar myActionBar = getSupportActionBar();
         myActionBar.hide();
-
+        TextView title = (TextView) findViewById(R.id.app_title);
+        TextView slogan = (TextView) findViewById(R.id.app_slogan);
+        Typeface myFont = Typeface.createFromAsset(getAssets(),"fonts/avefedan.ttf");
+        Typeface myFont2 = Typeface.createFromAsset(getAssets(),"fonts/Quikhand.ttf");
+        adapter = AddItemAdapter.getInstance();
         int callingActivity = getIntent().getIntExtra("calling-activity", 0);
-
+        title.setTypeface(myFont);
+        slogan.setTypeface(myFont2);
         if(callingActivity == 700){
             Toast.makeText(getApplicationContext(), "Logout successfully", Toast.LENGTH_SHORT).show();
             SharedPreferences sharedPref = getSharedPreferences("preferences",
@@ -149,14 +155,11 @@ public class LoginActivity extends AppCompatActivity {
                                             @Override
                                             public void run() {
                                                 Gson gson = new Gson();
-
                                                 ArrayList<Integer> userEventsIDsArray;
                                                 userEventsIDsArray = gson.fromJson(result2, new TypeToken<List<Integer>>() {
                                                 }.getType());
                                                 CurrentUserEvents.getInstance().setUserEvents(userEventsIDsArray);
-                                                Intent myIntent = new Intent(LoginActivity.this, UserAreaMain.class);
-                                                myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                LoginActivity.this.startActivity(myIntent);
+                                                GetListFromServer();
 
                                             }
                                         });
@@ -190,4 +193,46 @@ public class LoginActivity extends AppCompatActivity {
             }
         }));
     }
+    public void GetListFromServer() {
+        final NetworkManager instance = NetworkManager.getInstance();
+        instance.addRequest(new GetEventsRequest(new ServerCallback() {
+
+            @Override
+            public void onSuccess(Object res, int statusCode) {
+                final String result = (String) res;
+                Log.e("Login menu", result);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (result != "[]") {
+                            Gson gson = new Gson();
+                            ArrayList<GenericEvent> eventsArray;
+
+                            eventsArray = gson.fromJson(result, new TypeToken<List<GenericEvent>>() {
+                            }.getType());
+                            adapter.setModel(null);
+
+
+                            if (adapter.setModel(eventsArray)) {
+
+                                adapter.notifyDataSetChanged();
+
+                            }
+                            Intent myIntent = new Intent(LoginActivity.this, UserAreaMain.class);
+                            myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            LoginActivity.this.startActivity(myIntent);
+
+                        } else
+                            Log.e("Fragment One", "Can't initialize model");
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Object err, int statusCode) {
+                Toast.makeText(getApplicationContext(), "failure to receive message", Toast.LENGTH_SHORT).show();
+                Log.e("Fragment2", "Connection to Server failed");
+            }
+        }));
+    }//fetchFromNetwork
 }
