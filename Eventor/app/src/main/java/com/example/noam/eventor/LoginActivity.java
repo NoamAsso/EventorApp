@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
-                //mediaPlayer.setVolume(0f, 0f);
+                mediaPlayer.setVolume(0f, 0f);
                 mediaPlayer.setLooping(true);
             }
         });
