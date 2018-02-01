@@ -252,7 +252,7 @@ public class AddItemAdapter extends BaseAdapter {
 
                             switch (which) {
                                 case DialogInterface.BUTTON_POSITIVE:
-                                    JoinEvent((GenericEvent) getItem(position));
+                                    JoinEvent((GenericEvent) getItem(position),position);
                                     join.setEnabled(false);
                                     join.setText("Joined");
                                     join.setTextColor(Color.GRAY);
