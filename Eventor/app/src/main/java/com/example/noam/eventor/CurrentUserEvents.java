@@ -24,5 +24,5 @@ public class CurrentUserEvents {
     public ArrayList<Integer> getUserEvents() {
         return userEvents;
     }
-    public static void clearInstance() { sInstance = null; }
+
 }

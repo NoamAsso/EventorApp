@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.location.Location;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -54,6 +55,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import android.graphics.Bitmap;
 import android.media.Image;
 import android.net.Uri;
@@ -76,12 +78,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "AddEvent";
 
     public static final int Selected_Image = 1;
     int PLACE_PICKER_REQUEST = 2;
-    EditText eventTitle;
     EditText eventDescription;
     ImageButton datePick;
     Bitmap bitmap;
@@ -99,7 +100,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     Button createButton;
     GoogleApiClient googleApiClient;
     int day, month, year, hour, minute;
-    int fday,fmonth, fyear, fhour, fminute;
+    int fday, fmonth, fyear, fhour, fminute;
     private GeoDataClient mGeoDataClient;
     private PlaceDetectionClient mPlaceDetectionClient;
     GenericEvent event;
@@ -175,6 +176,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
             return false;
         }
     };
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
@@ -182,18 +184,17 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mGeoDataClient =Places.getGeoDataClient(AddEvent.this, null);
+        mGeoDataClient = Places.getGeoDataClient(AddEvent.this, null);
         mPlaceDetectionClient = Places.getPlaceDetectionClient(this, null);
-        eventTitle = (EditText) findViewById(R.id.event_title);
         eventDescription = (EditText) findViewById(R.id.description_text);
         eventImage = (ImageButton) findViewById(R.id.event_image);
         datePick = (ImageButton) findViewById(R.id.date_choose);
         dateDisplay = (TextView) findViewById(R.id.date_text);
         numParticipant = (EditText) findViewById(R.id.numOfParticipants);
-        noLimit =  (CheckBox) findViewById(R.id.noLimit);
+        noLimit = (CheckBox) findViewById(R.id.noLimit);
         price = (EditText) findViewById(R.id.priceText);
-        isFree =  (CheckBox) findViewById(R.id.isFree);
-        isPrivate =  (CheckBox) findViewById(R.id.isPrivate);
+        isFree = (CheckBox) findViewById(R.id.isFree);
+        isPrivate = (CheckBox) findViewById(R.id.isPrivate);
         createButton = (Button) findViewById(R.id.create_button);
         locationButton = (ImageButton) findViewById(R.id.loaction_button);
         locationText = (EditText) findViewById(R.id.location_text);
@@ -206,7 +207,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
         context = getApplicationContext();
         //spinner
-        String[] items = new String[] {"Football", "Basketball", "Volleyball","Tennis", "Baseball", "Cricket","Custom"};
+        String[] items = new String[]{"Football", "Basketball", "Volleyball", "Tennis", "Baseball", "Cricket", "Custom"};
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_catgory);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, items);
@@ -217,8 +218,8 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int arg2, long arg3) {
                 // TODO Auto-generated method stub
-                String chosenOption=spinner.getSelectedItem().toString();
-                if(chosenOption.matches("custom")){
+                String chosenOption = spinner.getSelectedItem().toString();
+                if (chosenOption.matches("custom")) {
                     ViewGroup.LayoutParams params = spinner.getLayoutParams();
                     params.height = 0;
                     spinner.setLayoutParams(params);
@@ -228,6 +229,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                 }
 
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
                 // TODO Auto-generated method stub
@@ -243,48 +245,44 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
             public void onClick(View view) {
                 EditTextNormalize();
                 boolean error = false;
-                if(eventTitle.getText().toString().matches("")){
+                if (eventDescription.getText().toString().matches("")) {
                     error = true;
-                    eventTitle.setBackgroundResource(R.drawable.rounded_edittext_red );
+                    eventDescription.setBackgroundResource(R.drawable.rounded_edittext_red);
                 }
-                if(eventDescription.getText().toString().matches("")){
+                if (numParticipant.getText().toString().matches("") && !noLimit.isChecked()) {
                     error = true;
-                    eventDescription.setBackgroundResource(R.drawable.rounded_edittext_red );
+                    numParticipant.setBackgroundResource(R.drawable.rounded_edittext_red);
                 }
-                if(numParticipant.getText().toString().matches("")&&!noLimit.isChecked()){
+                if (price.getText().toString().matches("") && !isFree.isChecked()) {
                     error = true;
-                    numParticipant.setBackgroundResource(R.drawable.rounded_edittext_red );
+                    price.setBackgroundResource(R.drawable.rounded_edittext_red);
                 }
-                if(price.getText().toString().matches("")&&!isFree.isChecked()){
+                if (dateDisplay.getText().toString().matches("")) {
                     error = true;
-                    price.setBackgroundResource(R.drawable.rounded_edittext_red );
+                    dateDisplay.setBackgroundResource(R.drawable.rounded_edittext_red);
                 }
-                if(dateDisplay.getText().toString().matches("")){
+                if (locationText.getText().toString().matches("")) {
                     error = true;
-                    dateDisplay.setBackgroundResource(R.drawable.rounded_edittext_red );
+                    locationText.setBackgroundResource(R.drawable.rounded_edittext_red);
                 }
-                if(locationText.getText().toString().matches("")){
-                    error = true;
-                    locationText.setBackgroundResource(R.drawable.rounded_edittext_red );
-                }
-                if(!error){
+                if (!error) {
                     Gson gson = new Gson();
                     Date date = new Date();
                     String category;
                     String bitmapString = "No Image";
                     int maxUsers = Integer.MAX_VALUE; //if unlimited # of players
                     int priceOfEvent = 0;
-                    if(spinner.getSelectedItem().toString().equals("Custom"))
+                    if (spinner.getSelectedItem().toString().equals("Custom"))
                         category = costumeCategory.getText().toString();
                     else
                         category = spinner.getSelectedItem().toString();
-                    if(!noLimit.isChecked()) {
+                    if (!noLimit.isChecked()) {
                         maxUsers = Integer.parseInt(numParticipant.getText().toString());
                     }
-                    if(!isFree.isChecked()) {
+                    if (!isFree.isChecked()) {
                         priceOfEvent = Integer.parseInt(price.getText().toString());
                     }
-                    if(bitmap != null)
+                    if (bitmap != null)
                         bitmapString = getStringFromBitmap(bitmap);
 
                     date.setYear(fyear);
@@ -338,10 +336,9 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     //myIntent.putExtra("key", value); //Optional parameters
                     AddEvent.this.startActivity(myIntent);
                     //finish();
-                }
-                else {
+                } else {
 
-                    Toast.makeText(getApplicationContext(),"Some fields are missing",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Some fields are missing", Toast.LENGTH_SHORT).show();
                 }
             }
             //create button
@@ -353,7 +350,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                 PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
                 try {
                     Intent intent = builder.build(AddEvent.this);
-                    startActivityForResult(intent,PLACE_PICKER_REQUEST);
+                    startActivityForResult(intent, PLACE_PICKER_REQUEST);
                 } catch (GooglePlayServicesRepairableException e) {
                     e.printStackTrace();
                 } catch (GooglePlayServicesNotAvailableException e) {
@@ -374,14 +371,12 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
             @Override
             public void onClick(View v) {
                 //is chkIos checked?
-                if (((CheckBox) v).isChecked()){
+                if (((CheckBox) v).isChecked()) {
                     findViewById(R.id.numOfParticipants).setEnabled(false);
-                    findViewById(R.id.numOfParticipants).setBackgroundResource(R.drawable.rounded_edittext_gray );
-                }
-
-                else{
+                    findViewById(R.id.numOfParticipants).setBackgroundResource(R.drawable.rounded_edittext_gray);
+                } else {
                     findViewById(R.id.numOfParticipants).setEnabled(true);
-                    findViewById(R.id.numOfParticipants).setBackgroundResource(R.drawable.rounded_edittext );
+                    findViewById(R.id.numOfParticipants).setBackgroundResource(R.drawable.rounded_edittext);
                 }
             }
         });
@@ -389,13 +384,12 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
             @Override
             public void onClick(View v) {
                 //is chkIos checked?
-                if (((CheckBox) v).isChecked()){
+                if (((CheckBox) v).isChecked()) {
                     findViewById(R.id.priceText).setEnabled(false);
-                    findViewById(R.id.priceText).setBackgroundResource(R.drawable.rounded_edittext_gray );
-                }
-                else{
+                    findViewById(R.id.priceText).setBackgroundResource(R.drawable.rounded_edittext_gray);
+                } else {
                     findViewById(R.id.priceText).setEnabled(true);
-                    findViewById(R.id.priceText).setBackgroundResource(R.drawable.rounded_edittext );
+                    findViewById(R.id.priceText).setBackgroundResource(R.drawable.rounded_edittext);
                 }
             }
         });
@@ -410,13 +404,15 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                 month = cal.get(Calendar.MONTH);
                 year = cal.get(Calendar.YEAR);
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(AddEvent.this,AddEvent.this,year,month,day);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(AddEvent.this, AddEvent.this, year, month, day);
+                datePickerDialog.getDatePicker().setMinDate(new Date().getTime());
                 datePickerDialog.show();
             }
         });
 
     }
-    public boolean onOptionsItemSelected(MenuItem item){
+
+    public boolean onOptionsItemSelected(MenuItem item) {
         Intent myIntent = new Intent(getApplicationContext(), UserAreaMain.class);
         startActivityForResult(myIntent, 0);
         return true;
@@ -426,12 +422,12 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
         fyear = i;
-        fmonth = i1+1;
+        fmonth = i1 + 1;
         fday = i2;
         Calendar cal = Calendar.getInstance();
         hour = cal.get(Calendar.HOUR_OF_DAY);
         minute = cal.get(Calendar.MINUTE);
-        TimePickerDialog timePickerDialog = new TimePickerDialog(AddEvent.this,AddEvent.this,hour,minute, true);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(AddEvent.this, AddEvent.this, hour, minute, true);
         timePickerDialog.show();
     }
 
@@ -439,31 +435,30 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     public void onTimeSet(TimePicker timePicker, int i, int i1) {
         fhour = i;
         fminute = i1;
-        dateDisplay.setText(fday + "/" + fmonth + "/"+ fyear + "   "+ fhour + ":"+ fminute );
+        dateDisplay.setText(fday + "/" + fmonth + "/" + fyear + "   " + fhour + ":" + fminute);
     }
 
-    public void ImagebuttonClick(View v){
+    public void ImagebuttonClick(View v) {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent,1);
+        startActivityForResult(intent, 1);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK && (data !=null)){
-            eventTitle.setText(Integer.toString(requestCode));
-            if(requestCode == Selected_Image){
+        if (resultCode == RESULT_OK && (data != null)) {
+            if (requestCode == Selected_Image) {
                 Uri imageUri = data.getData();
-                try{
+                try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
                     eventImage.setImageBitmap(bitmap);
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     System.out.println(e);
                 }
             }
-            if(requestCode == PLACE_PICKER_REQUEST){
-                place = PlacePicker.getPlace(data,this);
-                String address = String.format("%s, %s",place.getName(),place.getAddress());
+            if (requestCode == PLACE_PICKER_REQUEST) {
+                place = PlacePicker.getPlace(data, this);
+                String address = String.format("%s, %s", place.getName(), place.getAddress());
                 locationText.setText(address);
 
             }
@@ -471,17 +466,16 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
     }
 
-    public void EditTextNormalize(){
-        eventTitle.setBackgroundResource(R.drawable.rounded_edittext);
+    public void EditTextNormalize() {
         eventDescription.setBackgroundResource(R.drawable.rounded_edittext);
-        if(noLimit.isChecked())
-            numParticipant.setBackgroundResource(R.drawable.rounded_edittext_gray );
+        if (noLimit.isChecked())
+            numParticipant.setBackgroundResource(R.drawable.rounded_edittext_gray);
         else
-            numParticipant.setBackgroundResource(R.drawable.rounded_edittext );
-        if(isFree.isChecked())
-            price.setBackgroundResource(R.drawable.rounded_edittext_gray );
+            numParticipant.setBackgroundResource(R.drawable.rounded_edittext);
+        if (isFree.isChecked())
+            price.setBackgroundResource(R.drawable.rounded_edittext_gray);
         else
-            price.setBackgroundResource(R.drawable.rounded_edittext );
+            price.setBackgroundResource(R.drawable.rounded_edittext);
         dateDisplay.setBackgroundResource(R.drawable.rounded_edittext);
     }
 
@@ -500,7 +494,8 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     @Override
     public void onConnectionSuspended(int i) {
 
-   }
+    }
+
     private String getStringFromBitmap(Bitmap bitmapPicture) {
 
         final int COMPRESSION_QUALITY = 100;

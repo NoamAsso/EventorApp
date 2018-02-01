@@ -41,21 +41,28 @@ public class EventPage extends AppCompatActivity {
     ImageView image;
     Button joinEvent;
     ListView participants;
-
+    CoordinatorLayout coor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event_page);
         Bundle b = getIntent().getExtras();
         int value = -1;
         if(b != null)
             value = b.getInt("key");
+        MapEventMenu f = new MapEventMenu();
+        // Supply index input as an argument.
+        Bundle args = new Bundle();
+        args.putInt("index", value);
+        f.setArguments(args);
+
+        setContentView(R.layout.activity_event_page);
+
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floating_button);
-
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_event_page);
-
         GenericEvent event = (GenericEvent)AddItemAdapter.getInstance().getModel().get(value);
 
         category = (TextView) findViewById(R.id.event_category);
@@ -68,6 +75,7 @@ public class EventPage extends AppCompatActivity {
         eventCreator = (TextView) findViewById(R.id.event_creator_name);
         description = (TextView) findViewById(R.id.event_description);
         image = (ImageView) findViewById(R.id.event_pic);
+        coor = (CoordinatorLayout) findViewById(R.id.main_event_page);
         Date datecheck = new Date();
         category.setText(event.getCategory().toString());
         description.setText(event.getDescription().toString());
@@ -100,21 +108,27 @@ public class EventPage extends AppCompatActivity {
         switch (imageicon) {
             case "Football":
                 image.setBackground(this.getResources().getDrawable(R.drawable.football_icon));
+                coor.setBackground(this.getResources().getDrawable(R.drawable.soccer_wallpaper));
                 break;
             case "Baketball":
                 image.setBackground(this.getResources().getDrawable(R.drawable.basketball_iconn));
+                coor.setBackground(this.getResources().getDrawable(R.drawable.basketball_wallpaper2));
                 break;
             case "Volleyball":
                 image.setBackground(this.getResources().getDrawable(R.drawable.volleyball_icon));
+                coor.setBackground(this.getResources().getDrawable(R.drawable.volleyball_wallpaper));
                 break;
             case "Tennis":
                 image.setBackground(this.getResources().getDrawable(R.drawable.tennis_icon));
+                coor.setBackground(this.getResources().getDrawable(R.drawable.tennis_wallpaper));
                 break;
             case "Baseball":
                 image.setBackground(this.getResources().getDrawable(R.drawable.baseball_icon));
+                coor.setBackground(this.getResources().getDrawable(R.drawable.baseball_wallpaper));
                 break;
             case "Cricket":
                 image.setBackground(this.getResources().getDrawable(R.drawable.cricket_icon));
+                coor.setBackground(this.getResources().getDrawable(R.drawable.cricket_wallpaper));
                 break;
             case "No image":
                 image.setBackground(this.getResources().getDrawable(R.drawable.add_image));

@@ -1,9 +1,13 @@
 package com.example.noam.eventor;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.util.Log;
@@ -14,6 +18,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
@@ -36,11 +41,14 @@ public class AddItemAdapterTwo extends BaseAdapter {
     private ArrayList<GenericEvent> model;
     private static AddItemAdapterTwo sInstance;
     private LayoutInflater layoutInflater;
+    private Button join;
+    private User currentUser;
 
     private AddItemAdapterTwo() {
         model = new ArrayList<>();
         this.context = null;
         layoutInflater = null;
+
     }
 
     public static AddItemAdapterTwo getInstance() {
@@ -104,52 +112,80 @@ public class AddItemAdapterTwo extends BaseAdapter {
         }
 
         final GenericEvent currentItem = (GenericEvent) getItem(position);
-
         GeoDataClient mGeoDataClient = Places.getGeoDataClient(context, null);
         PlaceDetectionClient mPlaceDetectionClient = Places.getPlaceDetectionClient(context, null);
         Button detailButton = (Button) convertView.findViewById(R.id.details_button);
         TextView timeHrsMin = (TextView) convertView.findViewById(R.id.time_item);
         TextView title = (TextView) convertView.findViewById(R.id.event_title_item);
         TextView maxNumOfUsers = (TextView) convertView.findViewById(R.id.max_num_users);
+        TextView currentUsers = (TextView) convertView.findViewById(R.id.current_num_users);
         TextView date = (TextView) convertView.findViewById(R.id.event_date_item);
+        TextView price = convertView.findViewById(R.id.price);
         final TextView location = (TextView) convertView.findViewById(R.id.location_item);
         ImageView image = (ImageView) convertView.findViewById(R.id.image_item);
+        join = (Button) convertView.findViewById(R.id.event_join);
+        CurrentUser Uinstance = CurrentUser.getInstance();
+        currentUser = CurrentUser.getInstance().getUser();
+        currentUsers.setText(Integer.toString(currentItem.getCurrentUsers()));
+
+        if (CheckIfJoined(position)) {
+            join.setEnabled(false);
+            join.setText("Joined");
+            join.setTextColor(Color.GRAY);
+            join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
+        }
+        else{
+            if(join.getText()=="Joined"){
+                join.setEnabled(true);
+                join.setText("Join");
+                join.setTextColor(Color.WHITE);
+                join.setBackground(context.getResources().getDrawable(R.drawable.curve_edges_button_location));
+            }
+        }
+
+        /*
+        if (CurrentUserEvents.getInstance().getUserEvents() != null) {
+            if (CurrentUserEvents.getInstance().getUserEvents().contains(position+1)) {
+                join.setEnabled(false);
+                join.setText("Joined");
+                join.setTextColor(Color.GRAY);
+                join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
+            }
+        }
+         */
         //sets the text for item name and item description from the current item object
         title.setText(currentItem.getCategory());
         year = currentItem.getDate().getYear();
         month = currentItem.getDate().getMonth();
         day = currentItem.getDate().getDate();
-        if((year == (datecheck.getYear()+1900)) && (month == (datecheck.getMonth()+1))){
-            switch (day-datecheck.getDate()){
+        if ((year == (datecheck.getYear() + 1900)) && (month == (datecheck.getMonth() + 1))) {
+            switch (day - datecheck.getDate()) {
                 case 0:
-                    date.setText("Today");break;
+                    date.setText("Today");
+                    break;
                 case 1:
-                    date.setText("Tommorow");break;
+                    date.setText("Tommorow");
+                    break;
                 default:
-                    date.setText(Integer.toString(day)+"/"+Integer.toString(month)+"/"+Integer.toString(year));
+                    date.setText(Integer.toString(day) + "/" + Integer.toString(month) + "/" + Integer.toString(year));
             }
         }
+        if (currentItem.getDate().getMinutes() < 10 && currentItem.getDate().getHours() > 9) {
+            timeHrsMin.setText("At: " + currentItem.getDate().getHours() + ":0" + currentItem.getDate().getMinutes());
+        } else if (currentItem.getDate().getHours() < 10 && currentItem.getDate().getMinutes() > 9) {
+            timeHrsMin.setText("At: 0" + currentItem.getDate().getHours() + ":" + currentItem.getDate().getMinutes());
+        } else if ((currentItem.getDate().getHours() < 10 && currentItem.getDate().getMinutes() < 10))
+            timeHrsMin.setText("At: " + currentItem.getDate().getHours() + ":0" + currentItem.getDate().getMinutes());
         else
-            date.setText(Integer.toString(datecheck.getDate()));
+            timeHrsMin.setText("At: " + currentItem.getDate().getHours() + ":" + currentItem.getDate().getMinutes());
 
-        if(currentItem.getDate().getMinutes()<10 && currentItem.getDate().getHours()>9){
-            timeHrsMin.setText("At: "+currentItem.getDate().getHours()+":0"+currentItem.getDate().getMinutes());
-        }
-        else if(currentItem.getDate().getHours()<10 && currentItem.getDate().getMinutes()>9){
-            timeHrsMin.setText("At: 0"+currentItem.getDate().getHours()+":"+currentItem.getDate().getMinutes());
-        }
-        else if((currentItem.getDate().getHours()<10 && currentItem.getDate().getMinutes()<10))
-            timeHrsMin.setText("At: "+currentItem.getDate().getHours()+":0"+currentItem.getDate().getMinutes());
-        else
-            timeHrsMin.setText("At: "+currentItem.getDate().getHours()+":"+currentItem.getDate().getMinutes());
-        //date.setText(currentItem.getstringDate());
-        String test = currentItem.getCategory();
-        switch (test) {
+        String imageicon = currentItem.getCategory();
+        switch (imageicon) {
             case "Football":
                 image.setBackground(context.getResources().getDrawable(R.drawable.football_icon));
                 break;
-            case "Baketball":
-                image.setBackground(context.getResources().getDrawable(R.drawable.basketball_icon));
+            case "Basketball":
+                image.setBackground(context.getResources().getDrawable(R.drawable.basketball_iconn));
                 break;
             case "Volleyball":
                 image.setBackground(context.getResources().getDrawable(R.drawable.volleyball_icon));
@@ -171,16 +207,23 @@ public class AddItemAdapterTwo extends BaseAdapter {
                 break;
         }
 
-        maxNumOfUsers.setText(Integer.toString(currentItem.getMaxUsers()));
+        if (currentItem.getMaxUsers() == Integer.MAX_VALUE) {
+            maxNumOfUsers.setText("Unlimited");
+        } else {
+            maxNumOfUsers.setText(Integer.toString(currentItem.getMaxUsers()));
+        }
+
+        price.setText(Integer.toString(position));
         String placeId = currentItem.getPlaceID();
         mGeoDataClient.getPlaceById(placeId).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
             public static final String TAG = "AddItemAdapter";
+
             @Override
             public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
                 if (task.isSuccessful()) {
                     PlaceBufferResponse places = task.getResult();
                     Place place2 = places.get(0);
-                    location.setText(place2.getName()+", "+place2.getAddress());
+                    location.setText(place2.getName() + ", " + place2.getAddress());
                     Log.i(TAG, "Place found: " + place2.getName() + place2.getAddress());
                     places.release();
                 } else {
@@ -188,18 +231,50 @@ public class AddItemAdapterTwo extends BaseAdapter {
                 }
             }
         });
-        //String address = String.format("%s, %s",currentItem.getplaceID().getLocale(),currentItem.getplaceID().getAddress());
-        //location.setText(address);
-
-
 
         detailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 currentIndex = position;
                 Intent myIntent = new Intent(context, EventPage.class);
-                //myIntent.putExtra("key", value); //Optional parameters
+                Bundle b = new Bundle();
+                b.putInt("key", position);
+                myIntent.putExtras(b);
                 context.startActivity(myIntent);
+                //finish();
+            }
+        });
+        join.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!CheckIfJoined(position)) {
+
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which) {
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    //JoinEvent((GenericEvent) getItem(position));
+                                    join.setEnabled(false);
+                                    join.setText("Joined");
+                                    join.setTextColor(Color.GRAY);
+                                    join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
+
+                                    break;
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    break;
+                            }
+                        }
+                    };
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage("Are you sure you want to join this game?").setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
+
+                } else {
+                    Toast.makeText(context, "already joined.", Toast.LENGTH_SHORT).show();
+                }
+
                 //finish();
             }
         });
@@ -215,5 +290,17 @@ public class AddItemAdapterTwo extends BaseAdapter {
             e.getMessage();
             return null;
         }
+    }
+    public boolean CheckIfJoined(int position) {
+        ArrayList<Integer> text = CurrentUserEvents.getInstance().getUserEvents();
+        GenericEvent temp = (GenericEvent) getItem(position);
+        int x = temp.getId();
+        if (text.contains(temp.getId())) {
+            return true;
+        } else {
+            return false;
+        }
+
+
     }
 }

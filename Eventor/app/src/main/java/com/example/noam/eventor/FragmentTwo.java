@@ -37,7 +37,7 @@ public class FragmentTwo extends Fragment {
         View view = inflater.inflate(R.layout.fragment_two, container, false);
 
 
-        //perform(view);
+        perform(view);
 
         return view;
     }
@@ -58,46 +58,31 @@ public class FragmentTwo extends Fragment {
     }
 
     public void GetListFromServer() {
-
-        NetworkManager instance = NetworkManager.getInstance();
-        instance.addRequest(new GetEventsRequest(new ServerCallback() {
-
-            @Override
-            public void onSuccess(Object res, int statusCode) {
-                final String tempresult = (String) res;
-                result = tempresult;
-                Log.e("Fragment2", result);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //Toast.makeText(getActivity().getApplicationContext(), "yay got the message!"+result, Toast.LENGTH_SHORT).show();
-                        ArrayList<GenericEvent> currentList;
-                        if(result != "[]"){
-                            Gson gson = new Gson();
-                            currentList = gson.fromJson(result, new TypeToken<List<GenericEvent>>(){}.getType());
-                            AddItemAdapterTwo adapter;
-                            adapter = AddItemAdapterTwo.getInstance();
-                            adapter.setContext(getActivity());
-                            //adapter.AddObj(eventTest);
-                            if(adapter.setModel(currentList)) {
-                                list.setAdapter(adapter);
-                                adapter.notifyDataSetChanged();
-                            }
-                        }
-
-                        else
-                            Toast.makeText(getActivity(),"cant initial model",Toast.LENGTH_SHORT).show();
-
+        AddItemAdapterTwo adapter;
+        adapter = AddItemAdapterTwo.getInstance();
+        adapter.setContext(getActivity());
+        ArrayList<GenericEvent> currentList = AddItemAdapter.getInstance().getModel();
+        ArrayList<Integer> userEvents = CurrentUserEvents.getInstance().getUserEvents();
+        //adapter.AddObj(eventTest);
+        boolean flag = false;
+        if(adapter.setModel(currentList)) {
+            for (int i = 0; i < currentList.size(); i++) {
+                for (int j = 0; j < userEvents.size(); j++) {
+                    if(currentList.get(i).getId()==userEvents.get(j)){
+                        flag = true;
                     }
-                });
+                }
+                if(!flag){
+                    currentList.remove(i);
+                    i--;
+                }
 
+                flag = false;
             }
+            adapter.setModel(currentList);
+            adapter.notifyDataSetChanged();
+            list.setAdapter(adapter);
+        }
 
-            @Override
-            public void onFailure(Object err, int statusCode) {
-                Toast.makeText(getActivity().getApplicationContext(), "failure to receive message", Toast.LENGTH_SHORT).show();
-                Log.e("Fragment2", "Connection to Server failed");
-            }
-        }));
     }//fetchFromNetwork
 }
