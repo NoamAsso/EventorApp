@@ -89,7 +89,12 @@ public class RegisterActivity extends AppCompatActivity {
                     userAge.setBackgroundResource(R.drawable.rounded_edittext_red );
                 }
                 if(!error){
-                    User user = new User(0,userName.getText().toString(),userPassword.getText().toString(),Integer.parseInt(userAge.getText().toString()),userEmail.getText().toString(),userPhone.getText().toString(),spinnerGender.getSelectedItem().toString());
+                    User user = new User(0,userName.getText().toString(),
+                            userPassword.getText().toString(),
+                            Integer.parseInt(userAge.getText().toString()),
+                            userEmail.getText().toString(),
+                            userPhone.getText().toString(),
+                            spinnerGender.getSelectedItem().toString());
                     Gson gson = new Gson();
                     Date date = new Date();
                     String json = gson.toJson(user);

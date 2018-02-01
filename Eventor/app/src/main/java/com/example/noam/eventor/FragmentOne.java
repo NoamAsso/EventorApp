@@ -1,6 +1,8 @@
 package com.example.noam.eventor;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +17,7 @@ import android.view.animation.Animation;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
@@ -31,6 +34,7 @@ import java.util.List;
 
 public class FragmentOne extends Fragment {
     ListView list;
+    TextView recentEvents;
     AddItemAdapter adapter;
     // String result;
     SwipeRefreshLayout mSwipeRefreshView;
@@ -46,6 +50,10 @@ public class FragmentOne extends Fragment {
         list = (ListView) v.findViewById(R.id.eventlist1);
 
         adapter = AddItemAdapter.getInstance();
+        adapter.setContext(getActivity());
+        adapter.notifyDataSetChanged();
+        list.setAdapter(adapter);
+        Typeface myFont = Typeface.createFromAsset(getActivity().getAssets(),"fonts/myriad_light.otf");
         mSwipeRefreshView = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
         mSwipeRefreshView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -78,17 +86,10 @@ public class FragmentOne extends Fragment {
             }
         });
 
-        //GetListFromServer();
+        GetListFromServer();
 
         return v;
     }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        //GetListFromServer();
-    }
-
     public void GetListFromServer() {
         final NetworkManager instance = NetworkManager.getInstance();
         instance.addRequest(new GetEventsRequest(new ServerCallback() {
@@ -106,14 +107,11 @@ public class FragmentOne extends Fragment {
                             eventsArray = gson.fromJson(result, new TypeToken<List<GenericEvent>>() {
                             }.getType());
                             adapter.setModel(null);
-
-
                             if (adapter.setModel(eventsArray)) {
                                 adapter.setContext(getActivity());
                                 adapter.notifyDataSetChanged();
                                 list.setAdapter(adapter);
                             }
-
 
                         } else
                             Log.e("Fragment One", "Can't initialize model");
@@ -124,8 +122,16 @@ public class FragmentOne extends Fragment {
             @Override
             public void onFailure(Object err, int statusCode) {
                 Toast.makeText(getActivity().getApplicationContext(), "failure to receive message", Toast.LENGTH_SHORT).show();
-                Log.e("Fragment2", "Connection to Server failed");
+                Log.e("FragmentOne", "Connection to Server failed");
             }
         }));
     }//fetchFromNetwork
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        //GetListFromServer();
+    }
+
+
 }

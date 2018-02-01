@@ -1,21 +1,31 @@
 package com.example.noam.eventor;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Typeface;
+import android.location.Location;
+import android.location.LocationManager;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
@@ -27,8 +37,10 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class EventPage extends AppCompatActivity {
+    private static final int REQUEST_CODE = 1;
     TextView category;
     TextView date;
     TextView time;
@@ -39,16 +51,32 @@ public class EventPage extends AppCompatActivity {
     TextView eventCreator;
     TextView description;
     ImageView image;
+    Place place2;
+    TextView gameAddress;
     Button joinEvent;
+    Button reminder;
+    Button change;
     ListView participants;
     CoordinatorLayout coor;
+    GenericEvent event;
+    Button getDirections;
+    String addressString;
+    String addressString2;
+    LocationManager mLocationManager;
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle b = getIntent().getExtras();
+        final android.support.v7.app.ActionBar myActionBar = getSupportActionBar();
+        myActionBar.hide();
         int value = -1;
-        if(b != null)
+        int from = -1;
+        if(b != null){
             value = b.getInt("key");
+            from = b.getInt("from");
+        }
+
         MapEventMenu f = new MapEventMenu();
         // Supply index input as an argument.
         Bundle args = new Bundle();
@@ -57,14 +85,24 @@ public class EventPage extends AppCompatActivity {
 
         setContentView(R.layout.activity_event_page);
 
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floating_button);
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_event_page);
-        GenericEvent event = (GenericEvent)AddItemAdapter.getInstance().getModel().get(value);
+        if(from==1){
+            event = (GenericEvent)AddItemAdapter.getInstance().getModel().get(value);
+        }
 
+        else if(from==2){
+            event = (GenericEvent)AddItemAdapterTwo.getInstance().getModel().get(value);
+        }
+
+
+        Typeface myFont = Typeface.createFromAsset(getAssets(),"fonts/myriad_light.otf");
+        reminder = (Button) findViewById(R.id.reminder);
+        change = (Button) findViewById(R.id.change);
+        participants = (ListView) findViewById(R.id.user_list);
+        getDirections = (Button) findViewById(R.id.get_directions);
+        gameAddress = (TextView) findViewById(R.id.game_address);
         category = (TextView) findViewById(R.id.event_category);
         date = (TextView) findViewById(R.id.event_date);
         time = (TextView) findViewById(R.id.event_time);
@@ -79,6 +117,13 @@ public class EventPage extends AppCompatActivity {
         Date datecheck = new Date();
         category.setText(event.getCategory().toString());
         description.setText(event.getDescription().toString());
+        time.setTypeface(myFont);
+        address.setTypeface(myFont);
+        //getDirections.setTypeface(myFont);
+        gameAddress.setTypeface(myFont);
+        UserListAdapter adapter = UserListAdapter.getInstance();
+        adapter.setContext(this);
+        participants.setAdapter(adapter);
         int year = event.getDate().getYear();
         int month = event.getDate().getMonth();
         int day = event.getDate().getDate();
@@ -103,32 +148,51 @@ public class EventPage extends AppCompatActivity {
         else
             time.setText("At: "+event.getDate().getHours()+":"+event.getDate().getMinutes());
 
+        participants.setOnScrollListener(new AbsListView.OnScrollListener() {
 
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                boolean enable = false;
+                if (participants != null && participants.getChildCount() > 0) {
+                    // check if the first item of the list is visible
+                    boolean firstItemVisible = participants.getFirstVisiblePosition() == 0;
+                    // check if the top of the first item is visible
+                    boolean topOfFirstItemVisible = participants.getChildAt(0).getTop() == 0;
+                    // enabling or disabling the refresh layout
+                    enable = firstItemVisible && topOfFirstItemVisible;
+                }
+            }
+        });
         String imageicon = event.getCategory();
         switch (imageicon) {
             case "Football":
                 image.setBackground(this.getResources().getDrawable(R.drawable.football_icon));
-                coor.setBackground(this.getResources().getDrawable(R.drawable.soccer_wallpaper));
+                //coor.setBackground(this.getResources().getDrawable(R.drawable.soccer_wallpaper));
                 break;
             case "Baketball":
                 image.setBackground(this.getResources().getDrawable(R.drawable.basketball_iconn));
-                coor.setBackground(this.getResources().getDrawable(R.drawable.basketball_wallpaper2));
+                //coor.setBackground(this.getResources().getDrawable(R.drawable.basketball_wallpaper2));
                 break;
             case "Volleyball":
                 image.setBackground(this.getResources().getDrawable(R.drawable.volleyball_icon));
-                coor.setBackground(this.getResources().getDrawable(R.drawable.volleyball_wallpaper));
+                //coor.setBackground(this.getResources().getDrawable(R.drawable.volleyball_wallpaper));
                 break;
             case "Tennis":
                 image.setBackground(this.getResources().getDrawable(R.drawable.tennis_icon));
-                coor.setBackground(this.getResources().getDrawable(R.drawable.tennis_wallpaper));
+                //coor.setBackground(this.getResources().getDrawable(R.drawable.tennis_wallpaper));
                 break;
             case "Baseball":
                 image.setBackground(this.getResources().getDrawable(R.drawable.baseball_icon));
-                coor.setBackground(this.getResources().getDrawable(R.drawable.baseball_wallpaper));
+                //coor.setBackground(this.getResources().getDrawable(R.drawable.baseball_wallpaper));
                 break;
             case "Cricket":
                 image.setBackground(this.getResources().getDrawable(R.drawable.cricket_icon));
-                coor.setBackground(this.getResources().getDrawable(R.drawable.cricket_wallpaper));
+                //coor.setBackground(this.getResources().getDrawable(R.drawable.cricket_wallpaper));
                 break;
             case "No image":
                 image.setBackground(this.getResources().getDrawable(R.drawable.add_image));
@@ -146,8 +210,11 @@ public class EventPage extends AppCompatActivity {
             public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
                 if (task.isSuccessful()) {
                     PlaceBufferResponse places = task.getResult();
-                    Place place2 = places.get(0);
+                    place2 = places.get(0);
+                    addressString = place2.getAddress().toString();
+                    addressString2 = place2.getName().toString();
                     address.setText(place2.getName()+", "+place2.getAddress());
+
                     Log.i(TAG, "Place found: " + place2.getName() + place2.getAddress());
                     places.release();
                 } else {
@@ -199,6 +266,54 @@ public class EventPage extends AppCompatActivity {
         });
     behavior.setHideable(false);
         behavior.setPeekHeight(300);
-    }
 
+        getDirections.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Location myLocation = getLastKnownLocation();
+                String logtitude = String.valueOf(myLocation.getLongitude());
+                String latitude = String.valueOf(myLocation.getLatitude());
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/maps/dir/?api=1&origin="+latitude+","+logtitude+"&destination="+addressString2+" "+addressString+"&travelmode=driving"));
+                startActivity(browserIntent);
+            }
+        });
+        reminder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "Will be available in the future", Toast.LENGTH_SHORT).show();
+            }
+        });
+        change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "Will be available in the future", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+    private Location getLastKnownLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mLocationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
+            List<String> providers = mLocationManager.getProviders(true);
+            Location bestLocation = null;
+            for (String provider : providers) {
+                Location l = mLocationManager.getLastKnownLocation(provider);
+                if (l == null) {
+                    continue;
+                }
+                if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                    // Found best last known location: %s", l);
+                    bestLocation = l;
+                }
+            }
+            return bestLocation;
+        } else{
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_CODE);
+            return null;
+        }
+
+    }
 }

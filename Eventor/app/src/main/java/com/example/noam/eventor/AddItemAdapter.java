@@ -110,9 +110,7 @@ public class AddItemAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         Log.e("GetView", "position " + position);
-        if(position==13){
-            int i  = 0;
-        }
+        positionL = position;
         int year, month, day;
         Date datecheck = new Date();
         // inflate the layout for each list row
@@ -167,6 +165,7 @@ public class AddItemAdapter extends BaseAdapter {
                     date.setText(Integer.toString(day) + "/" + Integer.toString(month) + "/" + Integer.toString(year));
             }
         }
+        date.setText(Integer.toString(day) + "/" + Integer.toString(month) + "/" + Integer.toString(year));
         if (currentItem.getDate().getMinutes() < 10 && currentItem.getDate().getHours() > 9) {
             timeHrsMin.setText("At: " + currentItem.getDate().getHours() + ":0" + currentItem.getDate().getMinutes());
         } else if (currentItem.getDate().getHours() < 10 && currentItem.getDate().getMinutes() > 9) {
@@ -210,7 +209,7 @@ public class AddItemAdapter extends BaseAdapter {
             maxNumOfUsers.setText(Integer.toString(currentItem.getMaxUsers()));
         }
 
-        price.setText(Integer.toString(position));
+        price.setText("Price: "+Integer.toString(currentItem.getPrice())+"₪");
         String placeId = currentItem.getPlaceID();
         mGeoDataClient.getPlaceById(placeId).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
             public static final String TAG = "AddItemAdapter";
@@ -233,9 +232,45 @@ public class AddItemAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 currentIndex = position;
+                UserListAdapter adapter = UserListAdapter.getInstance();
+                ArrayList<User> test = new ArrayList<>();//future list', just a test
+                User user = CurrentUser.getInstance().getUser();
+                User user2 = new User(0,"Jacob",
+                        "12345",
+                        26,
+                        "test",
+                        "123456",
+                        "Male");
+                User user3 = new User(0,"David",
+                        "12345",
+                        21,
+                        "test",
+                        "123456",
+                        "Male");
+                User user4 = new User(0,"Json",
+                        "12345",
+                        23,
+                        "test",
+                        "123456",
+                        "Male");
+                User user5 = new User(0,"Kevin",
+                        "12345",
+                        22,
+                        "test",
+                        "123456",
+                        "Male");
+                test.add(user);
+                test.add(user2);
+                test.add(user3);
+                test.add(user4);
+                test.add(user5);
+                adapter.setModel(test);
+                adapter.notifyDataSetChanged();
+
                 Intent myIntent = new Intent(context, EventPage.class);
                 Bundle b = new Bundle();
                 b.putInt("key", position);
+                b.putInt("from", 1);
                 myIntent.putExtras(b);
                 context.startActivity(myIntent);
                 //finish();
@@ -295,14 +330,12 @@ public class AddItemAdapter extends BaseAdapter {
                 ((Activity) context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
-                        join.setText("Joined");
-                        join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
                         Toast.makeText(context, "Joined to event!", Toast.LENGTH_SHORT).show();
 
                         Intent myIntent = new Intent(context, EventPage.class);
                         Bundle b = new Bundle();
-                        b.putInt("key", 2);
+                        b.putInt("key", positionL);
+                        b.putInt("from", 1);
                         myIntent.putExtras(b);
                         context.startActivity(myIntent);
                     }

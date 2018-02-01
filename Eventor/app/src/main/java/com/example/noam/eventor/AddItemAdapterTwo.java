@@ -142,17 +142,6 @@ public class AddItemAdapterTwo extends BaseAdapter {
                 join.setBackground(context.getResources().getDrawable(R.drawable.curve_edges_button_location));
             }
         }
-
-        /*
-        if (CurrentUserEvents.getInstance().getUserEvents() != null) {
-            if (CurrentUserEvents.getInstance().getUserEvents().contains(position+1)) {
-                join.setEnabled(false);
-                join.setText("Joined");
-                join.setTextColor(Color.GRAY);
-                join.setBackground(context.getResources().getDrawable(R.drawable.rounded_edittext));
-            }
-        }
-         */
         //sets the text for item name and item description from the current item object
         title.setText(currentItem.getCategory());
         year = currentItem.getDate().getYear();
@@ -213,7 +202,7 @@ public class AddItemAdapterTwo extends BaseAdapter {
             maxNumOfUsers.setText(Integer.toString(currentItem.getMaxUsers()));
         }
 
-        price.setText(Integer.toString(position));
+        price.setText("Price: "+Integer.toString(currentItem.getPrice())+"₪");
         String placeId = currentItem.getPlaceID();
         mGeoDataClient.getPlaceById(placeId).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
             public static final String TAG = "AddItemAdapter";
@@ -239,6 +228,7 @@ public class AddItemAdapterTwo extends BaseAdapter {
                 Intent myIntent = new Intent(context, EventPage.class);
                 Bundle b = new Bundle();
                 b.putInt("key", position);
+                b.putInt("from", 2);
                 myIntent.putExtras(b);
                 context.startActivity(myIntent);
                 //finish();
