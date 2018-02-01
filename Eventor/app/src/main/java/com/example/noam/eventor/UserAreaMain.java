@@ -19,7 +19,10 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.support.v7.widget.Toolbar;
-
+/**
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
+ */
 public class UserAreaMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 //main screen after login activity!
 

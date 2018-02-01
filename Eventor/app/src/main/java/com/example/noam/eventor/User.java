@@ -5,7 +5,10 @@ import java.util.ArrayList;
 /**
  * Created by itayrin on 1/23/2018.
  */
-
+/**
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
+ */
 public class User {//user object!
 
     private int userId;

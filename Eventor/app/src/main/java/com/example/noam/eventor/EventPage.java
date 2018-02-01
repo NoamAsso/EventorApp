@@ -38,7 +38,10 @@ import com.google.android.gms.tasks.Task;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+/**
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
+ */
 public class EventPage extends AppCompatActivity {
     private static final int REQUEST_CODE = 1;
     TextView category;

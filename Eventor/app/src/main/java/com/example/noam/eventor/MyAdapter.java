@@ -7,7 +7,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 /**
  * Created by Noam on 17/01/2018.
  */
-
+/**
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
+ */
 class MyAdapter extends FragmentPagerAdapter {//pageview adapter
     CharSequence Titles[]; // This will Store the Titles of the Tabs which are Going to be passed when ViewPagerAdapter is created
     int NumbOfTabs; // Store the number of tabs, this will also be passed when the ViewPagerAdapter is created

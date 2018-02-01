@@ -35,7 +35,10 @@ import java.util.Date;
 /**
  * Created by Noam on 01/02/2018.
  */
-
+/**
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
+ */
 public class UserListAdapter extends BaseAdapter {//adapter for list of users that joined a specific
     private Context context; //context
     private static int currentIndex;

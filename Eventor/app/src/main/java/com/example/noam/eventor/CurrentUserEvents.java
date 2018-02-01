@@ -3,6 +3,10 @@ package com.example.noam.eventor;
 import java.util.ArrayList;
 
 /**
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
+ */
+/**
  * Created by Noam on 25/01/2018.
  */
 

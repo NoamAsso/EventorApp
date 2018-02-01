@@ -7,9 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Created by Akshay Raj on 17-04-2017.
- * akshay@snowcorp.org
- * www.snowcorp.org
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
  */
 
 public class FragmentThree extends Fragment {//not implemented yet, should be invitations list

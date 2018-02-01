@@ -28,7 +28,10 @@ import static com.example.noam.eventor.NetworkManager.ReqMethod.GET;
 /**
  * Created by itayrin on 1/19/2018.
  */
-
+/**
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
+ */
 public class NetworkManager {//handles network connections
 
     public static final String TAG = "NetworkManager";

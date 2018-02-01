@@ -6,7 +6,10 @@ import static com.example.noam.eventor.NetworkManager.ReqMethod.GET;
 /**
  * Created by itayrin on 1/25/2018.
  */
-
+/**
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
+ */
 public class UpdateJoinRequest extends BaseRequest {
     Integer userid;
     Integer eventid;

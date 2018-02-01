@@ -36,7 +36,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 
 /**
- * Created by Noam on 19/01/2018.
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
  */
 
 public class AddItemAdapter extends BaseAdapter {

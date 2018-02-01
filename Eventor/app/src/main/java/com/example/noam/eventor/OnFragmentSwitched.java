@@ -5,7 +5,10 @@ import android.support.v4.view.ViewPager;
 /**
  * Created by itayrin on 1/22/2018.
  */
-
+/**
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
+ */
 public class OnFragmentSwitched implements ViewPager.OnPageChangeListener {
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

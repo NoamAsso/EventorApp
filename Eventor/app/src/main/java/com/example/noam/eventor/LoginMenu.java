@@ -25,7 +25,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
+ */
 public class LoginMenu extends AppCompatActivity {
     EditText username;
     EditText userPassword;

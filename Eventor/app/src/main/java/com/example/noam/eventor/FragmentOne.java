@@ -31,7 +31,10 @@ import java.util.List;
 /**
  * Created by Itay on 18/1/2018
  */
-
+/**
+ * Created by Noam Assouline and Itay ringler!
+ * all rights reserved :)
+ */
 public class FragmentOne extends Fragment {
     ListView list;
     TextView recentEvents;
